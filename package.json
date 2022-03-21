@@ -1,0 +1,26 @@
+{
+  "name": "polyreel",
+  "version": "0.1.0",
+  "repository": "",
+  "private": true,
+  "scripts": {
+    "dev": "yarn workspace @polyreel/next dev",
+    "build": "yarn workspace @polyreel/next build",
+    "test": "yarn workspace @polyreel/next start"
+  },
+  "author": "",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@graphprotocol/graph-ts",
+      "**/@graphprotocol/graph-ts/**",
+      "**/hardhat",
+      "**/hardhat/**",
+      "**/hardhat-ts",
+      "**/hardhat-ts/**"
+    ]
+  }
+}
