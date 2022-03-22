@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { TwitterIcon, WebIcon } from "@/icons";
 import { cardFormatDate } from "@/utils/formatDate";
 
@@ -11,15 +12,19 @@ export const FeedCard = ({ publication }: any) => {
         <div className="flex">
           {publication.profile.picture ? (
             <Link href={`/profile/${publication.profile.handle}`}>
-              <img
-                src={publication.profile.picture.original.url}
-                alt=""
-                className="rounded-full h-10 border-2 cursor-pointer"
-              />
+              <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
+                <Image
+                  src={publication.profile.picture.original.url}
+                  alt=""
+                  className="rounded-full"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
             </Link>
           ) : (
             <Link href={`/profile/${publication.profile.handle}`}>
-              <div className="bg-slate-300 rounded-full h-10 w-10 border-2 cursor-pointer"></div>
+              <div className="bg-slate-300 rounded-full h-12 w-12 border-2 cursor-pointer"></div>
             </Link>
           )}
 
@@ -61,7 +66,15 @@ export const FeedCard = ({ publication }: any) => {
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
                 {media.original.url && (
-                  <img src={media.original.url} alt="" className="rounded-lg" />
+                  <div className="h-96 w-96 relative border rounded">
+                    <Image
+                      src={media.original.url}
+                      alt=""
+                      className=""
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
                 )}
               </div>
             ))}
