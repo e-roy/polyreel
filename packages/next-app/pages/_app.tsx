@@ -9,6 +9,8 @@ import { providers } from "ethers";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "@/lib";
 
+import { ThemeProvider } from "next-themes";
+
 // Get environment variables
 const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -69,7 +71,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         provider={provider}
         webSocketProvider={webSocketProvider}
       >
-        <Component {...pageProps} />
+        <ThemeProvider defaultTheme="light" attribute="class">
+          <Component {...pageProps} />
+        </ThemeProvider>
       </Provider>
     </ApolloProvider>
   );

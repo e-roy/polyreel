@@ -6,6 +6,8 @@ import { Header } from "@/components/layout";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
+// import { UserTimeline } from "@/components/lens/timeline";
+import { GetPublications } from "@/components/lens/publications";
 
 import { TwitterIcon, WebIcon } from "@/icons";
 
@@ -14,7 +16,7 @@ const ProfilePage: NextPage = () => {
   const { id } = router.query;
   const { loading, error, data } = useQuery(GET_PROFILES, {
     variables: {
-      request: { profileIds: [id] },
+      request: { handles: [id] },
     },
   });
 
@@ -22,7 +24,7 @@ const ProfilePage: NextPage = () => {
   if (error) return <p>Error :(</p>;
 
   let profile = data.profiles.items[0];
-  console.log(profile);
+  //   console.log(profile);
   if (!profile) return null;
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -33,16 +35,16 @@ const ProfilePage: NextPage = () => {
       </Head>
 
       <Header />
-      <main className="flex-1 overflow-y-scroll bg-stone-100 px-4">
-        <div className="h-48 max-h-48">
+      <main className="flex-1 overflow-y-scroll px-4">
+        <div className="">
           {profile.coverPicture ? (
             <img
               src={profile.coverPicture.original.url}
               alt=""
-              className="rounded-lg"
+              className="rounded-t-xl max-h-64 w-full shadow-xl"
             />
           ) : (
-            <div className="bg-sky-500 h-48 max-h-48 rounded-t"></div>
+            <div className="bg-sky-500 h-64 max-h-64 rounded-t shadow-xl"></div>
           )}
         </div>
         <div className="flex mb-4 -mt-16 ml-8">
@@ -55,8 +57,28 @@ const ProfilePage: NextPage = () => {
           ) : (
             <div className="rounded-full h-32 w-32 bg-gray-300 border-2"></div>
           )}
-          <div className="ml-2 my-auto font-semibold text-3xl bg-white px-1 rounded-xl">
-            {profile.handle}
+          <div className="ml-2 px-2 py-1 my-auto font-semibold text-3xl bg-white border shadow-lg text-stone-800  rounded-xl">
+            @{profile.handle}
+          </div>
+          <div className="mt-20 ml-8 flex space-x-8">
+            {profile.website && (
+              <a
+                href={profile.website}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <WebIcon size={30} />
+              </a>
+            )}
+            {profile.twitterUrl && (
+              <a
+                href={profile.twitterUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <TwitterIcon size={30} />
+              </a>
+            )}
           </div>
         </div>
         <div className="font-semibold">
@@ -65,6 +87,8 @@ const ProfilePage: NextPage = () => {
         <div className="font-semibold">
           Location : <span className="font-normal">{profile.location}</span>
         </div>
+        {/* <UserTimeline profileId={profile.id} /> */}
+        <GetPublications profileId={profile.id} />
       </main>
 
       {/* <footer className="px-4 py-2">footer</footer> */}
