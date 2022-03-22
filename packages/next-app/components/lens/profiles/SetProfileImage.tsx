@@ -6,7 +6,7 @@ import { omit, splitSignature } from "@/lib/helpers";
 import { CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA } from "@/queries/profile/set-profile-image";
 import { Button, TextField } from "@/components/elements";
 
-import { uploadIpfs } from "@/lib/ipfs";
+// import { uploadIpfs } from "@/lib/ipfs";
 
 import LENS_ABI from "@/abis/Lens.json";
 const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
@@ -74,7 +74,7 @@ export const SetProfileImage = ({ profileId }: SetProfileImageProps) => {
       },
     });
 
-  const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createSetProfileImageURITypedData({
       variables: {

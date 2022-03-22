@@ -37,7 +37,7 @@ export const UpdateProfile = ({ profileId }: UpdateProfileProps) => {
     }
   );
 
-  const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProfile();
   };
