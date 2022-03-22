@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { TwitterIcon, WebIcon } from "@/icons";
 import { cardFormatDate } from "@/utils/formatDate";
 
@@ -10,12 +9,10 @@ export const PublicationCard = ({ publication }: any) => {
         <div className="flex">
           {publication.profile.picture ? (
             <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
-              <Image
+              <img
                 src={publication.profile.picture.original.url}
                 alt=""
                 className="rounded-full"
-                layout="fill"
-                objectFit="cover"
               />
             </div>
           ) : (
@@ -61,12 +58,7 @@ export const PublicationCard = ({ publication }: any) => {
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
                 {media.original.url && (
-                  <Image
-                    src={media.original.url}
-                    alt=""
-                    className="rounded-lg"
-                    layout="fill"
-                  />
+                  <img src={media.original.url} alt="" className="rounded-lg" />
                 )}
               </div>
             ))}

@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -40,11 +39,10 @@ const ProfilePage: NextPage = () => {
         <div className="">
           {profile.coverPicture ? (
             <div className="rounded-t-xl relative h-64 max-h-64 w-full shadow-xl -z-10">
-              <Image
+              <img
                 src={profile.coverPicture.original.url}
                 alt=""
                 className=""
-                layout="fill"
               />
             </div>
           ) : (
@@ -54,12 +52,10 @@ const ProfilePage: NextPage = () => {
         <div className="flex mb-4 -mt-16 ml-8">
           {profile.picture ? (
             <div className="h-32 w-32 relative rounded-full border-2 shadow-xl">
-              <Image
+              <img
                 src={profile.picture.original.url}
                 alt=""
                 className="rounded-full"
-                layout="fill"
-                objectFit="cover"
               />
             </div>
           ) : (

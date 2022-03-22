@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "../elements";
 import { useConnect, useAccount } from "wagmi";
-import Image from "next/image";
 
 import metamaskLogo from "@/images/metamask-logo.png";
 import walletConnectLogo from "@/images/walletconnect-logo.png";
@@ -85,8 +84,8 @@ export const ConnectWallet = () => {
               >
                 <div>
                   {x.name === "MetaMask" && (
-                    <Image
-                      src={metamaskLogo}
+                    <img
+                      src={metamaskLogo.src}
                       width={50}
                       height={50}
                       alt="MetaMask"
@@ -94,8 +93,8 @@ export const ConnectWallet = () => {
                     />
                   )}
                   {x.name === "WalletConnect" && (
-                    <Image
-                      src={walletConnectLogo}
+                    <img
+                      src={walletConnectLogo.src}
                       width={50}
                       height={50}
                       alt="Wallet Connect"

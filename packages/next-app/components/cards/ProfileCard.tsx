@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { TwitterIcon, WebIcon } from "@/icons";
 
 export const ProfileCard = ({ profile }: any) => {
@@ -10,7 +9,7 @@ export const ProfileCard = ({ profile }: any) => {
     >
       <div className="h-20">
         {profile.coverPicture && (
-          <Image
+          <img
             src={profile.coverPicture.original.url}
             alt=""
             className="rounded-lg"
@@ -21,12 +20,10 @@ export const ProfileCard = ({ profile }: any) => {
       <div className="flex mb-4 -mt-6">
         {profile.picture ? (
           <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
-            <Image
+            <img
               src={profile.picture.original.url}
               alt=""
               className="rounded-full"
-              layout="fill"
-              objectFit="cover"
             />
           </div>
         ) : (

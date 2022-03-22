@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { TwitterIcon, WebIcon } from "@/icons";
 import { cardFormatDate } from "@/utils/formatDate";
 
@@ -13,12 +12,10 @@ export const FeedCard = ({ publication }: any) => {
           {publication.profile.picture ? (
             <Link href={`/profile/${publication.profile.handle}`}>
               <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
-                <Image
+                <img
                   src={publication.profile.picture.original.url}
                   alt=""
                   className="rounded-full"
-                  layout="fill"
-                  objectFit="cover"
                 />
               </div>
             </Link>
@@ -67,13 +64,7 @@ export const FeedCard = ({ publication }: any) => {
               <div key={index}>
                 {media.original.url && (
                   <div className="h-96 w-96 relative border rounded">
-                    <Image
-                      src={media.original.url}
-                      alt=""
-                      className=""
-                      layout="fill"
-                      objectFit="cover"
-                    />
+                    <img src={media.original.url} alt="" className="" />
                   </div>
                 )}
               </div>
