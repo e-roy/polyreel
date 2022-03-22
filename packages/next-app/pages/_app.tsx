@@ -1,13 +1,17 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-import { Connector, Provider, chain, defaultChains } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { WalletLinkConnector } from 'wagmi/connectors/walletLink';
-import { providers } from 'ethers';
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { Connector, Provider, chain, defaultChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { WalletLinkConnector } from "wagmi/connectors/walletLink";
+import { providers } from "ethers";
+
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "@/lib";
 
 // Get environment variables
 const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
+const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
 
 // Pick chains
 const chains = defaultChains;
@@ -21,20 +25,20 @@ const connectors = ({ chainId }: ConnectorsConfig) => {
     defaultChain.rpcUrls[0];
   return [
     new InjectedConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        infuraId,
-        qrcode: true,
-      },
-    }),
-    new WalletLinkConnector({
-      chains,
-      options: {
-        appName: 'create-web3-frontend',
-        jsonRpcUrl: `${rpcUrl}/${infuraId}`,
-      },
-    }),
+    // new WalletConnectConnector({
+    //   chains,
+    //   options: {
+    //     infuraId,
+    //     qrcode: true,
+    //   },
+    // }),
+    // new WalletLinkConnector({
+    //   chains,
+    //   options: {
+    //     appName: 'create-web3-frontend',
+    //     jsonRpcUrl: `${rpcUrl}/${infuraId}`,
+    //   },
+    // }),
   ];
 };
 
@@ -47,24 +51,27 @@ const provider = ({ chainId }: ProviderConfig) =>
   providers.getDefaultProvider(
     isChainSupported(chainId) ? chainId : defaultChain.id,
     {
+      alchemyId,
       infuraId,
     }
   );
 const webSocketProvider = ({ chainId }: ProviderConfig) =>
   isChainSupported(chainId)
-    ? new providers.InfuraWebSocketProvider(chainId, infuraId)
+    ? new providers.AlchemyWebSocketProvider(chainId, infuraId)
     : undefined;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider
-      autoConnect
-      connectors={connectors}
-      provider={provider}
-      webSocketProvider={webSocketProvider}
-    >
-      <Component {...pageProps} />
-    </Provider>
+    <ApolloProvider client={apolloClient()}>
+      <Provider
+        autoConnect
+        connectors={connectors}
+        provider={provider}
+        webSocketProvider={webSocketProvider}
+      >
+        <Component {...pageProps} />
+      </Provider>
+    </ApolloProvider>
   );
 }
 
