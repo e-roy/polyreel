@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 import { GET_TIMELINE } from "@/queries/timeline/user-timeline";
 
-import { uploadIpfs } from "@/lib/ipfs";
+// import { uploadIpfs } from "@/lib/ipfs";
 
 import { useSigner, useContract } from "wagmi";
 
@@ -23,7 +23,7 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
   const { loading, error, data } = useQuery(GET_TIMELINE, {
     variables: {
       request: {
-        profileId: profileId,
+        profileId,
         // publicationTypes: ["POST", "COMMENT", "MIRROR"],
         limit: 50,
       },
@@ -35,9 +35,6 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
   console.log(data);
   return (
     <div className="p-2 border rounded">
-      <h1 className="text-xl font-bold text-center cursor-pointer">
-        User Timeline - {profileId}
-      </h1>
       <div className="flex flex-wrap">
         {data.timeline.items.map((timelineItem: any, index: number) => (
           <div key={index} className="w-1/4 m-2">

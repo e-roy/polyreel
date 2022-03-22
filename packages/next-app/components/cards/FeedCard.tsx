@@ -6,11 +6,11 @@ import { cardFormatDate } from "@/utils/formatDate";
 export const FeedCard = ({ publication }: any) => {
   //   console.log(publication);
   return (
-    <div className="m-2 p-2 border border-stone-400 shadow-lg rounded">
+    <div className="m-2 p-4 border border-stone-400 shadow-lg rounded">
       <div className="flex justify-between">
         <div className="flex">
           {publication.profile.picture ? (
-            <Link href={`/profile/${publication.profile.id}`}>
+            <Link href={`/profile/${publication.profile.handle}`}>
               <img
                 src={publication.profile.picture.original.url}
                 alt=""
@@ -18,7 +18,7 @@ export const FeedCard = ({ publication }: any) => {
               />
             </Link>
           ) : (
-            <Link href={`/profile/${publication.profile.id}`}>
+            <Link href={`/profile/${publication.profile.handle}`}>
               <div className="bg-slate-300 rounded-full h-10 w-10 border-2 cursor-pointer"></div>
             </Link>
           )}

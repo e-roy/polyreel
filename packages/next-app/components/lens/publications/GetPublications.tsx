@@ -23,19 +23,15 @@ export const GetPublications = ({
       },
     },
   });
-  console.log("publicactions", data);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log(data);
+  // console.log(data);
   return (
-    <div className="p-2 border rounded">
-      <h1 className="text-xl font-bold text-center">
-        Get Publications from {profileId}
-      </h1>
+    <div className="mt-6">
       <div className="flex flex-wrap">
         {data.publications.items.map((publication: any, index: number) => (
-          <div key={index} className="w-1/4 m-2">
+          <div key={index} className="w-1/3 space-2">
             <PublicationCard publication={publication} />
           </div>
         ))}

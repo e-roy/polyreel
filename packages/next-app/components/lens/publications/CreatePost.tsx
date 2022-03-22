@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 
 import { CREATE_POST_TYPED_DATA } from "@/queries/publications/create-post";
 
-import { uploadIpfs } from "@/lib/ipfs";
+// import { uploadIpfs } from "@/lib/ipfs";
 
 import { useSignTypedData, useContractWrite } from "wagmi";
 
@@ -94,7 +94,8 @@ export const CreatePost = ({ profileId }: CreatePostProps) => {
   if (error) return <p>Submission error! {error.message}</p>;
 
   const handlePost = async () => {
-    const result = await uploadIpfs({ name, description: content, content });
+    // const result = await uploadIpfs({ name, description: content, content });
+    const result = "";
     // setIpfsResult(result);
     // console.log(result);
     createPostTypedData({

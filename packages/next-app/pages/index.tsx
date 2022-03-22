@@ -13,7 +13,7 @@ const Landing: NextPage = () => {
       </Head>
 
       <Header />
-      <main className="flex-1 overflow-y-scroll bg-stone-100 px-4">
+      <main className="flex-1 overflow-y-scroll px-4">
         <ExplorePublications />
       </main>
 
