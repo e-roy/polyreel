@@ -1,52 +1,25 @@
-import type { NextPage } from 'next';
-import { useCallback } from 'react';
-import { useAccount, useConnect, useNetwork, useSignMessage } from 'wagmi';
+import type { NextPage } from "next";
+import Head from "next/head";
+import { Header } from "@/components/layout";
+import { ExplorePublications } from "@/components/lens/explore";
 
-const Home: NextPage = () => {
-  const [{ data, error }, connect] = useConnect();
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  });
-  const { connected } = data;
-
-  if (connected) {
-    return (
-      <div className='py-24 text-center'>
-        <p className='text-2xl font-bold'>
-          Welcome {accountData?.ens?.name || accountData?.address}
-        </p>
-        <button
-          className='mx-auto mt-10 rounded bg-slate-200 p-2'
-          onClick={disconnect}
-        >
-          Disconnect
-        </button>
-      </div>
-    );
-  }
-
+const Landing: NextPage = () => {
   return (
-    <div className='py-24 text-center'>
-      <h1 className='text-2xl font-bold'>Welcome to create-web3-frontend</h1>
-      <p className='mt-10'>Connect your wallet:</p>
-      <div className='mt-5 flex justify-center gap-6'>
-        {data.connectors.map((x) => (
-          <button
-            className='rounded bg-slate-200 p-2'
-            key={x.id}
-            onClick={() => connect(x)}
-          >
-            {x.name}
-            {!x.ready && ' (unsupported)'}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-col h-screen overflow-hidden">
+      <Head>
+        <title>polyreel</title>
+        <meta name="description" content="polyreel" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      {error && (
-        <p className='text-red-500'>{error?.message ?? 'Failed to connect'}</p>
-      )}
+      <Header />
+      <main className="flex-1 overflow-y-scroll bg-stone-100 px-4">
+        <ExplorePublications />
+      </main>
+
+      {/* <footer className="px-4 py-2">footer</footer> */}
     </div>
   );
 };
 
-export default Home;
+export default Landing;
