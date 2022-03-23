@@ -11,7 +11,6 @@ export const REFRESH_AUTHENTICATION = `
 `;
 
 export const refreshAuth = (refreshToken: string) => {
-  console.log("refreshAuth");
   return apolloClient.mutate({
     mutation: gql(REFRESH_AUTHENTICATION),
     variables: {

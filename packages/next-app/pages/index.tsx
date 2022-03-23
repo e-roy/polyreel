@@ -14,7 +14,7 @@ const Landing: NextPage = () => {
 
       <Header />
       <main className="flex-1 overflow-y-scroll px-4">
-        <ExplorePublications />
+        {/* <ExplorePublications /> */}
       </main>
 
       {/* <footer className="px-4 py-2">footer</footer> */}
