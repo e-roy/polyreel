@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon, PlusIcon } from "@heroicons/react/solid";
+import { Transition, Dialog } from "@headlessui/react";
+import { ChevronLeftIcon, PlusIcon } from "@heroicons/react/solid";
 import { Auth, ConnectWallet, Logout } from "@/components/lens/auth";
-import Link from "next/link";
 import { getAuthenticationToken } from "@/lib/auth/state";
 
 import { useAccount } from "wagmi";
@@ -12,10 +11,6 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { VERIFY } from "@/queries/auth/verify";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
@@ -23,6 +18,8 @@ export const Header = ({}: HeaderProps) => {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [profileHandle, setProfileHandle] = useState<string | null>(null);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [open, setOpen] = useState(false);
+  let completeButtonRef = useRef(null);
   const [{ data: accountData, loading: accountLoading }] = useAccount();
 
   useEffect(() => {
@@ -40,6 +37,7 @@ export const Header = ({}: HeaderProps) => {
       },
     }
   );
+  // console.log(profileData);
 
   const { data: verifyData, loading: verifyLoading } = useQuery(VERIFY, {
     variables: {
@@ -72,117 +70,181 @@ export const Header = ({}: HeaderProps) => {
     setProfileHandle(profile.handle);
   };
 
+  // console.log(router.pathname);
+
   const baseClass =
-    "flex cursor-pointer py-2 px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
+    "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
 
   if (accountLoading || profileLoading || verifyLoading) {
     return (
-      <header className="py-2 px-4 mx-4 bg-blue-200 h-16 flex justify-between sticky"></header>
+      <header className="py-2 px-4 mx-4 bg-white h-16 flex justify-between sticky"></header>
     );
   }
 
   return (
-    <header className="py-2 px-4 mx-4 bg-blue-200 h-16 flex justify-between sticky">
-      <Link href={`/me/${profileHandle}`}>
-        {profilePicture ? (
-          <div className="h-12 w-12 relative rounded-full border-2 shadow-xl cursor-pointer">
-            <img src={profilePicture} alt="" className="rounded-full" />
+    <header className="py-2 px-4 mx-4  flex justify-between sticky top-0 z-10">
+      {router.pathname === "/home" ? (
+        <>
+          {profilePicture ? (
+            <div
+              className="h-12 w-12 relative rounded-full border-2 shadow-md cursor-pointer"
+              onClick={() => setOpen(!open)}
+            >
+              <img src={profilePicture} alt="" className="rounded-full" />
+            </div>
+          ) : (
+            <div
+              className="rounded-full h-12 w-12 bg-gray-300 border-2 shadow-md cursor-pointer"
+              onClick={() => setOpen(!open)}
+            ></div>
+          )}
+        </>
+      ) : (
+        <div
+          className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
+          onClick={() => router.back()}
+        >
+          <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
+        </div>
+      )}
+
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog
+          initialFocus={completeButtonRef}
+          as="div"
+          className="fixed inset-0 overflow-hidden dialog z-20"
+          onClose={setOpen}
+        >
+          <div className="absolute inset-0 overflow-hidden transistion">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-in-out duration-500"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in-out duration-500"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full ">
+              <Transition.Child
+                as={Fragment}
+                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                enterFrom="-translate-x-full"
+                enterTo="translate-x-0"
+                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                leaveFrom="translate-x-0"
+                leaveTo="-translate-x-full"
+              >
+                <div className="pointer-events-auto  max-w-md">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white pb-6 shadow-xl">
+                    <div
+                      className="hover:bg-sky-200 cursor-pointer"
+                      onClick={() => router.push(`/profile/${profileHandle}`)}
+                    >
+                      <div className="relative h-40 sm:h-56">
+                        <img
+                          className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg"
+                          src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
+                          alt=""
+                        />
+                      </div>
+                      <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
+                        <div className="sm:flex-1 flex">
+                          <div className="">
+                            <>
+                              {profilePicture ? (
+                                <div className="h-12 w-12 relative rounded-full border-2 shadow-md">
+                                  <img
+                                    src={profilePicture}
+                                    alt=""
+                                    className="rounded-full"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="rounded-full h-12 w-12 bg-gray-300 border-2 shadow-md"></div>
+                              )}
+                            </>
+                          </div>
+                          <div className="ml-4">
+                            <div className="flex items-center">
+                              <h3 className="text-lg font-bold text-stone-900 sm:text-xl">
+                                Name
+                              </h3>
+                            </div>
+                            <p className="text-sm text-stone-500">
+                              @{profileHandle}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative mt-4 flex-1 px-2 sm:px-4">
+                      <div className="relative grid gap-4 bg-white px-2 py-2 sm:gap-2 sm:p-2">
+                        <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
+                          Switch profiles
+                        </div>
+                        {profileData?.profiles.items.map(
+                          (profile: any, index: number) => (
+                            <div
+                              key={index}
+                              className={`${baseClass}`}
+                              onClick={() => {
+                                handleProfileClick(profile);
+                                !open;
+                              }}
+                            >
+                              {profile.picture ? (
+                                <div className="h-10 w-10 border-2 rounded-full">
+                                  <img
+                                    src={profile.picture.original.url}
+                                    alt={profile.handle}
+                                    className="rounded-full"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
+                              )}
+                              <div className="mt-2 px-4">{profile.handle}</div>
+                            </div>
+                          )
+                        )}
+                        <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
+                          {/* Switch profiles */}
+                        </div>
+                        <div className={`${baseClass}`}>
+                          <PlusIcon className="ml-1 mr-4 h-8 w-8" />
+
+                          <div
+                            className="mt-1"
+                            onClick={() => router.push("/create-profile")}
+                          >
+                            create new profile
+                          </div>
+                        </div>
+
+                        <Logout className={`${baseClass}`} />
+                        <button
+                          className="hidden"
+                          ref={completeButtonRef}
+                        ></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Transition.Child>
+            </div>
           </div>
-        ) : (
-          <div className="rounded-full h-12 w-12 bg-gray-300 border-2 cursor-pointer"></div>
-        )}
-      </Link>
+        </Dialog>
+      </Transition.Root>
 
       {!isWalletConnected ? (
         <ConnectWallet />
       ) : (
-        <>
-          {!isVerified ? (
-            <Auth userLoggedIn={handleUserLoggedIn} />
-          ) : (
-            <Popover className="relative mt-2">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    className={classNames(
-                      open ? "text-gray-900" : "text-gray-500",
-                      "group rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none"
-                    )}
-                  >
-                    <div className="flex">
-                      <div className="px-4"> {profileHandle}</div>
-                    </div>
-
-                    <ChevronDownIcon
-                      className={classNames(
-                        open ? "text-gray-600" : "text-gray-400",
-                        "ml-2 h-5 w-5 group-hover:text-gray-500"
-                      )}
-                      aria-hidden="true"
-                    />
-                  </Popover.Button>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="opacity-0 translate-y-1"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition ease-in duration-150"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 translate-y-1"
-                  >
-                    <Popover.Panel className="absolute z-10 -left-1/4 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-xs sm:px-0">
-                      <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                        <div className="relative grid gap-6 bg-white px-2 py-4 sm:gap-2 sm:p-2">
-                          {profileData?.profiles.items.map(
-                            (profile: any, index: number) => (
-                              <div
-                                key={index}
-                                className={`${baseClass}`}
-                                onClick={() => {
-                                  handleProfileClick(profile);
-                                  !open;
-                                }}
-                              >
-                                {profile.picture ? (
-                                  <div className="h-10 w-10 border-2 rounded-full">
-                                    <img
-                                      src={profile.picture.original.url}
-                                      alt={profile.handle}
-                                      className="rounded-full"
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
-                                )}
-                                <div className="mt-2 px-4">
-                                  {profile.handle}
-                                </div>
-                              </div>
-                            )
-                          )}
-
-                          <div className={`${baseClass}`}>
-                            <PlusIcon className="ml-1 mr-4 h-8 w-8" />
-
-                            <div
-                              className="mt-1"
-                              onClick={() => router.push("/create-profile")}
-                            >
-                              create new profile
-                            </div>
-                          </div>
-
-                          <Logout className={`${baseClass}`} />
-                        </div>
-                      </div>
-                    </Popover.Panel>
-                  </Transition>
-                </>
-              )}
-            </Popover>
-          )}
-        </>
+        <>{!isVerified ? <Auth userLoggedIn={handleUserLoggedIn} /> : null}</>
       )}
     </header>
   );

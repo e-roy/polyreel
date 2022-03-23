@@ -4,7 +4,7 @@ import { cardFormatDate } from "@/utils/formatDate";
 
 export const PublicationCard = ({ publication }: any) => {
   return (
-    <div className="m-2 p-2 border border-stone-400 shadow-lg rounded">
+    <div className="m-2 p-2  border border-stone-400 shadow-lg rounded">
       <div className="flex justify-between">
         <div className="flex">
           {publication.profile.picture ? (
@@ -58,7 +58,11 @@ export const PublicationCard = ({ publication }: any) => {
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
                 {media.original.url && (
-                  <img src={media.original.url} alt="" className="rounded-lg" />
+                  <img
+                    src={media.original.url}
+                    alt=""
+                    className="rounded-lg my-2"
+                  />
                 )}
               </div>
             ))}

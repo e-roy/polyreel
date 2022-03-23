@@ -28,10 +28,10 @@ export const GetPublications = ({
   if (error) return <p>Error :(</p>;
   // console.log(data);
   return (
-    <div className="mt-6">
+    <div className="mt-2">
       <div className="flex flex-wrap">
         {data.publications.items.map((publication: any, index: number) => (
-          <div key={index} className="w-1/3 space-2">
+          <div key={index} className="w-full sm:w-1/3 space-2">
             <PublicationCard publication={publication} />
           </div>
         ))}
