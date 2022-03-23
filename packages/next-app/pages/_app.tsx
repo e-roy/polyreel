@@ -64,18 +64,18 @@ const webSocketProvider = ({ chainId }: ProviderConfig) =>
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={apolloClient()}>
-      <Provider
-        autoConnect
-        connectors={connectors}
-        provider={provider}
-        webSocketProvider={webSocketProvider}
-      >
+    <Provider
+      autoConnect
+      connectors={connectors}
+      provider={provider}
+      webSocketProvider={webSocketProvider}
+    >
+      <ApolloProvider client={apolloClient()}>
         <ThemeProvider defaultTheme="light" attribute="class">
           <Component {...pageProps} />
         </ThemeProvider>
-      </Provider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </Provider>
   );
 }
 

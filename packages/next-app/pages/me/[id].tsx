@@ -3,15 +3,14 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Header } from "@/components/layout";
-
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
-// import { UserTimeline } from "@/components/lens/timeline";
+
 import { GetPublications } from "@/components/lens/publications";
 
 import { TwitterIcon, WebIcon } from "@/icons";
 
-const ProfilePage: NextPage = () => {
+const MePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { loading, error, data } = useQuery(GET_PROFILES, {
@@ -26,6 +25,7 @@ const ProfilePage: NextPage = () => {
   let profile = data.profiles.items[0];
   //   console.log(profile);
   if (!profile) return null;
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Head>
@@ -35,7 +35,7 @@ const ProfilePage: NextPage = () => {
       </Head>
 
       <Header />
-      <main className="flex-1 overflow-y-scroll px-4">
+      <main className="flex-1 overflow-y-scroll bg-stone-100 px-4">
         <div className="">
           {profile.coverPicture ? (
             <div className="rounded-t-xl relative h-64 max-h-64 w-full shadow-xl -z-10">
@@ -92,7 +92,6 @@ const ProfilePage: NextPage = () => {
         <div className="font-semibold">
           Location : <span className="font-normal">{profile.location}</span>
         </div>
-        {/* <UserTimeline profileId={profile.id} /> */}
         <GetPublications profileId={profile.id} />
       </main>
 
@@ -101,4 +100,4 @@ const ProfilePage: NextPage = () => {
   );
 };
 
-export default ProfilePage;
+export default MePage;
