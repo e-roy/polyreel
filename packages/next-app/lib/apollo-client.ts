@@ -64,7 +64,24 @@ export const apolloClient = () => {
   const apolloClient = new ApolloClient({
     link: authLink.concat(httpLink),
     uri: APIURL,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            explorePublications: {
+              keyArgs: [],
+              merge(existing, incoming) {
+                if (!existing) return incoming;
+                return {
+                  items: existing.items.concat(incoming.items),
+                  pageInfo: incoming.pageInfo,
+                };
+              },
+            },
+          },
+        },
+      },
+    }),
   });
   return apolloClient;
 };

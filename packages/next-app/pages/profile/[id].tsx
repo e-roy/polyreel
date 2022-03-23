@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Header } from "@/components/layout";
@@ -9,25 +9,35 @@ import { GET_PROFILES } from "@/queries/profile/get-profiles";
 // import { UserTimeline } from "@/components/lens/timeline";
 import { GetPublications } from "@/components/lens/publications";
 
+import { Button } from "@/components/elements";
 import { TwitterIcon, WebIcon } from "@/icons";
+import { EditProfileButton } from "@/components/profile";
 
 const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [profileHandle, setProfileHandle] = useState<string | null>(null);
+
   const { loading, error, data } = useQuery(GET_PROFILES, {
     variables: {
       request: { handles: [id] },
     },
   });
+  useEffect(() => {
+    setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
+    setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   let profile = data.profiles.items[0];
-  //   console.log(profile);
+  // console.log(profile);
   if (!profile) return null;
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    // <div className="flex flex-col h-screen overflow-hidden">
+    <div>
       <Head>
         <title>polyreel</title>
         <meta name="description" content="polyreel" />
@@ -35,10 +45,11 @@ const ProfilePage: NextPage = () => {
       </Head>
 
       <Header />
-      <main className="flex-1 overflow-y-scroll px-4">
+      {/* <main className="flex-1 overflow-y-scroll px-4"> */}
+      <main className="-mt-14 sm:px-4">
         <div className="">
           {profile.coverPicture ? (
-            <div className="rounded-t-xl relative h-64 max-h-64 w-full shadow-xl -z-10">
+            <div className="rounded-t-xl h-64 max-h-64 w-full shadow-xl -z-10">
               <img
                 src={profile.coverPicture.original.url}
                 alt=""
@@ -47,51 +58,111 @@ const ProfilePage: NextPage = () => {
               />
             </div>
           ) : (
-            <div className="bg-sky-500 h-64 max-h-64 rounded-t shadow-xl"></div>
+            <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
           )}
         </div>
-        <div className="flex mb-4 -mt-16 ml-8">
-          {profile.picture ? (
-            <div className="h-32 w-32 relative rounded-full border-2 shadow-xl">
-              <img
-                src={profile.picture.original.url}
-                alt=""
-                className="rounded-full"
-              />
+        <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
+          <div className="flex">
+            <div className="pl-4  sm:pl-8 md:pl-12 lg:pl-16">
+              {profile.picture ? (
+                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 shadow-xl">
+                  <img
+                    src={profile.picture.original.url}
+                    alt=""
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 shadow-xl"></div>
+              )}
             </div>
-          ) : (
-            <div className="rounded-full h-32 w-32 bg-gray-300 border-2"></div>
-          )}
-          <div className="ml-2 px-2 py-1 my-auto font-semibold text-3xl bg-white border shadow-lg text-stone-800  rounded-xl">
-            @{profile.handle}
+
+            <div className="ml-2 px-2 py-1 my-auto font-semibold text-xl sm:text-3xl bg-white border shadow-lg text-stone-800  rounded-xl">
+              @{profile.handle}
+            </div>
           </div>
-          <div className="mt-20 ml-8 flex space-x-8">
-            {profile.website && (
-              <a
-                href={profile.website}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <WebIcon size={30} />
-              </a>
-            )}
-            {profile.twitterUrl && (
-              <a
-                href={profile.twitterUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <TwitterIcon size={30} />
-              </a>
-            )}
+
+          <div className="flex justify-between w-full px-8">
+            <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
+              {profile.website && (
+                <a
+                  href={profile.website}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <WebIcon size={30} />
+                </a>
+              )}
+              {profile.twitterUrl && (
+                <a
+                  href={profile.twitterUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <TwitterIcon size={30} />
+                </a>
+              )}
+            </div>
+            <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
+              {profileHandle === id ? (
+                <>
+                  <EditProfileButton />
+                </>
+              ) : (
+                <Button className="w-20">follow</Button>
+              )}
+            </div>
           </div>
         </div>
-        <div className="font-semibold">
-          Bio :<span className="font-normal">{profile.bio}</span>
+        <div className="px-2 text-sm sm:text-base text-stone-800">
+          <div className="font-semibold">
+            Bio :<span className="font-normal">{profile.bio}</span>
+          </div>
+          <div className="font-semibold py-2">
+            Location : <span className="font-normal">{profile.location}</span>
+          </div>
+          <div className="flex">
+            <div className="font-semibold py-2">
+              Following :
+              <span className="font-normal pl-1">
+                {profile.stats.totalFollowing}
+              </span>
+            </div>
+            <div className="font-semibold py-2 ml-4">
+              Followers :
+              <span className="font-normal pl-1">
+                {profile.stats.totalFollowers}
+              </span>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="font-semibold py-2">
+              Posts :
+              <span className="font-normal pl-1">
+                {profile.stats.totalPosts}
+              </span>
+            </div>
+            <div className="font-semibold py-2 ml-4">
+              Comments :
+              <span className="font-normal pl-1">
+                {profile.stats.totalComments}
+              </span>
+            </div>
+            <div className="font-semibold py-2 ml-4">
+              Collects :
+              <span className="font-normal pl-1">
+                {profile.stats.totalCollects}
+              </span>
+            </div>
+            <div className="font-semibold py-2 ml-4">
+              Mirrors :
+              <span className="font-normal pl-1">
+                {profile.stats.totalMirrors}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="font-semibold">
-          Location : <span className="font-normal">{profile.location}</span>
-        </div>
+
         {/* <UserTimeline profileId={profile.id} /> */}
         <GetPublications profileId={profile.id} />
       </main>

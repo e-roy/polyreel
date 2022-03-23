@@ -11,14 +11,13 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
 }) => {
-  const btnBase = "rounded-xl border border-black shadow-md";
+  const btnBase =
+    "flex rounded-xl px-4 py-2 border border-black rounded-lg shadow-md font-medium bg-stone-200/70 hover:bg-stone-100/90";
 
   if (disabled)
     return (
       <div className={`${btnBase} ${className} p-[1px]`}>
-        <div className="flex px-4 py-2 font-medium m-[2px] rounded-lg">
-          {children}
-        </div>
+        <div className="m-[2px]">{children}</div>
       </div>
     );
 
@@ -28,9 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
     >
-      <div className="flex px-4 py-2 font-medium m-[3px] rounded-lg hover:shadow-xl hover:bg-stone-100">
-        {children}
-      </div>
+      <div className="m-[3px]hover:shadow-xl">{children}</div>
     </button>
   );
 };
