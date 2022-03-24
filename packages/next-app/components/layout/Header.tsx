@@ -64,6 +64,7 @@ export const Header = ({}: HeaderProps) => {
         profile.picture.original.url
       );
     else sessionStorage.setItem("polyreel_profile_picture", "");
+    sessionStorage.setItem("polyreel_profile_id", profile.id);
     sessionStorage.setItem("polyreel_profile_handle", profile.handle);
     if (profile.picture) setProfilePicture(profile.picture.original.url);
     else setProfilePicture(null);
@@ -82,7 +83,7 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className="py-2 px-4 mx-4  flex justify-between sticky top-0 z-10">
+    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-10">
       {router.pathname === "/home" ? (
         <>
           {profilePicture ? (
@@ -100,12 +101,18 @@ export const Header = ({}: HeaderProps) => {
           )}
         </>
       ) : (
-        <div
-          className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
-          onClick={() => router.back()}
-        >
-          <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
-        </div>
+        <>
+          {router.pathname !== "/" ? (
+            <div
+              className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
+              onClick={() => router.back()}
+            >
+              <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </>
       )}
 
       <Transition.Root show={open} as={Fragment}>
@@ -144,13 +151,15 @@ export const Header = ({}: HeaderProps) => {
                       className="hover:bg-sky-200 cursor-pointer"
                       onClick={() => router.push(`/profile/${profileHandle}`)}
                     >
-                      <div className="relative h-40 sm:h-56">
+                      {/* <div className="relative h-40 sm:h-56">
                         <img
                           className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg"
                           src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
                           alt=""
                         />
-                      </div>
+                      </div> */}
+                      <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
+
                       <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                         <div className="sm:flex-1 flex">
                           <div className="">

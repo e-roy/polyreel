@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Header } from "@/components/layout";
-import { ExplorePublications } from "@/components/lens/explore";
+import { Hero } from "@/components/landing";
 
 const Landing: NextPage = () => {
   return (
@@ -13,8 +13,8 @@ const Landing: NextPage = () => {
       </Head>
 
       <Header />
-      <main className="flex-1 overflow-y-scroll px-4">
-        {/* <ExplorePublications /> */}
+      <main className="">
+        <Hero />
       </main>
 
       {/* <footer className="px-4 py-2">footer</footer> */}

@@ -41,19 +41,21 @@ export const ExplorePublications = () => {
     rootMargin: "0px 0px 400px 0px",
   });
   if (!data) return null;
-
+  // console.log(data);
   return (
-    <div className="p-2 rounded">
-      <>
+    <div className="">
+      <div className="p-2">
         {data.explorePublications &&
           data.explorePublications.items &&
           data.explorePublications.items.map((item: any, index: number) => (
-            <div key={index} className="m-2 p-2 rounded">
+            <div key={index} className="rounded">
               <FeedCard publication={item} />
             </div>
           ))}
-      </>
-      {pageInfo.next && <div ref={sentryRef}></div>}
+        {pageInfo.next && (
+          <div className="h-4 bg-slate-600" ref={sentryRef}></div>
+        )}
+      </div>
     </div>
   );
 };

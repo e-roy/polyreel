@@ -27,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
     >
-      <div className="m-[3px]hover:shadow-xl">{children}</div>
+      <div className="m-[3px]hover:shadow-xl mx-auto">{children}</div>
     </button>
   );
 };

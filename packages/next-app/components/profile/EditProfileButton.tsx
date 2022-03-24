@@ -1,19 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Modal, TextField } from "@/components/elements";
 import { XIcon } from "@heroicons/react/outline";
+import { useMutation } from "@apollo/client";
+import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
 
-type EditProfileButtonProps = {};
+type EditProfileButtonProps = {
+  refetch: () => void;
+};
 
-export const EditProfileButton = ({}: EditProfileButtonProps) => {
+export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
+  const [profileId, setProfileId] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [profileHandle, setProfileHandle] = useState<string | null>(null);
   const [updateName, setUpdateName] = useState("");
   const [updateBio, setUpdateBio] = useState("");
   const [updateLocation, setUpdateLocation] = useState("");
+  const [updateWebsite, setUpdateWebsite] = useState(null);
+  const [updateTwitterUrl, setUpdateTwitterUrl] = useState(null);
+  const [updateCoverPicture, setUpdateCoverPicture] = useState(null);
+
+  const [updateProfile, { data, loading, error }] = useMutation(
+    UPDATE_PROFILE,
+    {
+      variables: {
+        request: {
+          profileId,
+          name: updateName,
+          bio: updateBio,
+          location: updateLocation,
+          website: updateWebsite,
+          twitterUrl: updateTwitterUrl,
+          coverPicture: updateCoverPicture,
+        },
+      },
+    }
+  );
+  useEffect(() => {
+    setProfileId(sessionStorage.getItem("polyreel_profile_id"));
+    setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
+    setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setIsOpen(false);
+      refetch();
+    }
+  }, [data]);
 
   const handleButton = () => {
-    console.log("button");
     setIsOpen(true);
+  };
+
+  const handleSave = () => {
+    updateProfile();
   };
 
   return (
@@ -39,16 +81,18 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               </div>
             </div>
             <div>
-              <Button>save</Button>
+              <Button onClick={() => handleSave()}>save</Button>
             </div>
           </div>
-          <div className="relative h-40 sm:h-56 bg-sky-300">
-            {/* <img
+          {/* <div className="relative h-40 sm:h-56 ">
+            <img
               className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg z-20"
               src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
               alt=""
-            /> */}
-          </div>
+            />
+          </div> */}
+          <div className="relative bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
+
           <div className="-mt-8 z-30">
             <>
               {/* {profilePicture ? (

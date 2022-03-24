@@ -3,10 +3,7 @@ import { TwitterIcon, WebIcon } from "@/icons";
 
 export const ProfileCard = ({ profile }: any) => {
   return (
-    <div
-      className="m-2 p-2 border border-stone-600 rounded w-full h-full text-sm cursor-pointer hover:shadow-xl"
-      // onClick={() => setProfileId(profile.id)}
-    >
+    <div className="m-2 p-2 border border-stone-600 rounded w-full h-full text-sm cursor-pointer hover:shadow-xl">
       <div className="h-20">
         {profile.coverPicture && (
           <img

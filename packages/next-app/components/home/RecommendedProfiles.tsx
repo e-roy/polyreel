@@ -1,32 +1,26 @@
 import React, { useState } from "react";
-import { useAccount } from "wagmi";
+import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 
 import { RECOMMENDED_PROFILES } from "@/queries/profile/recommended-profiles";
+import { RecommendCard } from "@/components/cards";
 
-import { ProfileCard } from "@/components/cards";
+type RecommendedProfilesProps = {};
 
-type RecommendedProfilesProps = {
-  setSelectedOwner: (profileId: string) => void;
-};
-
-export const RecommendedProfiles = ({
-  setSelectedOwner,
-}: RecommendedProfilesProps) => {
+export const RecommendedProfiles = ({}: RecommendedProfilesProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
-  const [{ data: accountData }] = useAccount();
-  // const [selectedOwner, setSelectedOwner] = useState(null);
 
   const { loading, error, data } = useQuery(RECOMMENDED_PROFILES);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log(data);
+  // console.log(data);
 
   return (
-    <div className="p-2 border rounded">
+    <div className="">
       <h1
-        className="text-xl font-bold text-center cursor-pointer"
+        className="text-xl font-bold text-center text-stone-700 sticky top-0 z-10 bg-white py-2"
         onClick={() => setIsOpen(!isOpen)}
       >
         Recommended Profiles
@@ -36,10 +30,10 @@ export const RecommendedProfiles = ({
           {data.recommendedProfiles.map((profile: any, index: number) => (
             <div
               key={index}
-              className="w-1/4 m-2"
-              onClick={() => setSelectedOwner(profile.ownedBy)}
+              className="w-full"
+              onClick={() => router.push(`/profile/${profile.handle}`)}
             >
-              <ProfileCard profile={profile} />
+              <RecommendCard profile={profile} />
             </div>
           ))}
         </div>

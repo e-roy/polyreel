@@ -29,5 +29,6 @@ export const removeAuthenticationToken = async () => {
   if (typeof window !== "undefined") {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("refresh_token");
+    sessionStorage.clear();
   }
 };

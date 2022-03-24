@@ -19,14 +19,14 @@ export const GetPublications = ({
       request: {
         profileId: profileId,
         publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 50,
+        limit: 20,
       },
     },
   });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  // console.log(data);
+  console.log(data);
   return (
     <div className="mt-2">
       <div className="flex flex-wrap">

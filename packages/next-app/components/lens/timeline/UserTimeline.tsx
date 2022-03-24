@@ -25,7 +25,7 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
       request: {
         profileId,
         // publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 50,
+        limit: 20,
       },
     },
   });

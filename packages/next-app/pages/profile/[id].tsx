@@ -6,12 +6,16 @@ import { Header } from "@/components/layout";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
-// import { UserTimeline } from "@/components/lens/timeline";
+import { UserTimeline } from "@/components/lens/timeline";
 import { GetPublications } from "@/components/lens/publications";
 
 import { Button } from "@/components/elements";
 import { TwitterIcon, WebIcon } from "@/icons";
-import { EditProfileButton } from "@/components/profile";
+import {
+  EditProfileButton,
+  FollowProfileButton,
+  FollowersButton,
+} from "@/components/profile";
 
 const ProfilePage: NextPage = () => {
   const router = useRouter();
@@ -19,7 +23,7 @@ const ProfilePage: NextPage = () => {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [profileHandle, setProfileHandle] = useState<string | null>(null);
 
-  const { loading, error, data } = useQuery(GET_PROFILES, {
+  const { loading, error, data, refetch } = useQuery(GET_PROFILES, {
     variables: {
       request: { handles: [id] },
     },
@@ -69,7 +73,7 @@ const ProfilePage: NextPage = () => {
                   <img
                     src={profile.picture.original.url}
                     alt=""
-                    className="rounded-full"
+                    className="rounded-full h-20 sm:h-28 md:h-32"
                   />
                 </div>
               ) : (
@@ -77,8 +81,13 @@ const ProfilePage: NextPage = () => {
               )}
             </div>
 
-            <div className="ml-2 px-2 py-1 my-auto font-semibold text-xl sm:text-3xl bg-white border shadow-lg text-stone-800  rounded-xl">
-              @{profile.handle}
+            <div className="mt-6 ml-6 px-2 py-1 my-auto  bg-white border shadow-lg text-stone-800  rounded-xl">
+              <div className="py-1 my-auto font-semibold text-md sm:text-xl md:text-2xl lg:text-3xl">
+                @{profile.handle}
+              </div>
+              <div className="py-1 my-auto font-semibold text-sm sm:text-md md:text-xl">
+                {profile.name}
+              </div>
             </div>
           </div>
 
@@ -106,33 +115,34 @@ const ProfilePage: NextPage = () => {
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
               {profileHandle === id ? (
                 <>
-                  <EditProfileButton />
+                  <EditProfileButton refetch={refetch} />
                 </>
               ) : (
-                <Button className="w-20">follow</Button>
+                <>
+                  <FollowProfileButton
+                    profileId={profile.id}
+                    refetch={refetch}
+                  />
+                </>
               )}
             </div>
           </div>
         </div>
         <div className="px-2 text-sm sm:text-base text-stone-800">
           <div className="font-semibold">
-            Bio :<span className="font-normal">{profile.bio}</span>
+            Bio :<span className="font-normal pl-1">{profile.bio}</span>
           </div>
           <div className="font-semibold py-2">
-            Location : <span className="font-normal">{profile.location}</span>
+            Location :
+            <span className="font-normal pl-1">{profile.location}</span>
           </div>
           <div className="flex">
             <div className="font-semibold py-2">
-              Following :
-              <span className="font-normal pl-1">
-                {profile.stats.totalFollowing}
-              </span>
-            </div>
-            <div className="font-semibold py-2 ml-4">
-              Followers :
-              <span className="font-normal pl-1">
-                {profile.stats.totalFollowers}
-              </span>
+              <FollowersButton
+                profileId={profile.id}
+                followers={profile.stats.totalFollowers}
+                following={profile.stats.totalFollowing}
+              />
             </div>
           </div>
           <div className="flex">

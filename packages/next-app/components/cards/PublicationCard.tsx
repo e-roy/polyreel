@@ -8,11 +8,11 @@ export const PublicationCard = ({ publication }: any) => {
       <div className="flex justify-between">
         <div className="flex">
           {publication.profile.picture ? (
-            <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
+            <div className="h-12 w-12 relative rounded-full border-2">
               <img
                 src={publication.profile.picture.original.url}
                 alt=""
-                className="rounded-full"
+                className="rounded-full h-12"
               />
             </div>
           ) : (
