@@ -1,22 +1,21 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import { useQuery } from "@apollo/client";
-import { GET_FOLLOWERS } from "@/queries/follow/followers";
-import { GET_FOLLOWING } from "@/queries/follow/following";
-import { FollowersCard } from "@/components/cards";
+import { GetFollowing, GetFollowers } from ".";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type FollowersButtonProps = {
+  ownedBy?: string;
   profileId: string;
   followers?: number;
   following?: number;
 };
 
 export const FollowersButton = ({
+  ownedBy,
   profileId,
   followers,
   following,
@@ -24,41 +23,24 @@ export const FollowersButton = ({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("followers");
 
-  const {
-    loading,
-    error,
-    data: followersData,
-    fetchMore,
-  } = useQuery(GET_FOLLOWERS, {
-    variables: {
-      request: {
-        profileId: profileId,
-        limit: 10,
-      },
-    },
-  });
-
-  const { data: followingData } = useQuery(GET_FOLLOWING, {
-    variables: {
-      request: {
-        profileId: profileId,
-        limit: 10,
-      },
-    },
-  });
-
-  // console.log(followersData);
-  // console.log(followingData);
-
-  // console.log(profileId);
   return (
     <>
       <div
         className="flex bg-transparent cursor-pointer"
         onClick={() => setOpen(!open)}
       >
-        <div className="font-semibold py-2">following : {following}</div>
-        <div className="font-semibold py-2 ml-4">followers : {followers}</div>
+        <div
+          className="font-semibold py-2"
+          onClick={() => setActive("following")}
+        >
+          following : {following}
+        </div>
+        <div
+          className="font-semibold py-2 ml-4"
+          onClick={() => setActive("followers")}
+        >
+          followers : {followers}
+        </div>
       </div>
 
       <Transition.Root show={open} as={Fragment}>
@@ -119,19 +101,9 @@ export const FollowersButton = ({
                       </div>
                       <div className="h-3/6 sm:h-2/5 overflow-y-scroll">
                         {active === "followers" ? (
-                          <>
-                            {followersData &&
-                              followersData.followers.items.map(
-                                (follower: any, index: number) => (
-                                  <FollowersCard
-                                    key={index}
-                                    profile={follower.wallet.defaultProfile}
-                                  />
-                                )
-                              )}
-                          </>
+                          <GetFollowers profileId={profileId} />
                         ) : (
-                          <></>
+                          <GetFollowing ownedBy={ownedBy} />
                         )}
                       </div>
                     </div>

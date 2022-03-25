@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { TwitterIcon, WebIcon } from "@/icons";
 import { cardFormatDate } from "@/utils/formatDate";
+import { VideoPlayer, Image } from "@/components/media";
 
 export const FeedCard = ({ publication }: any) => {
   //   console.log(publication);
@@ -55,16 +56,23 @@ export const FeedCard = ({ publication }: any) => {
         <div className="font-bold">{publication.__typename}</div>
         <div className="text-xs">{cardFormatDate(publication.createdAt)}</div>
       </div>
-      <div className="text-xs italic">id: {publication.id}</div>
-      <div className="overflow-hidden">{publication.metadata.description}</div>
+      {/* <div className="text-xs italic">id: {publication.id}</div> */}
+      <div className="overflow-hidden mb-4">
+        {publication.metadata.description}
+      </div>
       <div>
         {publication.metadata.media && (
           <div className="flex flex-wrap">
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
-                {media.original.url && (
-                  <div className="h-96 w-96 relative border rounded">
-                    <img src={media.original.url} alt="" className="" />
+                {media.original.url && media.original.mimeType !== "video/mp4" && (
+                  <div>
+                    <Image media={media.original} />
+                  </div>
+                )}
+                {media.original.url && media.original.mimeType === "video/mp4" && (
+                  <div>
+                    <VideoPlayer media={media.original} />
                   </div>
                 )}
               </div>

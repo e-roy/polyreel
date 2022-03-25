@@ -18,7 +18,7 @@ export const FollowProfileButton = ({
   profileId,
   refetch,
 }: FollowProfileButtonProps) => {
-  console.log(profileId);
+  // console.log(profileId);
   const [{ data: accountData }] = useAccount();
   const [{ data: signData }, signTypedData] = useSignTypedData();
 
@@ -74,7 +74,7 @@ export const FollowProfileButton = ({
     }
   );
 
-  console.log(data);
+  // console.log(data);
 
   const handleButton = async () => {
     console.log("follow");

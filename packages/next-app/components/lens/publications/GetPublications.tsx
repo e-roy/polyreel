@@ -26,7 +26,7 @@ export const GetPublications = ({
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log(data);
+  // console.log(data);
   return (
     <div className="mt-2">
       <div className="flex flex-wrap">

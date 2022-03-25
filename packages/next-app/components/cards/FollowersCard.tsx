@@ -1,9 +1,14 @@
+import { useRouter } from "next/router";
 import { TwitterIcon, WebIcon } from "@/icons";
 
 export const FollowersCard = ({ profile }: any) => {
+  const router = useRouter();
   if (!profile) return null;
   return (
-    <div className="mb-2 p-2 border border-stone-400 shadow rounded w-full text-sm cursor-pointer hover:shadow-xl">
+    <div
+      className="mb-2 p-2 border border-stone-400 shadow rounded w-full text-sm cursor-pointer hover:shadow-xl"
+      onClick={() => router.push(`/profile/${profile.handle}`)}
+    >
       <div className="flex justify-between mb-2 pr-4">
         <div className="flex">
           {profile.picture ? (

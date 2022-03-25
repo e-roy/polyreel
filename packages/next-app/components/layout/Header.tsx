@@ -83,7 +83,7 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-10">
+    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-30">
       {router.pathname === "/home" ? (
         <>
           {profilePicture ? (

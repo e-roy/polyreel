@@ -9,7 +9,6 @@ import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { UserTimeline } from "@/components/lens/timeline";
 import { GetPublications } from "@/components/lens/publications";
 
-import { Button } from "@/components/elements";
 import { TwitterIcon, WebIcon } from "@/icons";
 import {
   EditProfileButton,
@@ -139,6 +138,7 @@ const ProfilePage: NextPage = () => {
           <div className="flex">
             <div className="font-semibold py-2">
               <FollowersButton
+                ownedBy={profile.ownedBy}
                 profileId={profile.id}
                 followers={profile.stats.totalFollowers}
                 following={profile.stats.totalFollowing}

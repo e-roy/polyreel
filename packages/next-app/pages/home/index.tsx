@@ -5,6 +5,7 @@ import {
   ExplorePublications,
   CreatePost,
   RecommendedProfiles,
+  UserTimeline,
 } from "@/components/home";
 
 const Home: NextPage = () => {
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
           <div className="w-full lg:w-2/3 xl:w-1/2  min-h-9/10">
             <div className="lg:px-8 h-9/10 overflow-y-scroll">
               <ExplorePublications />
+              {/* <UserTimeline /> */}
             </div>
           </div>
 

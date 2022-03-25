@@ -57,13 +57,14 @@ export const PublicationCard = ({ publication }: any) => {
           <>
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
-                {media.original.url && (
-                  <img
-                    src={media.original.url}
-                    alt=""
-                    className="rounded-lg my-2"
-                  />
-                )}
+                {media.original.url &&
+                  media.original.mimeType === "image/png" && (
+                    <img
+                      src={media.original.url}
+                      alt=""
+                      className="rounded-lg my-2"
+                    />
+                  )}
               </div>
             ))}
           </>
@@ -72,3 +73,5 @@ export const PublicationCard = ({ publication }: any) => {
     </div>
   );
 };
+
+// mimeType: "video/mp4";
