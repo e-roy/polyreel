@@ -6,14 +6,14 @@ import { Header } from "@/components/layout";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
-import { UserTimeline } from "@/components/lens/timeline";
+
 import { GetPublications } from "@/components/lens/publications";
 
 import { TwitterIcon, WebIcon } from "@/icons";
 import {
   EditProfileButton,
-  FollowProfileButton,
   FollowersButton,
+  DoesFollow,
 } from "@/components/profile";
 
 const ProfilePage: NextPage = () => {
@@ -27,6 +27,7 @@ const ProfilePage: NextPage = () => {
       request: { handles: [id] },
     },
   });
+
   useEffect(() => {
     setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
     setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
@@ -37,6 +38,7 @@ const ProfilePage: NextPage = () => {
 
   let profile = data.profiles.items[0];
   // console.log(profile);
+
   if (!profile) return null;
   return (
     // <div className="flex flex-col h-screen overflow-hidden">
@@ -76,7 +78,7 @@ const ProfilePage: NextPage = () => {
                   />
                 </div>
               ) : (
-                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 shadow-xl"></div>
+                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 bg-stone-300 shadow-xl"></div>
               )}
             </div>
 
@@ -113,16 +115,9 @@ const ProfilePage: NextPage = () => {
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
               {profileHandle === id ? (
-                <>
-                  <EditProfileButton refetch={refetch} />
-                </>
+                <EditProfileButton refetch={refetch} />
               ) : (
-                <>
-                  <FollowProfileButton
-                    profileId={profile.id}
-                    refetch={refetch}
-                  />
-                </>
+                <DoesFollow profileId={profile.id} />
               )}
             </div>
           </div>

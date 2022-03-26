@@ -1,5 +1,4 @@
 import React from "react";
-import { TwitterIcon, WebIcon } from "@/icons";
 
 export const RecommendCard = ({ profile }: any) => {
   return (
@@ -24,32 +23,13 @@ export const RecommendCard = ({ profile }: any) => {
             <div className="my-auto font-semibold text-xs">{profile.name}</div>
           </div>
         </div>
-        <div>
-          <div className="my-2 flex space-x-4">
-            {profile.website && (
-              <a
-                href={profile.website}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <WebIcon size={20} />
-              </a>
-            )}
-            {profile.twitterUrl && (
-              <a
-                href={profile.twitterUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <TwitterIcon size={20} />
-              </a>
-            )}
-          </div>
+        <div></div>
+      </div>
+      {profile.bio && (
+        <div className="text-stone-700 font-medium">
+          Bio :<span className="font-normal">{profile.bio}</span>
         </div>
-      </div>
-      <div className="font-semibold">
-        Bio :<span className="font-normal">{profile.bio}</span>
-      </div>
+      )}
 
       <div className="flex">
         <div className="font-semibold">

@@ -1,8 +1,13 @@
 import React from "react";
 import Link from "next/link";
-import { TwitterIcon, WebIcon } from "@/icons";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
+
+import {
+  ChatAlt2Icon,
+  DocumentDuplicateIcon,
+  CollectionIcon,
+} from "@heroicons/react/outline";
 
 export const FeedCard = ({ publication }: any) => {
   //   console.log(publication);
@@ -27,29 +32,8 @@ export const FeedCard = ({ publication }: any) => {
           )}
 
           <div className="ml-4 my-auto font-semibold">
-            {publication.profile.handle}
+            @{publication.profile.handle}
           </div>
-        </div>
-
-        <div className="my-auto flex space-x-4">
-          {publication.profile.website && (
-            <a
-              href={publication.profile.website}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <WebIcon size={20} />
-            </a>
-          )}
-          {publication.profile.twitterUrl && (
-            <a
-              href={publication.profile.twitterUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <TwitterIcon size={20} />
-            </a>
-          )}
         </div>
       </div>
       <div className="flex justify-between">
@@ -65,20 +49,32 @@ export const FeedCard = ({ publication }: any) => {
           <div className="flex flex-wrap">
             {publication.metadata.media.map((media: any, index: number) => (
               <div key={index}>
-                {media.original.url && media.original.mimeType !== "video/mp4" && (
-                  <div>
+                {media.original.url &&
+                  media.original.mimeType !== "video/mp4" && (
                     <Image media={media.original} />
-                  </div>
-                )}
-                {media.original.url && media.original.mimeType === "video/mp4" && (
-                  <div>
+                  )}
+                {media.original.url &&
+                  media.original.mimeType === "video/mp4" && (
                     <VideoPlayer media={media.original} />
-                  </div>
-                )}
+                  )}
               </div>
             ))}
           </div>
         )}
+      </div>
+      <div className="flex text-stone-700 mt-4">
+        <div className="flex">
+          {publication.stats.totalAmountOfComments}
+          <ChatAlt2Icon className="h-6 w-6 ml-2" aria-hidden="true" />
+        </div>
+        <div className="flex ml-4">
+          {publication.stats.totalAmountOfMirrors}
+          <DocumentDuplicateIcon className="h-6 w-6 ml-2" aria-hidden="true" />
+        </div>
+        <div className="flex ml-4">
+          {publication.stats.totalAmountOfCollects}
+          <CollectionIcon className="h-6 w-6 ml-2" aria-hidden="true" />
+        </div>
       </div>
     </div>
   );

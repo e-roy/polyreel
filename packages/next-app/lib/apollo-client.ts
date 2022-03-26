@@ -78,6 +78,16 @@ export const apolloClient = () => {
                 };
               },
             },
+            publications: {
+              keyArgs: [],
+              merge(existing, incoming) {
+                if (!existing) return incoming;
+                return {
+                  items: existing.items.concat(incoming.items),
+                  pageInfo: incoming.pageInfo,
+                };
+              },
+            },
             followers: {
               keyArgs: [],
               merge(existing, incoming) {

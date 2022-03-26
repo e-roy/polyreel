@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { TwitterIcon, WebIcon } from "@/icons";
 
 export const FollowersCard = ({ profile }: any) => {
   const router = useRouter();
@@ -27,28 +26,6 @@ export const FollowersCard = ({ profile }: any) => {
               @{profile.handle}
             </div>
             <div className="my-auto font-semibold text-xs">{profile.name}</div>
-          </div>
-        </div>
-        <div>
-          <div className="my-2 flex space-x-4">
-            {profile.website && (
-              <a
-                href={profile.website}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <WebIcon size={20} />
-              </a>
-            )}
-            {profile.twitterUrl && (
-              <a
-                href={profile.twitterUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <TwitterIcon size={20} />
-              </a>
-            )}
           </div>
         </div>
       </div>

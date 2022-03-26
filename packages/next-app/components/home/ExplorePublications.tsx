@@ -4,12 +4,14 @@ import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import { FeedCard } from "@/components/cards";
+import { Post } from "@/components/post";
 
 export const ExplorePublications = () => {
   const { loading, error, data, fetchMore } = useQuery(EXPLORE_PUBLICATIONS, {
     variables: {
       request: {
         sortCriteria: "LATEST",
+        // sortCriteria: "TOP_COMMENTED",
         limit: 10,
       },
     },
@@ -20,6 +22,7 @@ export const ExplorePublications = () => {
       variables: {
         request: {
           sortCriteria: "LATEST",
+          // sortCriteria: "TOP_COMMENTED",
           limit: 10,
           cursor: pageInfo?.next,
         },
@@ -42,15 +45,15 @@ export const ExplorePublications = () => {
     rootMargin: "0px 0px 400px 0px",
   });
   if (!data) return null;
-  // console.log(data);
+  console.log(data);
   return (
     <div className="">
       <div className="p-2">
         {data.explorePublications &&
           data.explorePublications.items &&
           data.explorePublications.items.map((item: any, index: number) => (
-            <div key={index} className="rounded">
-              <FeedCard publication={item} />
+            <div key={index} className="">
+              <Post publication={item} />
             </div>
           ))}
         {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
