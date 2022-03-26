@@ -11,6 +11,8 @@ import { apolloClient } from "@/lib";
 
 import { ThemeProvider } from "next-themes";
 
+import { AppLayout } from "@/components/layout";
+
 // Get environment variables
 const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -72,7 +74,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <ApolloProvider client={apolloClient()}>
         <ThemeProvider defaultTheme="light" attribute="class">
-          <Component {...pageProps} />
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
         </ThemeProvider>
       </ApolloProvider>
     </Provider>

@@ -12,7 +12,6 @@ const Landing: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
       <main className="">
         <Hero />
       </main>

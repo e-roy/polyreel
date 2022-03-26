@@ -29,6 +29,7 @@ export const removeAuthenticationToken = async () => {
   if (typeof window !== "undefined") {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("refresh_token");
+    localStorage.removeItem("polyreel_current_user_profile_id");
     sessionStorage.clear();
   }
 };

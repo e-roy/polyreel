@@ -1,4 +1,11 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from "react";
+import { UserContext } from "@/components/layout";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
 import { ChevronLeftIcon, PlusIcon } from "@heroicons/react/solid";
@@ -14,6 +21,7 @@ import { VERIFY } from "@/queries/auth/verify";
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const router = useRouter();
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [profileHandle, setProfileHandle] = useState<string | null>(null);
@@ -21,6 +29,8 @@ export const Header = ({}: HeaderProps) => {
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
   const [{ data: accountData, loading: accountLoading }] = useAccount();
+
+  // console.log("currentUser", currentUser);
 
   useEffect(() => {
     if (accountData) {
@@ -46,6 +56,7 @@ export const Header = ({}: HeaderProps) => {
   });
   // console.log(verifyData);
   let isVerified = false;
+  // console.log(verifyData);
   if (verifyData?.verify) isVerified = true;
 
   useEffect(() => {
@@ -58,17 +69,7 @@ export const Header = ({}: HeaderProps) => {
   };
 
   const handleProfileClick = (profile: any) => {
-    if (profile.picture)
-      sessionStorage.setItem(
-        "polyreel_profile_picture",
-        profile.picture.original.url
-      );
-    else sessionStorage.setItem("polyreel_profile_picture", "");
-    sessionStorage.setItem("polyreel_profile_id", profile.id);
-    sessionStorage.setItem("polyreel_profile_handle", profile.handle);
-    if (profile.picture) setProfilePicture(profile.picture.original.url);
-    else setProfilePicture(null);
-    setProfileHandle(profile.handle);
+    setCurrentUser(profile);
   };
 
   // console.log(router.pathname);
@@ -86,12 +87,16 @@ export const Header = ({}: HeaderProps) => {
     <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-30">
       {router.pathname === "/home" ? (
         <>
-          {profilePicture ? (
+          {currentUser?.picture ? (
             <div
               className="h-12 w-12 relative rounded-full border-2 shadow-md cursor-pointer"
               onClick={() => setOpen(!open)}
             >
-              <img src={profilePicture} alt="" className="rounded-full" />
+              <img
+                src={currentUser?.picture.original.url}
+                alt=""
+                className="rounded-full"
+              />
             </div>
           ) : (
             <div
@@ -151,23 +156,16 @@ export const Header = ({}: HeaderProps) => {
                       className="hover:bg-sky-200 cursor-pointer"
                       onClick={() => router.push(`/profile/${profileHandle}`)}
                     >
-                      {/* <div className="relative h-40 sm:h-56">
-                        <img
-                          className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg"
-                          src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
-                          alt=""
-                        />
-                      </div> */}
                       <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
 
                       <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                         <div className="sm:flex-1 flex">
                           <div className="">
                             <>
-                              {profilePicture ? (
+                              {currentUser?.picture ? (
                                 <div className="h-12 w-12 relative rounded-full border-2 shadow-md">
                                   <img
-                                    src={profilePicture}
+                                    src={currentUser?.picture.original.url}
                                     alt=""
                                     className="rounded-full"
                                   />
@@ -180,11 +178,11 @@ export const Header = ({}: HeaderProps) => {
                           <div className="ml-4">
                             <div className="flex items-center">
                               <h3 className="text-lg font-bold text-stone-900 sm:text-xl">
-                                Name
+                                {currentUser?.name}
                               </h3>
                             </div>
                             <p className="text-sm text-stone-500">
-                              @{profileHandle}
+                              @{currentUser?.handle}
                             </p>
                           </div>
                         </div>
@@ -229,7 +227,7 @@ export const Header = ({}: HeaderProps) => {
 
                           <div
                             className="mt-1"
-                            onClick={() => router.push("/create-profile")}
+                            onClick={() => router.push("/select-profile")}
                           >
                             create new profile
                           </div>

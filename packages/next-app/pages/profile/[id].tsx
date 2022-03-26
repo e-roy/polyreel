@@ -1,8 +1,9 @@
+import { useContext } from "react";
+import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Header } from "@/components/layout";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
@@ -16,11 +17,15 @@ import {
   DoesFollow,
 } from "@/components/profile";
 
+import { Avatar } from "@/components/elements";
+
 const ProfilePage: NextPage = () => {
+  const { currentUser } = useContext(UserContext);
   const router = useRouter();
   const { id } = router.query;
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [profileHandle, setProfileHandle] = useState<string | null>(null);
+  // console.log("currentUser", currentUser);
 
   const { loading, error, data, refetch } = useQuery(GET_PROFILES, {
     variables: {
@@ -49,10 +54,8 @@ const ProfilePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
-      {/* <main className="flex-1 overflow-y-scroll px-4"> */}
-      <main className="-mt-14 sm:px-4">
-        <div className="">
+      <div>
+        <div className="-mt-14">
           {profile.coverPicture ? (
             <div className="rounded-t-xl h-64 max-h-64 w-full shadow-xl -z-10">
               <img
@@ -69,17 +72,7 @@ const ProfilePage: NextPage = () => {
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
           <div className="flex">
             <div className="pl-4  sm:pl-8 md:pl-12 lg:pl-16">
-              {profile.picture ? (
-                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 shadow-xl">
-                  <img
-                    src={profile.picture.original.url}
-                    alt=""
-                    className="rounded-full h-20 sm:h-28 md:h-32"
-                  />
-                </div>
-              ) : (
-                <div className="h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-2 bg-stone-300 shadow-xl"></div>
-              )}
+              <Avatar profile={profile} size={32} />
             </div>
 
             <div className="mt-6 ml-6 px-2 py-1 my-auto  bg-white border shadow-lg text-stone-800  rounded-xl">
@@ -170,9 +163,7 @@ const ProfilePage: NextPage = () => {
 
         {/* <UserTimeline profileId={profile.id} /> */}
         <GetPublications profileId={profile.id} />
-      </main>
-
-      {/* <footer className="px-4 py-2">footer</footer> */}
+      </div>
     </div>
   );
 };

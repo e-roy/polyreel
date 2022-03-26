@@ -53,13 +53,4 @@ export const login = async (address: string) => {
     console.log("login: already logged in");
     return;
   }
-
-  //   return accessTokens.data;
 };
-
-(async () => {
-  //   await login();
-  //   if (argsBespokeInit()) {
-  //     await login();
-  //   }
-})();
