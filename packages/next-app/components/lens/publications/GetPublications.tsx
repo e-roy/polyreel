@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_PUBLICATIONS } from "@/queries/publications/get-publications";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-import { PublicationCard } from "@/components/cards";
+import { Post } from "@/components/post";
 
 type GetPublicationsProps = {
   profileId: string;
@@ -58,7 +58,9 @@ export const GetPublications = ({ profileId }: GetPublicationsProps) => {
       <div className="flex flex-wrap">
         {data.publications.items.map((publication: any, index: number) => (
           <div key={index} className="w-full sm:w-1/3 space-2">
-            <PublicationCard publication={publication} />
+            <div className="m-2 p-2  border border-stone-400 shadow-lg rounded">
+              <Post publication={publication} />
+            </div>
           </div>
         ))}
         {pageInfo.next && <div className="h-1" ref={sentryRef}></div>}

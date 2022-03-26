@@ -23,8 +23,6 @@ export type HeaderProps = {};
 export const Header = ({}: HeaderProps) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const router = useRouter();
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
-  const [profileHandle, setProfileHandle] = useState<string | null>(null);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
@@ -58,11 +56,6 @@ export const Header = ({}: HeaderProps) => {
   let isVerified = false;
   // console.log(verifyData);
   if (verifyData?.verify) isVerified = true;
-
-  useEffect(() => {
-    setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
-    setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
-  }, []);
 
   const handleUserLoggedIn = () => {
     router.push("/home");
@@ -154,7 +147,9 @@ export const Header = ({}: HeaderProps) => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-white pb-6 shadow-xl">
                     <div
                       className="hover:bg-sky-200 cursor-pointer"
-                      onClick={() => router.push(`/profile/${profileHandle}`)}
+                      onClick={() =>
+                        router.push(`/profile/${currentUser?.handle}`)
+                      }
                     >
                       <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
 

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
@@ -23,8 +23,6 @@ const ProfilePage: NextPage = () => {
   const { currentUser } = useContext(UserContext);
   const router = useRouter();
   const { id } = router.query;
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
-  const [profileHandle, setProfileHandle] = useState<string | null>(null);
   // console.log("currentUser", currentUser);
 
   const { loading, error, data, refetch } = useQuery(GET_PROFILES, {
@@ -32,11 +30,6 @@ const ProfilePage: NextPage = () => {
       request: { handles: [id] },
     },
   });
-
-  useEffect(() => {
-    setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
-    setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
-  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -107,7 +100,7 @@ const ProfilePage: NextPage = () => {
               )}
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
-              {profileHandle === id ? (
+              {currentUser?.handle === id ? (
                 <EditProfileButton refetch={refetch} />
               ) : (
                 <DoesFollow profileId={profile.id} />

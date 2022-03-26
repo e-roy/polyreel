@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
-import { Stats } from "@/components/post";
 
 export const PostBody = ({ publication }: any) => {
   return (
@@ -54,7 +53,6 @@ export const PostBody = ({ publication }: any) => {
           </div>
         )}
       </div>
-      <Stats stats={publication.stats} />
     </div>
   );
 };

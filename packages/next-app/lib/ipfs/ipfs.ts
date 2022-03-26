@@ -30,6 +30,6 @@ export const uploadIpfs = async (payload: any) => {
     })
   );
 
-  console.log("upload result ipfs", result);
+  // console.log("upload result ipfs", result);
   return result;
 };

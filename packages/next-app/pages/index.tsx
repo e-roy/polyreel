@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Header } from "@/components/layout";
 import { Hero } from "@/components/landing";
 
 const Landing: NextPage = () => {

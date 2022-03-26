@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { PostBody } from "@/components/post";
+import { PostBody, Stats } from "@/components/post";
 
 export const Post = ({ publication }: any) => {
+  console.log(publication);
   return (
-    <div className="p-4 border-t border-b border-stone-300">
+    <div className="">
       {publication.__typename === "Mirror" && (
         <div>
           <Link href={`/profile/${publication.mirrorOf.profile.handle}`}>
@@ -16,6 +17,7 @@ export const Post = ({ publication }: any) => {
             </div>
           </Link>
           <PostBody publication={publication} />
+          <Stats publication={publication} />
         </div>
       )}
 
@@ -27,16 +29,21 @@ export const Post = ({ publication }: any) => {
               {publication.mainPost.profile.handle}
             </div>
             <PostBody publication={publication.mainPost} />
+            <Stats publication={publication.mainPost} />
           </div>
           <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
-          <div className="p-4">
+          <div className="p-4 border rounded-lg">
             <PostBody publication={publication} />
+            <Stats publication={publication} />
           </div>
         </div>
       )}
 
       {publication.__typename === "Post" && (
-        <PostBody publication={publication} />
+        <>
+          <PostBody publication={publication} />
+          <Stats publication={publication} />
+        </>
       )}
     </div>
   );

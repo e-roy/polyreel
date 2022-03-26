@@ -3,7 +3,6 @@ import { useQuery } from "@apollo/client";
 import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-import { FeedCard } from "@/components/cards";
 import { Post } from "@/components/post";
 
 export const ExplorePublications = () => {
@@ -53,7 +52,9 @@ export const ExplorePublications = () => {
           data.explorePublications.items &&
           data.explorePublications.items.map((item: any, index: number) => (
             <div key={index} className="">
-              <Post publication={item} />
+              <div className="p-4 border-t border-b border-stone-300">
+                <Post publication={item} />
+              </div>
             </div>
           ))}
         {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
