@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PostBody, Stats } from "@/components/post";
 
 export const Post = ({ publication }: any) => {
-  console.log(publication);
+  // console.log(publication);
   return (
     <div className="">
       {publication.__typename === "Mirror" && (

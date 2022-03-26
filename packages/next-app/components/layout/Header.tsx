@@ -5,10 +5,11 @@ import React, {
   useRef,
   useContext,
 } from "react";
+import Link from "next/link";
 import { UserContext } from "@/components/layout";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
-import { ChevronLeftIcon, PlusIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 import { Auth, ConnectWallet, Logout } from "@/components/lens/auth";
 import { getAuthenticationToken } from "@/lib/auth/state";
 
@@ -101,12 +102,19 @@ export const Header = ({}: HeaderProps) => {
       ) : (
         <>
           {router.pathname !== "/" ? (
-            <div
-              className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
-              onClick={() => router.back()}
-            >
-              <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
-            </div>
+            <>
+              <div
+                className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
+                onClick={() => router.back()}
+              >
+                <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
+              </div>
+              <Link href={"/home"}>
+                <div className="cursor-pointer mt-2 relative grid content-center justify-center bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full">
+                  <HomeIcon className="h-6 w-6 text-stone-100" />
+                </div>
+              </Link>
+            </>
           ) : (
             <div></div>
           )}

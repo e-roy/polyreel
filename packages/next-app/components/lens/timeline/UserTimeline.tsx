@@ -32,7 +32,7 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log(data);
+  // console.log(data);
   return (
     <div className="p-2 border rounded">
       <div className="flex flex-wrap">

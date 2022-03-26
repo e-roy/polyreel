@@ -1,10 +1,7 @@
 import Link from "next/link";
+import { Mirror, Collect } from "@/components/post";
 
-import {
-  ChatAlt2Icon,
-  DocumentDuplicateIcon,
-  CollectionIcon,
-} from "@heroicons/react/outline";
+import { ChatAlt2Icon } from "@heroicons/react/outline";
 
 type StatsProps = {
   publication: any;
@@ -25,14 +22,8 @@ export const Stats = ({ publication }: StatsProps) => {
           <ChatAlt2Icon className="h-6 w-6 ml-2" aria-hidden="true" />
         </div>
       </Link>
-      <div className="flex ml-4 cursor-pointer">
-        {stats.totalAmountOfMirrors}
-        <DocumentDuplicateIcon className="h-6 w-6 ml-2" aria-hidden="true" />
-      </div>
-      <div className="flex ml-4 cursor-pointer">
-        {stats.totalAmountOfCollects}
-        <CollectionIcon className="h-6 w-6 ml-2" aria-hidden="true" />
-      </div>
+      <Mirror publication={publication} />
+      {/* <Collect publication={publication} /> */}
     </div>
   );
 };
