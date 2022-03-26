@@ -13,7 +13,7 @@ import { omit } from "@/lib/helpers";
 
 import LENS_ABI from "@/abis/Lens.json";
 
-import { PublicationCard } from "@/components/cards";
+// import { PublicationCard } from "@/components/cards";
 
 export type UserTimelineProps = {
   profileId: string;
@@ -39,7 +39,7 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
         {data.timeline.items.map((timelineItem: any, index: number) => (
           <div key={index} className="w-1/4 m-2">
             <div>{timelineItem.appId}</div>
-            <PublicationCard publication={timelineItem} />
+            {/* <PublicationCard publication={timelineItem} /> */}
           </div>
         ))}
       </div>
