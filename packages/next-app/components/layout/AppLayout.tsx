@@ -56,7 +56,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   );
 
   // console.log(userProfilesData);
-  // console.log(currentProfileData?.profiles.items[0]);
+  // console.log(currentProfileData);
 
   const injectContext = {
     profiles: userProfilesData?.profiles?.items,

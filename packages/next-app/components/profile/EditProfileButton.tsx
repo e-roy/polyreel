@@ -8,16 +8,24 @@ import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
 
 type EditProfileButtonProps = {};
 
+type coverPhotoType = {
+  original: {
+    url: string;
+    mime: string;
+  };
+};
+
 export const EditProfileButton = ({}: EditProfileButtonProps) => {
   const { currentUser, refechProfiles } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
-  const [updateName, setUpdateName] = useState("");
-  const [updateBio, setUpdateBio] = useState("");
-  const [updateLocation, setUpdateLocation] = useState("");
-  const [updateWebsite, setUpdateWebsite] = useState("");
-  const [updateTwitterUrl, setUpdateTwitterUrl] = useState("");
-  const [updateCoverPicture, setUpdateCoverPicture] = useState("");
+  const [updateName, setUpdateName] = useState<string>("");
+  const [updateBio, setUpdateBio] = useState<string>("");
+  const [updateLocation, setUpdateLocation] = useState<string>("");
+  const [updateWebsite, setUpdateWebsite] = useState<string | null>(null);
+  const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string | null>(null);
+  const [updateCoverPicture, setUpdateCoverPicture] =
+    useState<coverPhotoType | null>(null);
 
   const [updateProfile, { data, loading, error }] = useMutation(
     UPDATE_PROFILE,
@@ -41,9 +49,9 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
       setUpdateName(currentUser?.name as string);
       setUpdateBio(currentUser?.bio as string);
       setUpdateLocation(currentUser?.location as string);
-      setUpdateWebsite(currentUser?.website as string);
-      setUpdateTwitterUrl(currentUser?.twitterUrl as string);
-      setUpdateCoverPicture(currentUser?.coverPicture as string | any);
+      setUpdateWebsite((currentUser?.website as string) || null);
+      setUpdateTwitterUrl((currentUser?.twitterUrl as string) || null);
+      setUpdateCoverPicture(currentUser.coverPicture as coverPhotoType | any);
     }
   }, [currentUser]);
 
