@@ -101,7 +101,7 @@ const ProfilePage: NextPage = () => {
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
               {currentUser?.handle === id ? (
-                <EditProfileButton refetch={refetch} />
+                <EditProfileButton />
               ) : (
                 <DoesFollow profileId={profile.id} />
               )}

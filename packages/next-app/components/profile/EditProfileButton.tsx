@@ -1,32 +1,30 @@
-import { useState, useEffect } from "react";
-import { Button, Modal, TextField } from "@/components/elements";
+import { useState, useEffect, useContext } from "react";
+import { Button, Modal, TextField, Avatar } from "@/components/elements";
 import { XIcon } from "@heroicons/react/outline";
+
+import { UserContext } from "@/components/layout";
 import { useMutation } from "@apollo/client";
 import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
 
-type EditProfileButtonProps = {
-  refetch: () => void;
-};
+type EditProfileButtonProps = {};
 
-export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
+export const EditProfileButton = ({}: EditProfileButtonProps) => {
+  const { currentUser, refechProfiles } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
-  const [profileId, setProfileId] = useState<string | null>(null);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
-  const [profileHandle, setProfileHandle] = useState<string | null>(null);
   const [updateName, setUpdateName] = useState("");
   const [updateBio, setUpdateBio] = useState("");
   const [updateLocation, setUpdateLocation] = useState("");
-  const [updateWebsite, setUpdateWebsite] = useState(null);
-  const [updateTwitterUrl, setUpdateTwitterUrl] = useState(null);
-  const [updateCoverPicture, setUpdateCoverPicture] = useState(null);
+  const [updateWebsite, setUpdateWebsite] = useState("");
+  const [updateTwitterUrl, setUpdateTwitterUrl] = useState("");
+  const [updateCoverPicture, setUpdateCoverPicture] = useState("");
 
   const [updateProfile, { data, loading, error }] = useMutation(
     UPDATE_PROFILE,
     {
       variables: {
         request: {
-          profileId,
+          profileId: currentUser?.id,
           name: updateName,
           bio: updateBio,
           location: updateLocation,
@@ -37,25 +35,26 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
       },
     }
   );
-  useEffect(() => {
-    setProfileId(sessionStorage.getItem("polyreel_profile_id"));
-    setProfileHandle(sessionStorage.getItem("polyreel_profile_handle"));
-    setProfilePicture(sessionStorage.getItem("polyreel_profile_picture"));
-  }, []);
 
   useEffect(() => {
-    if (data) {
-      setIsOpen(false);
-      refetch();
+    if (currentUser) {
+      setUpdateName(currentUser?.name as string);
+      setUpdateBio(currentUser?.bio as string);
+      setUpdateLocation(currentUser?.location as string);
+      setUpdateWebsite(currentUser?.website as string);
+      setUpdateTwitterUrl(currentUser?.twitterUrl as string);
+      setUpdateCoverPicture(currentUser?.coverPicture as string | any);
     }
-  }, [data]);
+  }, [currentUser]);
 
   const handleButton = () => {
     setIsOpen(true);
   };
 
-  const handleSave = () => {
-    updateProfile();
+  const handleSave = async () => {
+    await updateProfile();
+    refechProfiles();
+    setIsOpen(false);
   };
 
   return (
@@ -84,50 +83,64 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
               <Button onClick={() => handleSave()}>save</Button>
             </div>
           </div>
-          {/* <div className="relative h-40 sm:h-56 ">
-            <img
-              className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg z-20"
-              src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
-              alt=""
-            />
-          </div> */}
-          <div className="relative bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
+          {currentUser?.coverPicture ? (
+            <div className="relative h-40 sm:h-56 ">
+              <img
+                className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg z-20"
+                src={currentUser?.coverPicture.original.url}
+                alt=""
+              />
+            </div>
+          ) : (
+            <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
+          )}
 
-          <div className="-mt-8 z-30">
-            <>
-              {/* {profilePicture ? (
-                <div className="h-12 w-12 relative rounded-full border-2 shadow-md">
-                  <img src={profilePicture} alt="" className="rounded-full" />
-                </div>
-              ) : ( */}
-              <div className="rounded-full h-12 w-12 bg-gray-800 border-2 shadow-md"></div>
-              {/* )} */}
-            </>
+          <div className="-mt-8 ml-4">
+            <Avatar profile={currentUser} size={"medium"} />
           </div>
-          <TextField
-            className="my-4"
-            name="name"
-            label="Update Your Name"
-            value={updateName}
-            placeholder="name"
-            onChange={(e) => setUpdateName(e.target.value)}
-          />
-          <TextField
-            className="my-4"
-            name="bio"
-            label="Update Your Bio"
-            value={updateBio}
-            placeholder="bio"
-            onChange={(e) => setUpdateBio(e.target.value)}
-          />
-          <TextField
-            className="my-4"
-            name="location"
-            label="Update Your Location"
-            value={updateLocation}
-            placeholder="location"
-            onChange={(e) => setUpdateLocation(e.target.value)}
-          />
+
+          <div className="h-1/2 overflow-y-scroll">
+            <TextField
+              className="my-4"
+              name="name"
+              label="Update Your Name"
+              value={updateName}
+              placeholder="name"
+              onChange={(e) => setUpdateName(e.target.value)}
+            />
+            <TextField
+              className="my-4"
+              name="bio"
+              label="Update Your Bio"
+              value={updateBio}
+              placeholder="bio"
+              onChange={(e) => setUpdateBio(e.target.value)}
+            />
+            <TextField
+              className="my-4"
+              name="location"
+              label="Update Your Location"
+              value={updateLocation}
+              placeholder="location"
+              onChange={(e) => setUpdateLocation(e.target.value)}
+            />
+            <TextField
+              className="my-4"
+              name="website"
+              label="Update Your Website Url"
+              value={updateWebsite}
+              placeholder="website"
+              onChange={(e) => setUpdateWebsite(e.target.value)}
+            />
+            <TextField
+              className="my-4"
+              name="twitter"
+              label="Update Your Twitter Url"
+              value={updateTwitterUrl}
+              placeholder="location"
+              onChange={(e) => setUpdateTwitterUrl(e.target.value)}
+            />
+          </div>
         </div>
       </Modal>
     </>
