@@ -124,7 +124,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               placeholder="location"
               onChange={(e) => setUpdateLocation(e.target.value)}
             />
-            <TextField
+            {/* <TextField
               className="my-4"
               name="website"
               label="Update Your Website Url"
@@ -139,7 +139,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               value={updateTwitterUrl}
               placeholder="location"
               onChange={(e) => setUpdateTwitterUrl(e.target.value)}
-            />
+            /> */}
           </div>
         </div>
       </Modal>

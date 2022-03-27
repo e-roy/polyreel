@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { CreateProfile } from "@/components/create-profile";
-import { Button } from "@/components/elements";
+import { Button, Avatar } from "@/components/elements";
 import { Logout } from "@/components/lens/auth";
 
 const SelectProfile: NextPage = () => {
@@ -18,6 +18,8 @@ const SelectProfile: NextPage = () => {
     setCurrentUser(profile);
     router.push(`/profile/${profile.handle}`);
   };
+
+  console.log(profiles);
 
   const baseClass =
     "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
@@ -52,17 +54,7 @@ const SelectProfile: NextPage = () => {
                     className={`${baseClass}`}
                     onClick={() => handleSelectProfile(profile)}
                   >
-                    {profile.picture ? (
-                      <div className="h-10 w-10 border-2 rounded-full">
-                        <img
-                          src={profile.picture.original.url}
-                          alt={profile.handle}
-                          className="rounded-full"
-                        />
-                      </div>
-                    ) : (
-                      <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
-                    )}
+                    <Avatar profile={profile} size={"small"} />
                     <div className="mt-2 px-4">{profile.handle}</div>
                   </div>
                 ))}

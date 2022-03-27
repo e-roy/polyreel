@@ -8,9 +8,9 @@ type AvatarProps = {
 export const Avatar = ({ profile, size }: AvatarProps) => {
   // console.log(profile.picture?.original.url);
 
-  if (profile.picture?.original.url === "") return null;
+  if (profile?.picture?.original.url === "") return null;
   if (
-    profile.picture?.original.url.startsWith(
+    profile?.picture?.original.url.startsWith(
       "https://statics-mumbai-lens.s3.amazonaws.com/profile"
     )
   )
@@ -23,12 +23,12 @@ const AvatarIcon = ({ profile, size }: AvatarProps) => {
   if (size === "profile") {
     return (
       <>
-        {profile.picture ? (
+        {profile?.picture ? (
           <div
             className={`h-20 sm:h-28 md:h-32 w-20 sm:w-28 md:w-32 relative rounded-full border-4 border-white shadow-xl`}
           >
             <img
-              src={profile.picture.original.url}
+              src={profile?.picture.original.url}
               alt={`@${profile.handle}`}
               className={`rounded-full h-20 sm:h-28 md:h-32`}
             />
@@ -47,12 +47,12 @@ const AvatarIcon = ({ profile, size }: AvatarProps) => {
   } else if (size === "medium") {
     return (
       <>
-        {profile.picture && profile.picture.original.url ? (
+        {profile?.picture && profile.picture.original.url ? (
           <div
             className={`h-12 sm:h-12 md:h-12 w-12 sm:w-12 md:w-12 relative rounded-full border-4 border-white shadow-xl`}
           >
             <img
-              src={profile.picture.original.url}
+              src={profile?.picture.original.url}
               alt={`@${profile.handle}`}
               className={`rounded-full h-12 sm:h-12 md:h-12`}
             />
@@ -71,12 +71,12 @@ const AvatarIcon = ({ profile, size }: AvatarProps) => {
   } else if (size === "small") {
     return (
       <>
-        {profile.picture && profile.picture.original.url ? (
+        {profile?.picture && profile.picture.original.url ? (
           <div
             className={`h-12 relative rounded-full border-4 border-white shadow-xl`}
           >
             <img
-              src={profile.picture.original.url}
+              src={profile?.picture.original.url}
               alt={`@${profile.handle}`}
               className={`rounded-full h-12 w-12`}
             />
