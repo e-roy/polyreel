@@ -35,6 +35,7 @@ export const PostBody = ({ publication }: any) => {
       <div className="overflow-hidden my-2">
         {publication.metadata.description}
       </div>
+      <div className="overflow-hidden my-2">{publication.metadata.content}</div>
       <div>
         {publication.metadata.media && (
           <div className="flex flex-wrap">

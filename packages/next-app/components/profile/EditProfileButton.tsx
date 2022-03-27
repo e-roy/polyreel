@@ -22,10 +22,10 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
   const [updateName, setUpdateName] = useState<string>("");
   const [updateBio, setUpdateBio] = useState<string>("");
   const [updateLocation, setUpdateLocation] = useState<string>("");
-  const [updateWebsite, setUpdateWebsite] = useState<string | null>(null);
-  const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string | null>(null);
-  const [updateCoverPicture, setUpdateCoverPicture] =
-    useState<coverPhotoType | null>(null);
+  // const [updateWebsite, setUpdateWebsite] = useState<string | null>(null);
+  // const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string | null>(null);
+  // const [updateCoverPicture, setUpdateCoverPicture] =
+  //   useState<coverPhotoType | null>(null);
 
   const [updateProfile, { data, loading, error }] = useMutation(
     UPDATE_PROFILE,
@@ -36,9 +36,9 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
           name: updateName,
           bio: updateBio,
           location: updateLocation,
-          website: updateWebsite,
-          twitterUrl: updateTwitterUrl,
-          coverPicture: updateCoverPicture,
+          website: "https://mumbai.polygonscan.com/",
+          twitterUrl: "https://twitter.com/",
+          coverPicture: null,
         },
       },
     }
@@ -46,12 +46,13 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
 
   useEffect(() => {
     if (currentUser) {
-      setUpdateName(currentUser?.name as string);
-      setUpdateBio(currentUser?.bio as string);
-      setUpdateLocation(currentUser?.location as string);
-      setUpdateWebsite((currentUser?.website as string) || null);
-      setUpdateTwitterUrl((currentUser?.twitterUrl as string) || null);
-      setUpdateCoverPicture(currentUser.coverPicture as coverPhotoType | any);
+      if (currentUser?.name) setUpdateName(currentUser?.name as string);
+      if (currentUser?.bio) setUpdateBio(currentUser?.bio as string);
+      if (currentUser?.location)
+        setUpdateLocation(currentUser?.location as string);
+      // setUpdateWebsite((currentUser?.website as string) || null);
+      // setUpdateTwitterUrl((currentUser?.twitterUrl as string) || null);
+      // setUpdateCoverPicture(currentUser.coverPicture as coverPhotoType | any);
     }
   }, [currentUser]);
 
@@ -64,6 +65,11 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
     refechProfiles();
     setIsOpen(false);
   };
+
+  // console.log(currentUser);
+  // console.log(data);
+  // console.log(loading);
+  // console.log(error);
 
   return (
     <>
@@ -91,7 +97,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               <Button onClick={() => handleSave()}>save</Button>
             </div>
           </div>
-          {currentUser?.coverPicture ? (
+          {currentUser?.coverPicture && currentUser?.coverPicture.original ? (
             <div className="relative h-40 sm:h-56 ">
               <img
                 className="absolute h-full w-full object-cover sm:border-2 border-transparent rounded-lg z-20"
