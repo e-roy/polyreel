@@ -26,7 +26,7 @@ export const uploadIpfs = async (payload: any) => {
         //   type: "image/jpeg",
         // },
       ],
-      appId: "testAPP",
+      appId: "polyreel.xyz",
     })
   );
 
