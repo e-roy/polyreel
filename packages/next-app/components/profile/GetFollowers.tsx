@@ -48,12 +48,12 @@ export const GetFollowers = ({ profileId }: GetFollowersProps) => {
   if (!followersData) return null;
 
   return (
-    <>
+    <div className="pb-80 pt-4">
       {followersData &&
         followersData.followers.items.map((follower: any, index: number) => (
           <FollowersCard key={index} profile={follower.wallet.defaultProfile} />
         ))}
       {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
-    </>
+    </div>
   );
 };

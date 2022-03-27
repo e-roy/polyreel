@@ -62,17 +62,16 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     profiles: userProfilesData?.profiles?.items,
     currentUser: currentProfileData?.profiles.items[0],
     setCurrentUser: (profile: any) => {
-      // console.log("setCurrentUser", profile);
       setCurrentUserProfileId(profile.id);
       localStorage.setItem("polyreel_current_user_profile_id", profile.id);
     },
+    refechProfiles: refetch,
   };
 
   if (userProfilesLoading) return <p>Loading...</p>;
   if (currentProfileLoading) return <p>Loading...</p>;
 
   if (router.pathname === "/home" && !currentProfileData) {
-    // console.log("no profile");
     router.push("/select-profile");
   }
 

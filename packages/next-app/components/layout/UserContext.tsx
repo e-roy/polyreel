@@ -26,10 +26,12 @@ type UserContextType = {
   profiles?: userProfile[];
   currentUser?: userProfile;
   setCurrentUser: Dispatch<userProfile | undefined>;
+  refechProfiles: () => void;
 };
 
 export const UserContext = createContext<UserContextType>({
   currentUser: undefined,
   profiles: [],
   setCurrentUser: () => {},
+  refechProfiles: () => {},
 });

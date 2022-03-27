@@ -16,7 +16,7 @@ const SelectProfile: NextPage = () => {
   const handleSelectProfile = (profile: any) => {
     localStorage.setItem("polyreel_current_user_profile_id", profile.id);
     setCurrentUser(profile);
-    router.push("/home");
+    router.push(`/profile/${profile.handle}`);
   };
 
   const baseClass =
@@ -45,27 +45,28 @@ const SelectProfile: NextPage = () => {
               <div className="py-2 text-center text-2xl font-bold">
                 Select A Profile
               </div>
-
-              {profiles?.map((profile, index) => (
-                <div
-                  key={index}
-                  className={`${baseClass}`}
-                  onClick={() => handleSelectProfile(profile)}
-                >
-                  {profile.picture ? (
-                    <div className="h-10 w-10 border-2 rounded-full">
-                      <img
-                        src={profile.picture.original.url}
-                        alt={profile.handle}
-                        className="rounded-full"
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
-                  )}
-                  <div className="mt-2 px-4">{profile.handle}</div>
-                </div>
-              ))}
+              <div className="h-60 overflow-y-scroll">
+                {profiles?.map((profile, index) => (
+                  <div
+                    key={index}
+                    className={`${baseClass}`}
+                    onClick={() => handleSelectProfile(profile)}
+                  >
+                    {profile.picture ? (
+                      <div className="h-10 w-10 border-2 rounded-full">
+                        <img
+                          src={profile.picture.original.url}
+                          alt={profile.handle}
+                          className="rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
+                    )}
+                    <div className="mt-2 px-4">{profile.handle}</div>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="my-6 text-center font-semibold text-lg">or</div>
           </div>

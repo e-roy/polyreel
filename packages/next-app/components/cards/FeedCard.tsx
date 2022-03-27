@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
+import { Avatar } from "@/components/elements";
 
 import {
   ChatAlt2Icon,
@@ -17,13 +18,7 @@ export const FeedCard = ({ publication }: any) => {
         <div className="flex">
           {publication.profile.picture ? (
             <Link href={`/profile/${publication.profile.handle}`}>
-              <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
-                <img
-                  src={publication.profile.picture.original.url}
-                  alt=""
-                  className="rounded-full h-12"
-                />
-              </div>
+              <Avatar profile={publication.profile} size={"medium"} />
             </Link>
           ) : (
             <Link href={`/profile/${publication.profile.handle}`}>

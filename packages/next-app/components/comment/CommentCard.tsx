@@ -10,7 +10,7 @@ import { uploadIpfs } from "@/lib/ipfs/ipfs";
 import LENS_ABI from "@/abis/Lens.json";
 const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
 
-import { Button } from "@/components/elements";
+import { Button, Avatar } from "@/components/elements";
 
 type CommentCardProps = {
   publicationId: string;
@@ -120,17 +120,7 @@ export const CommentCard = ({ publicationId }: CommentCardProps) => {
       <div className="border rounded-lg border-stone-300 p-2 shadow-lg">
         <div className="flex relative mt-6 flex-1 px-4 sm:px-6">
           <div>
-            {currentUser?.picture ? (
-              <div className="h-8 w-8 sm:h-12 sm:w-12  relative rounded-full border-2 shadow-md">
-                <img
-                  src={currentUser?.picture.original.url}
-                  alt=""
-                  className="rounded-full"
-                />
-              </div>
-            ) : (
-              <div className="rounded-full h-8 w-8 sm:h-12 sm:w-12 bg-gray-300 border-2 shadow-md"></div>
-            )}
+            <Avatar profile={currentUser} size={"medium"} />
           </div>
           <div className="w-full ml-4">
             <textarea

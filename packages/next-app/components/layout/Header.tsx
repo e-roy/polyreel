@@ -19,6 +19,8 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { VERIFY } from "@/queries/auth/verify";
 
+import { Avatar } from "@/components/elements";
+
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
@@ -78,27 +80,19 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-30">
+    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-20">
       {router.pathname === "/home" ? (
-        <>
+        <div onClick={() => setOpen(!open)} className="flex cursor-pointer">
           {currentUser?.picture ? (
-            <div
-              className="h-12 w-12 relative rounded-full border-2 shadow-md cursor-pointer"
-              onClick={() => setOpen(!open)}
-            >
-              <img
-                src={currentUser?.picture.original.url}
-                alt=""
-                className="rounded-full"
-              />
-            </div>
+            <Avatar profile={currentUser} size={"small"} />
           ) : (
-            <div
-              className="rounded-full h-12 w-12 bg-gray-300 border-2 shadow-md cursor-pointer"
-              onClick={() => setOpen(!open)}
-            ></div>
+            <Avatar profile={currentUser} size={"small"} />
           )}
-        </>
+          <div className="mt-2 px-4 font-medium">
+            <div>@{currentUser?.handle}</div>
+            <div>{currentUser?.name}</div>
+          </div>
+        </div>
       ) : (
         <>
           {router.pathname !== "/" ? (
@@ -163,30 +157,10 @@ export const Header = ({}: HeaderProps) => {
 
                       <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                         <div className="sm:flex-1 flex">
-                          <div className="">
-                            <>
-                              {currentUser?.picture ? (
-                                <div className="h-12 w-12 relative rounded-full border-2 shadow-md">
-                                  <img
-                                    src={currentUser?.picture.original.url}
-                                    alt=""
-                                    className="rounded-full"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="rounded-full h-12 w-12 bg-gray-300 border-2 shadow-md"></div>
-                              )}
-                            </>
-                          </div>
-                          <div className="ml-4">
-                            <div className="flex items-center">
-                              <h3 className="text-lg font-bold text-stone-900 sm:text-xl">
-                                {currentUser?.name}
-                              </h3>
-                            </div>
-                            <p className="text-sm text-stone-500">
-                              @{currentUser?.handle}
-                            </p>
+                          <Avatar profile={currentUser} size={"small"} />
+                          <div className="mt-2 px-4 font-medium">
+                            <div>@{currentUser?.handle}</div>
+                            <div>{currentUser?.name}</div>
                           </div>
                         </div>
                       </div>
@@ -199,26 +173,22 @@ export const Header = ({}: HeaderProps) => {
                         </div>
                         {profileData?.profiles.items.map(
                           (profile: any, index: number) => (
-                            <div
-                              key={index}
-                              className={`${baseClass}`}
-                              onClick={() => {
-                                handleProfileClick(profile);
-                                !open;
-                              }}
-                            >
-                              {profile.picture ? (
-                                <div className="h-10 w-10 border-2 rounded-full">
-                                  <img
-                                    src={profile.picture.original.url}
-                                    alt={profile.handle}
-                                    className="rounded-full"
-                                  />
+                            <div key={index}>
+                              {profile.id !== currentUser?.id ? (
+                                <div
+                                  className={`${baseClass}`}
+                                  onClick={() => {
+                                    handleProfileClick(profile);
+                                    !open;
+                                  }}
+                                >
+                                  <Avatar profile={profile} size={"small"} />
+                                  <div className="mt-2 px-4 font-medium">
+                                    <div>@{profile.handle}</div>
+                                    <div>{profile.name}</div>
+                                  </div>
                                 </div>
-                              ) : (
-                                <div className="bg-slate-300 rounded-full h-10 w-10 border-2"></div>
-                              )}
-                              <div className="mt-2 px-4">{profile.handle}</div>
+                              ) : null}
                             </div>
                           )
                         )}

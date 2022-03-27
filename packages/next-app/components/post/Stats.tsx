@@ -23,7 +23,7 @@ export const Stats = ({ publication }: StatsProps) => {
         </div>
       </Link>
       <Mirror publication={publication} />
-      {/* <Collect publication={publication} /> */}
+      <Collect publication={publication} />
     </div>
   );
 };
