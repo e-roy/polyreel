@@ -44,7 +44,7 @@ export const ExplorePublications = () => {
     rootMargin: "0px 0px 400px 0px",
   });
   if (!data) return null;
-  console.log(data);
+  // console.log(data);
   return (
     <div className="">
       <div className="p-2">

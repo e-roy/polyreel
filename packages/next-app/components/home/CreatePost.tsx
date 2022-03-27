@@ -1,7 +1,6 @@
-import { Fragment, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "@/components/layout";
-import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
+import { Dialog } from "@headlessui/react";
 import { Button } from "@/components/elements";
 
 import { useMutation } from "@apollo/client";
@@ -11,12 +10,16 @@ import { uploadIpfs } from "@/lib/ipfs/ipfs";
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
+import { Modal, Avatar } from "@/components/elements";
+
 import LENS_ABI from "@/abis/Lens.json";
 const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
 
 export const CreatePost = () => {
   const { currentUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
 
@@ -114,81 +117,49 @@ export const CreatePost = () => {
   return (
     <>
       <div className="flex bg-transparent w-32">
-        <Button onClick={() => setOpen(!open)}>create post</Button>
+        <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+          create post
+        </Button>
       </div>
 
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 " onClose={setOpen}>
-          <div className="absolute inset-0">
-            <Dialog.Overlay className="absolute inset-0" />
-
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 flex w-screen">
-              <Transition.Child
-                as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
-                enterFrom="translate-y-full"
-                enterTo="translate-y-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
-                leaveFrom="translate-y-0"
-                leaveTo="translate-y-full"
-              >
-                <div className="pointer-events-auto w-screen">
-                  <div className="flex h-1/2 flex-col bg-stone-200 py-6 shadow-xl overflow-y-hidden">
-                    <div className="px-4 sm:px-6">
-                      <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">
-                          Create Post
-                        </Dialog.Title>
-                        <div className="ml-3 flex h-7 items-center">
-                          <button
-                            type="button"
-                            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
-                            onClick={() => setOpen(false)}
-                          >
-                            <span className="sr-only">Close panel</span>
-                            <XIcon className="h-6 w-6" aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex relative mt-6 flex-1 px-4 sm:px-6">
-                      <div>
-                        {currentUser?.picture ? (
-                          <div className="h-8 w-8 sm:h-12 sm:w-12  relative rounded-full border-2 shadow-md">
-                            <img
-                              src={currentUser?.picture.original.url}
-                              alt=""
-                              className="rounded-full"
-                            />
-                          </div>
-                        ) : (
-                          <div className="rounded-full h-8 w-8 sm:h-12 sm:w-12 bg-gray-300 border-2 shadow-md"></div>
-                        )}
-                      </div>
-                      <div className="w-full ml-4">
-                        <textarea
-                          rows={8}
-                          className="p-2 block w-full sm:text-sm resize-none focus-none"
-                          placeholder=""
-                          value={content}
-                          onChange={(e) => {
-                            setContent(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex mx-8 justify-end bg-transparent">
-                      <Button onClick={() => handlePost()} className="w-16">
-                        post
-                      </Button>
-                    </div>
-                  </div>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        >
+          <div className="bg-white p-4">
+            <div className=" items-start justify-between">
+              <Dialog.Title className="text-lg font-medium text-gray-900">
+                Create Post
+              </Dialog.Title>
+              <div className="flex relative mt-6 flex-1">
+                <div>
+                  <Avatar profile={currentUser} size={"small"} />
                 </div>
-              </Transition.Child>
+                <div className="w-full ml-4">
+                  <textarea
+                    rows={8}
+                    className="p-2 block w-full sm:text-sm resize-none focus-none border border-stone-400  rounded-lg"
+                    placeholder=""
+                    value={content}
+                    onChange={(e) => {
+                      setContent(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="my-4 flex justify-between px-4 sm:px-6">
+                <div></div>
+                <div className="w-30">
+                  <Button onClick={() => handlePost()}> post</Button>
+                </div>
+              </div>
             </div>
           </div>
-        </Dialog>
-      </Transition.Root>
+        </Modal>
+      )}
     </>
   );
 };
