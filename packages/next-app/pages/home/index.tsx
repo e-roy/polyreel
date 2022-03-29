@@ -11,7 +11,7 @@ import {
 
 const Home: NextPage = () => {
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col overflow-hidden">
       <Head>
         <title>polyreel</title>
         <meta name="description" content="polyreel" />
@@ -22,19 +22,17 @@ const Home: NextPage = () => {
         <div className="flex-1 w-full overflow-y-hidden ">
           {/* 3 column wrapper */}
           <div className="flex xl:px-8 2xl:px-32 h-9/10">
-            <div className="w-0 xl:w-1/4 xl:border-r xl:border-gray-200">
-              {/* Left Column */}
-            </div>
+            <div className="w-0 xl:w-1/4 ">{/* Left Column */}</div>
 
-            <div className="w-full lg:w-2/3 xl:w-1/2  min-h-9/10">
-              <div className="lg:px-8 h-9/10 overflow-y-scroll">
+            <div className="w-full mx-2 lg:w-2/3 xl:w-1/2  min-h-9/10">
+              <div className="lg:px-8 h-9/10 overflow-y-scroll border border-stone-300 rounded-xl shadow-lg">
                 <ExplorePublications />
                 {/* <UserTimeline /> */}
               </div>
             </div>
 
-            <div className="hidden md:block md:w-1/3 xl:w-1/4  lg:border-l lg:border-gray-200 xl:pr-0">
-              <div className="overflow-y-scroll h-3/4 px-4">
+            <div className="hidden md:block md:w-1/3 xl:w-1/4  xl:pr-0">
+              <div className="overflow-y-scroll h-3/4 px-4 border border-stone-300 rounded-xl mt-8 mx-4 shadow-lg">
                 <RecommendedProfiles />
               </div>
             </div>

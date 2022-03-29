@@ -78,7 +78,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <UserContext.Provider value={injectContext}>
       {router.pathname !== "/select-profile" && <Header />}
-      <main className="sm:px-4">{children}</main>
+      <main className="">{children}</main>
     </UserContext.Provider>
   );
 };

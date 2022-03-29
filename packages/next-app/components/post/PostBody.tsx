@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
+import { Avatar } from "@/components/elements";
+import Linkify from "linkify-react";
+import { linkifyOptions } from "@/lib/linkifyOptions";
+import "linkify-plugin-mention";
 
 export const PostBody = ({ publication }: any) => {
   return (
@@ -8,17 +12,7 @@ export const PostBody = ({ publication }: any) => {
       <div className="flex justify-between">
         <Link href={`/profile/${publication.profile.handle}`}>
           <div className="flex cursor-pointer">
-            {publication.profile.picture ? (
-              <div className="h-12 w-12 relative rounded-full border-2 cursor-pointer">
-                <img
-                  src={publication.profile.picture.original.url}
-                  alt=""
-                  className="rounded-full h-12"
-                />
-              </div>
-            ) : (
-              <div className="bg-slate-300 rounded-full h-12 w-12 border-2 cursor-pointer"></div>
-            )}
+            <Avatar profile={publication.profile} size={"small"} />
             <div>
               <div className="ml-4 my-auto font-semibold">
                 @{publication.profile.handle}
@@ -31,11 +25,17 @@ export const PostBody = ({ publication }: any) => {
         </Link>
         <div className="text-xs">{cardFormatDate(publication.createdAt)}</div>
       </div>
+      <Linkify tagName="div" options={linkifyOptions}>
+        <div className="overflow-hidden my-2 linkify">
+          {publication.metadata.description}
+        </div>
+        {publication.metadata.description !== publication.metadata.content && (
+          <div className="overflow-hidden my-2 linkify">
+            {publication.metadata.content}
+          </div>
+        )}
+      </Linkify>
 
-      <div className="overflow-hidden my-2">
-        {publication.metadata.description}
-      </div>
-      <div className="overflow-hidden my-2">{publication.metadata.content}</div>
       <div>
         {publication.metadata.media && (
           <div className="flex flex-wrap">

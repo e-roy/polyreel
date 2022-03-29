@@ -63,12 +63,10 @@ const ProfilePage: NextPage = () => {
           )}
         </div>
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
-          <div className="flex">
-            <div className="pl-4  sm:pl-8 md:pl-12 lg:pl-16">
-              <Avatar profile={profile} size={"profile"} />
-            </div>
+          <div className="flex px-12">
+            <Avatar profile={profile} size={"profile"} />
 
-            <div className="mt-6 ml-6 px-2 py-1 my-auto  bg-white border shadow-lg text-stone-800  rounded-xl">
+            <div className="mt-6 ml-6 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
               <div className="py-1 my-auto font-semibold text-md sm:text-xl md:text-2xl lg:text-3xl">
                 @{profile.handle}
               </div>

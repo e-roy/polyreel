@@ -11,11 +11,7 @@ const Landing: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="">
-        <Hero />
-      </main>
-
-      {/* <footer className="px-4 py-2">footer</footer> */}
+      <Hero />
     </div>
   );
 };
