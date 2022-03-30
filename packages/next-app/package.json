@@ -15,7 +15,7 @@
     "ethers": "5.6.1",
     "graphql": "^16.3.0",
     "hls.js": "^1.1.5",
-    "ipfs-http-client": "^56.0.1",
+    "ipfs-http-client": "54.0.2",
     "jwt-decode": "^3.1.2",
     "linkify-plugin-mention": "^3.0.4",
     "linkify-react": "^3.0.4",
