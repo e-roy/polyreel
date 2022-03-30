@@ -19,7 +19,7 @@ const SelectProfile: NextPage = () => {
     router.push(`/profile/${profile.handle}`);
   };
 
-  console.log(profiles);
+  // console.log(profiles);
 
   const baseClass =
     "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";

@@ -1,32 +1,40 @@
-import React, { useState } from "react";
-import { useAccount } from "wagmi";
+import React from "react";
 import { useQuery } from "@apollo/client";
-import { addressShorten } from "@/utils/address-shorten";
-
 import { GET_USERS_NFTS } from "@/queries/nfts/get-users-nfts";
 
-export const GetUserNfts = () => {
-  const ownedBy = "0x28Db2b440686A1adCA8d841b090330d88234A8c9";
-  //   const ownedBy = "0x505c2b951D87B8969B1Aa797997b96E5471A4E46";
+type GetUserNftsProps = {
+  ownedBy?: string;
+};
 
-  const [isOpen, setIsOpen] = useState(true);
+export const GetUserNfts = ({ ownedBy }: GetUserNftsProps) => {
   const { loading, error, data } = useQuery(GET_USERS_NFTS, {
     variables: {
-      request: { ownerAddress: ownedBy, chainIds: [80001] },
+      request: { ownerAddress: ownedBy, chainIds: [80001], limit: 50 },
     },
   });
 
-  //   if (loading) return <p>Loading...</p>;
-  //   if (error) return <p>Error :(</p>;
-  console.log(data);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
   return (
-    <div className="p-2 border rounded">
-      <h1
-        className="text-xl font-bold text-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        Get NFTs ownedBy {addressShorten(ownedBy)}
-      </h1>
+    <div className="mt-2">
+      <div className="flex flex-wrap">
+        {data.nfts.items.map((nft: any, index: number) => (
+          <div key={index} className="w-full sm:w-1/3 space-2">
+            <div className="m-2 p-2  border border-stone-400 shadow-lg rounded">
+              <img src={nft.originalContent.uri} alt="" className="" />
+              <div>
+                <p>Collection : {nft.collectionName}</p>
+                <p>Contract Name : {nft.contractName}</p>
+                <p>Description : {nft.description}</p>
+                <p>Name : {nft.name}</p>
+                <p>type : {nft.ercType}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div></div>
+      </div>
     </div>
   );
 };

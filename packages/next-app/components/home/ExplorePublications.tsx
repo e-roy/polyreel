@@ -52,7 +52,7 @@ export const ExplorePublications = () => {
           data.explorePublications.items &&
           data.explorePublications.items.map((item: any, index: number) => (
             <div key={index} className="">
-              <div className="p-4 border-t border-b border-stone-300">
+              <div className="p-4 border-b border-stone-300">
                 <Post publication={item} />
               </div>
             </div>

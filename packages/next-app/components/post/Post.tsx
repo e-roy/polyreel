@@ -32,7 +32,7 @@ export const Post = ({ publication }: any) => {
             <Stats publication={publication.mainPost} />
           </div>
           <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
-          <div className="p-4 border rounded-lg">
+          <div className="p-4 border rounded-lg shadow-md">
             <PostBody publication={publication} />
             <Stats publication={publication} />
           </div>

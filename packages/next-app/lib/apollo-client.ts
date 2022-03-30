@@ -68,50 +68,35 @@ export const apolloClient = () => {
       typePolicies: {
         Query: {
           fields: {
-            explorePublications: {
-              keyArgs: [],
-              merge(existing, incoming) {
-                if (!existing) return incoming;
-                return {
-                  items: existing.items.concat(incoming.items),
-                  pageInfo: incoming.pageInfo,
-                };
-              },
-            },
-            publications: {
-              keyArgs: [],
-              merge(existing, incoming) {
-                if (!existing) return incoming;
-                return {
-                  items: existing.items.concat(incoming.items),
-                  pageInfo: incoming.pageInfo,
-                };
-              },
-            },
-            followers: {
-              keyArgs: [],
-              merge(existing, incoming) {
-                if (!existing) return incoming;
-                return {
-                  items: existing.items.concat(incoming.items),
-                  pageInfo: incoming.pageInfo,
-                };
-              },
-            },
-            following: {
-              keyArgs: [],
-              merge(existing, incoming) {
-                if (!existing) return incoming;
-                return {
-                  items: existing.items.concat(incoming.items),
-                  pageInfo: incoming.pageInfo,
-                };
-              },
-            },
+            explorePublications: lensPagination(["request", ["sortCriteria"]]),
+            publications: lensPagination([
+              "request",
+              ["profileId", "publicationTypes"],
+            ]),
+            followers: lensPagination(["request", ["profileId"]]),
+            following: lensPagination(["request", ["address"]]),
           },
         },
       },
     }),
   });
   return apolloClient;
+};
+
+const lensPagination = (keyArgs: any) => {
+  return {
+    keyArgs: [keyArgs],
+    merge(existing: any, incoming: any) {
+      if (!existing) {
+        return incoming;
+      }
+      const existingItems = existing.items;
+      const incomingItems = incoming.items;
+
+      return {
+        items: existingItems.concat(incomingItems),
+        pageInfo: incoming.pageInfo,
+      };
+    },
+  };
 };

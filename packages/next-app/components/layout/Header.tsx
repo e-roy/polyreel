@@ -19,7 +19,7 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { VERIFY } from "@/queries/auth/verify";
 
-import { Avatar } from "@/components/elements";
+import { Avatar, Button } from "@/components/elements";
 
 export type HeaderProps = {};
 
@@ -80,7 +80,7 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className="py-2 px-4 mx-4 flex justify-between sticky top-0 z-20">
+    <header className={`py-2 px-8 flex justify-between sticky top-0 z-20`}>
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="flex cursor-pointer">
           {currentUser?.picture ? (
@@ -88,7 +88,7 @@ export const Header = ({}: HeaderProps) => {
           ) : (
             <Avatar profile={currentUser} size={"small"} />
           )}
-          <div className="mt-2 px-4 font-medium">
+          <div className="px-4 font-medium">
             <div>@{currentUser?.handle}</div>
             <div>{currentUser?.name}</div>
           </div>
@@ -146,19 +146,30 @@ export const Header = ({}: HeaderProps) => {
                 leaveTo="-translate-x-full"
               >
                 <div className="pointer-events-auto  max-w-md">
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white pb-6 shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-hidden bg-white pb-6 shadow">
                     <div
-                      className="hover:bg-sky-200 cursor-pointer"
+                      className="hover:bg-sky-200 cursor-pointer border-b shadow"
                       onClick={() =>
                         router.push(`/profile/${currentUser?.handle}`)
                       }
                     >
-                      <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
+                      {currentUser?.coverPicture &&
+                      currentUser?.coverPicture.original ? (
+                        <div className=" h-40 sm:h-56">
+                          <img
+                            className=" max-h-56 w-full sm:border-2 border-transparent"
+                            src={currentUser?.coverPicture.original.url}
+                            alt=""
+                          />
+                        </div>
+                      ) : (
+                        <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64"></div>
+                      )}
 
                       <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                         <div className="sm:flex-1 flex">
                           <Avatar profile={currentUser} size={"small"} />
-                          <div className="mt-2 px-4 font-medium">
+                          <div className="px-4 font-medium">
                             <div>@{currentUser?.handle}</div>
                             <div>{currentUser?.name}</div>
                           </div>
@@ -166,51 +177,53 @@ export const Header = ({}: HeaderProps) => {
                       </div>
                     </div>
 
-                    <div className="relative mt-4 flex-1 px-2 sm:px-4">
+                    <div className="relative mx-2 mt-2 flex-1 px-2 sm:px-4 overflow-y-scroll border rounded-xl shadow-xl">
                       <div className="relative grid gap-4 bg-white px-2 py-2 sm:gap-2 sm:p-2">
                         <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
                           Switch profiles
                         </div>
-                        {profileData?.profiles.items.map(
-                          (profile: any, index: number) => (
-                            <div key={index}>
-                              {profile.id !== currentUser?.id ? (
-                                <div
-                                  className={`${baseClass}`}
-                                  onClick={() => {
-                                    handleProfileClick(profile);
-                                    !open;
-                                  }}
-                                >
-                                  <Avatar profile={profile} size={"small"} />
-                                  <div className="mt-2 px-4 font-medium">
-                                    <div>@{profile.handle}</div>
-                                    <div>{profile.name}</div>
+                        <div>
+                          {profileData?.profiles.items.map(
+                            (profile: any, index: number) => (
+                              <div key={index}>
+                                {profile.id !== currentUser?.id ? (
+                                  <div
+                                    className={`${baseClass}`}
+                                    onClick={() => {
+                                      handleProfileClick(profile);
+                                      !open;
+                                    }}
+                                  >
+                                    <Avatar profile={profile} size={"small"} />
+                                    <div className="px-4 font-medium">
+                                      <div>@{profile.handle}</div>
+                                      <div>{profile.name}</div>
+                                    </div>
                                   </div>
-                                </div>
-                              ) : null}
-                            </div>
-                          )
-                        )}
-                        <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
-                          {/* Switch profiles */}
-                        </div>
-                        <div className={`${baseClass}`}>
-                          <PlusIcon className="ml-1 mr-4 h-8 w-8" />
-
-                          <div
-                            className="mt-1"
-                            onClick={() => router.push("/select-profile")}
-                          >
-                            create new profile
+                                ) : null}
+                              </div>
+                            )
+                          )}
+                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
+                            {/* Switch profiles */}
                           </div>
-                        </div>
+                          <div className={`${baseClass}`}>
+                            <PlusIcon className="ml-1 mr-4 h-8 w-8" />
 
-                        <Logout className={`${baseClass}`} />
-                        <button
-                          className="hidden"
-                          ref={completeButtonRef}
-                        ></button>
+                            <div
+                              className="mt-1"
+                              onClick={() => router.push("/select-profile")}
+                            >
+                              create new profile
+                            </div>
+                          </div>
+
+                          <Logout className={`${baseClass}`} />
+                          <button
+                            className="hidden"
+                            ref={completeButtonRef}
+                          ></button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -224,7 +237,24 @@ export const Header = ({}: HeaderProps) => {
       {!isWalletConnected ? (
         <ConnectWallet />
       ) : (
-        <>{!isVerified ? <Auth userLoggedIn={handleUserLoggedIn} /> : null}</>
+        <>
+          {!isVerified ? (
+            <Auth userLoggedIn={handleUserLoggedIn} />
+          ) : (
+            <>
+              {router.pathname === "/" ? (
+                <div className="flex justify-end">
+                  <Button
+                    className="w-30"
+                    onClick={() => router.push("./home")}
+                  >
+                    Home
+                  </Button>
+                </div>
+              ) : null}
+            </>
+          )}
+        </>
       )}
     </header>
   );

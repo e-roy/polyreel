@@ -12,7 +12,7 @@ type userProfile = {
   };
   location?: string;
   website?: string;
-  twitterUrl?: string;
+  twitterUrl?: string | null;
   name?: string;
   picture?: {
     original: {
@@ -24,7 +24,7 @@ type userProfile = {
 
 type UserContextType = {
   profiles?: userProfile[];
-  currentUser?: userProfile;
+  currentUser?: userProfile | undefined;
   setCurrentUser: Dispatch<userProfile | undefined>;
   refechProfiles: () => void;
 };
