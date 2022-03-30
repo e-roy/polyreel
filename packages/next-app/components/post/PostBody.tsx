@@ -26,11 +26,11 @@ export const PostBody = ({ publication }: any) => {
         <div className="text-xs">{cardFormatDate(publication.createdAt)}</div>
       </div>
       <Linkify tagName="div" options={linkifyOptions}>
-        <div className="overflow-hidden my-2 linkify">
+        <div className="overflow-hidden my-2 linkify line-clamp-4">
           {publication.metadata.description}
         </div>
         {publication.metadata.description !== publication.metadata.content && (
-          <div className="overflow-hidden my-2 linkify">
+          <div className="overflow-hidden my-2 linkify line-clamp-4">
             {publication.metadata.content}
           </div>
         )}

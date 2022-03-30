@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
-// import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
@@ -15,15 +14,22 @@ import {
   EditProfileButton,
   FollowersButton,
   DoesFollow,
+  NavSelect,
 } from "@/components/profile";
 
 import { Avatar } from "@/components/elements";
+
+import { GetUserNfts } from "@/components/lens/nfts";
+
+import Linkify from "linkify-react";
+import { linkifyOptions } from "@/lib/linkifyOptions";
+import "linkify-plugin-mention";
 
 const ProfilePage: NextPage = () => {
   const { currentUser } = useContext(UserContext);
   const router = useRouter();
   const { id } = router.query;
-  // console.log("currentUser", currentUser);
+  const [navSelect, setNavSelect] = useState("POST");
 
   const { loading, error, data, refetch } = useQuery(GET_PROFILES, {
     variables: {
@@ -35,7 +41,6 @@ const ProfilePage: NextPage = () => {
   if (error) return <p>Error :(</p>;
 
   let profile = data.profiles.items[0];
-  // console.log(profile);
 
   if (!profile) return null;
   return (
@@ -108,14 +113,17 @@ const ProfilePage: NextPage = () => {
         </div>
         <div className="px-2 text-sm sm:text-base text-stone-800">
           <div className="font-semibold">
-            Bio :<span className="font-normal pl-1">{profile.bio}</span>
+            <Linkify tagName="div" options={linkifyOptions}>
+              Bio :
+              <span className="font-normal pl-1 linkify">{profile.bio}</span>
+            </Linkify>
           </div>
           <div className="font-semibold py-2">
             Location :
             <span className="font-normal pl-1">{profile.location}</span>
           </div>
-          <div className="flex">
-            <div className="font-semibold py-2">
+          <div className="sm:flex justify-between">
+            <div className="font-semibold">
               <FollowersButton
                 ownedBy={profile.ownedBy}
                 profileId={profile.id}
@@ -123,37 +131,18 @@ const ProfilePage: NextPage = () => {
                 following={profile.stats.totalFollowing}
               />
             </div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold py-2">
-              Posts :
-              <span className="font-normal pl-1">
-                {profile.stats.totalPosts}
-              </span>
-            </div>
-            <div className="font-semibold py-2 ml-4">
-              Comments :
-              <span className="font-normal pl-1">
-                {profile.stats.totalComments}
-              </span>
-            </div>
-            <div className="font-semibold py-2 ml-4">
-              Collects :
-              <span className="font-normal pl-1">
-                {profile.stats.totalCollects}
-              </span>
-            </div>
-            <div className="font-semibold py-2 ml-4">
-              Mirrors :
-              <span className="font-normal pl-1">
-                {profile.stats.totalMirrors}
-              </span>
-            </div>
+            <NavSelect select={(res) => setNavSelect(res)} profile={profile} />
+            <div className="sm:w-1/6"></div>
           </div>
         </div>
+        {navSelect === "NFTS" && <GetUserNfts ownedBy={profile.ownedBy} />}
+        {(navSelect === "POST" ||
+          navSelect === "COMMENT" ||
+          navSelect === "MIRROR") && (
+          <GetPublications profileId={profile.id} filter={navSelect} />
+        )}
 
         {/* <UserTimeline profileId={profile.id} /> */}
-        <GetPublications profileId={profile.id} />
       </div>
     </div>
   );

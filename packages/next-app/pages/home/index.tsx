@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import Head from "next/head";
 import {
