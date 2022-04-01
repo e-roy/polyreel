@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const GET_PROFILES = gql`
   query ($request: ProfileQueryRequest!) {
     profiles(request: $request) {
@@ -19,8 +21,7 @@ export const GET_PROFILES = gql`
           }
           ... on MediaSet {
             original {
-              url
-              mimeType
+              ...MediaFieldsFragment
             }
           }
           __typename
@@ -35,8 +36,7 @@ export const GET_PROFILES = gql`
           }
           ... on MediaSet {
             original {
-              url
-              mimeType
+              ...MediaFieldsFragment
             }
           }
           __typename
@@ -79,4 +79,5 @@ export const GET_PROFILES = gql`
       }
     }
   }
+  ${MediaFieldsFragment}
 `;

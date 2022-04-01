@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { CREATE_MIRROR_TYPED_DATA } from "@/queries/publications/mirror";
 
+import { Loading } from "@/components/elements";
+
 const profileRequest = [
   {
     profileId: "0x032f1a",
@@ -20,7 +22,7 @@ export const Mirror = () => {
     },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
   console.log(data);
   return (

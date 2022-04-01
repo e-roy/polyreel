@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client/core";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const GET_FOLLOWING = gql`
   query ($request: FollowingRequest!) {
     following(request: $request) {
@@ -21,22 +23,7 @@ export const GET_FOLLOWING = gql`
             }
             ... on MediaSet {
               original {
-                url
-                width
-                height
-                mimeType
-              }
-              medium {
-                url
-                width
-                height
-                mimeType
-              }
-              small {
-                url
-                width
-                height
-                mimeType
+                ...MediaFieldsFragment
               }
             }
           }
@@ -49,22 +36,7 @@ export const GET_FOLLOWING = gql`
             }
             ... on MediaSet {
               original {
-                url
-                width
-                height
-                mimeType
-              }
-              small {
-                width
-                url
-                height
-                mimeType
-              }
-              medium {
-                url
-                width
-                height
-                mimeType
+                ...MediaFieldsFragment
               }
             }
           }
@@ -107,4 +79,5 @@ export const GET_FOLLOWING = gql`
       }
     }
   }
+  ${MediaFieldsFragment}
 `;
