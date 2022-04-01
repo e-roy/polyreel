@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const RECOMMENDED_PROFILES = gql`
   query {
     recommendedProfiles {
@@ -18,22 +20,7 @@ export const RECOMMENDED_PROFILES = gql`
         }
         ... on MediaSet {
           original {
-            url
-            width
-            height
-            mimeType
-          }
-          small {
-            url
-            width
-            height
-            mimeType
-          }
-          medium {
-            url
-            width
-            height
-            mimeType
+            ...MediaFieldsFragment
           }
         }
         __typename
@@ -48,22 +35,7 @@ export const RECOMMENDED_PROFILES = gql`
         }
         ... on MediaSet {
           original {
-            url
-            width
-            height
-            mimeType
-          }
-          small {
-            height
-            width
-            url
-            mimeType
-          }
-          medium {
-            url
-            width
-            height
-            mimeType
+            ...MediaFieldsFragment
           }
         }
         __typename
@@ -76,11 +48,6 @@ export const RECOMMENDED_PROFILES = gql`
       stats {
         totalFollowers
         totalFollowing
-        totalPosts
-        totalComments
-        totalMirrors
-        totalPublications
-        totalCollects
       }
       followModule {
         ... on FeeFollowModuleSettings {
@@ -100,4 +67,5 @@ export const RECOMMENDED_PROFILES = gql`
       }
     }
   }
+  ${MediaFieldsFragment}
 `;

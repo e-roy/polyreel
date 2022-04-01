@@ -17,7 +17,7 @@ const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
 
 export const CreatePost = () => {
   const { currentUser } = useContext(UserContext);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const [description, setDescription] = useState("");
@@ -97,6 +97,9 @@ export const CreatePost = () => {
       content,
     });
     // console.log(result);
+    setContent("");
+    setIsModalOpen(!isModalOpen);
+
     createPostTypedData({
       variables: {
         request: {
@@ -111,7 +114,7 @@ export const CreatePost = () => {
         },
       },
     });
-    setOpen(!open);
+    // setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -134,11 +137,9 @@ export const CreatePost = () => {
               <Dialog.Title className="text-lg font-medium text-gray-900">
                 Create Post
               </Dialog.Title>
-              <div className="flex relative mt-6 flex-1">
-                <div>
-                  <Avatar profile={currentUser} size={"small"} />
-                </div>
-                <div className="w-full ml-4">
+              <div className="flex mt-6">
+                <Avatar profile={currentUser} size={"small"} />
+                <div className="w-full pl-4">
                   <textarea
                     rows={8}
                     className="p-2 block w-full sm:text-sm resize-none focus-none border border-stone-400  rounded-lg"
@@ -150,7 +151,7 @@ export const CreatePost = () => {
                   />
                 </div>
               </div>
-              <div className="my-4 flex justify-between px-4 sm:px-6">
+              <div className="my-4 flex justify-between">
                 <div></div>
                 <div className="w-30">
                   <Button onClick={() => handlePost()}> post</Button>

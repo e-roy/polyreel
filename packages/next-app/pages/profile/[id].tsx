@@ -17,7 +17,7 @@ import {
   NavSelect,
 } from "@/components/profile";
 
-import { Avatar } from "@/components/elements";
+import { Avatar, Loading } from "@/components/elements";
 
 import { GetUserNfts } from "@/components/lens/nfts";
 
@@ -37,7 +37,7 @@ const ProfilePage: NextPage = () => {
     },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
   let profile = data.profiles.items[0];
@@ -112,6 +112,7 @@ const ProfilePage: NextPage = () => {
           </div>
         </div>
         <div className="px-2 text-sm sm:text-base text-stone-800">
+          {/* {profile.id} */}
           <div className="font-semibold">
             <Linkify tagName="div" options={linkifyOptions}>
               Bio :

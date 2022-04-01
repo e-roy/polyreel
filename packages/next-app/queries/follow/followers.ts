@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client/core";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const GET_FOLLOWERS = gql`
   query ($request: FollowersRequest!) {
     followers(request: $request) {
@@ -23,8 +25,7 @@ export const GET_FOLLOWERS = gql`
               }
               ... on MediaSet {
                 original {
-                  url
-                  mimeType
+                  ...MediaFieldsFragment
                 }
               }
             }
@@ -37,8 +38,7 @@ export const GET_FOLLOWERS = gql`
               }
               ... on MediaSet {
                 original {
-                  url
-                  mimeType
+                  ...MediaFieldsFragment
                 }
               }
             }
@@ -83,4 +83,5 @@ export const GET_FOLLOWERS = gql`
       }
     }
   }
+  ${MediaFieldsFragment}
 `;

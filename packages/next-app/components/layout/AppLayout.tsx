@@ -9,6 +9,8 @@ import { UserContext, Header } from "@/components/layout";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 
+import { Loading } from "@/components/elements";
+
 type AppLayoutProps = {
   children: React.ReactNode;
 };
@@ -68,8 +70,8 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     refechProfiles: refetch,
   };
 
-  if (userProfilesLoading) return <p>Loading...</p>;
-  if (currentProfileLoading) return <p>Loading...</p>;
+  if (userProfilesLoading) return <Loading />;
+  if (currentProfileLoading) return <Loading />;
 
   if (router.pathname === "/home" && !currentProfileData) {
     router.push("/select-profile");

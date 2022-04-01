@@ -8,6 +8,8 @@ import { GET_PUBLICATION } from "@/queries/publications/get-publication";
 import { Post } from "@/components/post";
 import { CommentCard } from "@/components/comment";
 
+import { Loading } from "@/components/elements";
+
 const PostPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -19,7 +21,7 @@ const PostPage: NextPage = () => {
     },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
   return (

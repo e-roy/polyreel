@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USERS_NFTS } from "@/queries/nfts/get-users-nfts";
 
+import { Loading } from "@/components/elements";
+
 type GetUserNftsProps = {
   ownedBy?: string;
 };
@@ -13,7 +15,7 @@ export const GetUserNfts = ({ ownedBy }: GetUserNftsProps) => {
     },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
   return (

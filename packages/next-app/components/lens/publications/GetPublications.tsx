@@ -5,6 +5,8 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import { Post } from "@/components/post";
 
+import { Loading } from "@/components/elements";
+
 interface GetPublicationsProps {
   profileId: string;
   filter: "POST" | "COMMENT" | "MIRROR";
@@ -49,7 +51,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
     rootMargin: "0px 0px 400px 0px",
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
   return (

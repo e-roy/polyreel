@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { HAS_COLLECTED } from "@/queries/publications/has-collected-publication";
+import { Loading } from "@/components/elements";
 
 export const HasCollectedPublication = () => {
   const { loading, error, data } = useQuery(HAS_COLLECTED, {
@@ -12,7 +13,7 @@ export const HasCollectedPublication = () => {
     },
   });
   console.log(error);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
   console.log(data);
   return (

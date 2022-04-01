@@ -13,6 +13,8 @@ import { omit } from "@/lib/helpers";
 
 import LENS_ABI from "@/abis/Lens.json";
 
+import { Loading } from "@/components/elements";
+
 // import { PublicationCard } from "@/components/cards";
 
 export type UserTimelineProps = {
@@ -30,7 +32,7 @@ export const UserTimeline = ({ profileId }: UserTimelineProps) => {
     },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
   // console.log(data);
   return (
