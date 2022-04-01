@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client/core";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const GET_PUBLICATION = gql`
   query ($request: PublicationQueryRequest!) {
     publication(request: $request) {
@@ -14,11 +16,6 @@ export const GET_PUBLICATION = gql`
         ...MirrorFields
       }
     }
-  }
-
-  fragment MediaFields on Media {
-    url
-    mimeType
   }
 
   fragment ProfileFields on Profile {
@@ -38,7 +35,7 @@ export const GET_PUBLICATION = gql`
       }
       ... on MediaSet {
         original {
-          ...MediaFields
+          ...MediaFieldsFragment
         }
       }
     }
@@ -51,7 +48,7 @@ export const GET_PUBLICATION = gql`
       }
       ... on MediaSet {
         original {
-          ...MediaFields
+          ...MediaFieldsFragment
         }
       }
     }
@@ -97,7 +94,7 @@ export const GET_PUBLICATION = gql`
     content
     media {
       original {
-        ...MediaFields
+        ...MediaFieldsFragment
       }
     }
     attributes {
@@ -284,4 +281,5 @@ export const GET_PUBLICATION = gql`
       }
     }
   }
+  ${MediaFieldsFragment}
 `;
