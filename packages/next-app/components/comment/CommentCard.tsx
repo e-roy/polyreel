@@ -14,9 +14,10 @@ import { Button, Avatar } from "@/components/elements";
 
 type CommentCardProps = {
   publicationId: string;
+  onClose: () => void;
 };
 
-export const CommentCard = ({ publicationId }: CommentCardProps) => {
+export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   const { currentUser } = useContext(UserContext);
   //   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -74,8 +75,8 @@ export const CommentCard = ({ publicationId }: CommentCardProps) => {
           };
           write({ args: postARGS }).then((res) => {
             if (!res.error) {
-              console.log(res.data);
-
+              // console.log(res.data);
+              onClose();
               // reset form  and other closing actions
             } else {
               console.log(res.error);
@@ -119,7 +120,7 @@ export const CommentCard = ({ publicationId }: CommentCardProps) => {
     <div className="my-4">
       <div className="border rounded-lg border-stone-300 p-2 shadow-lg">
         <div className="flex relative mt-6 flex-1 px-4 sm:px-6">
-          <Avatar profile={currentUser} size={"medium"} />
+          <Avatar profile={currentUser} size={"small"} />
           <div className="w-full ml-4">
             <textarea
               rows={8}

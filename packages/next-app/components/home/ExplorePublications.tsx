@@ -42,19 +42,15 @@ export const ExplorePublications = () => {
   if (!data) return null;
   // console.log(data);
   return (
-    <div className="">
-      <div className="p-2">
-        {data.explorePublications &&
-          data.explorePublications.items &&
-          data.explorePublications.items.map((item: any, index: number) => (
-            <div key={index} className="">
-              <div className="p-4 border-b border-stone-300">
-                <Post publication={item} />
-              </div>
-            </div>
-          ))}
-        {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
-      </div>
+    <div className="p-2">
+      {data.explorePublications &&
+        data.explorePublications.items &&
+        data.explorePublications.items.map((item: any, index: number) => (
+          <div key={index} className="p-4 border-b border-stone-300">
+            <Post publication={item} postType="feed" />
+          </div>
+        ))}
+      {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
     </div>
   );
 };
