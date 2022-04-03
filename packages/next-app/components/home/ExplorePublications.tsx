@@ -43,6 +43,10 @@ export const ExplorePublications = () => {
   // console.log(data);
   return (
     <div className="p-2">
+      <div className="text-stone-700 font-medium text-lg text-center">
+        Explore
+      </div>
+
       {data.explorePublications &&
         data.explorePublications.items &&
         data.explorePublications.items.map((item: any, index: number) => (

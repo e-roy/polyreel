@@ -8,11 +8,13 @@ import {
   SearchProfiles,
   UserTimeline,
 } from "@/components/home";
+import { Notifications } from "@/components/user";
 
-import { SearchIcon } from "@heroicons/react/outline";
+import { SearchIcon, HomeIcon, BellIcon } from "@heroicons/react/outline";
 
 const Home: NextPage = () => {
   const [search, setSearch] = useState("");
+  const [sideNav, setSideNav] = useState("home");
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -25,12 +27,33 @@ const Home: NextPage = () => {
         <div className="flex-1 w-full overflow-y-hidden ">
           {/* 3 column wrapper */}
           <div className="flex xl:px-8 2xl:px-32 h-9/10">
-            <div className="w-0 xl:w-1/4 ">{/* Left Column */}</div>
+            <div className="lg:w-16 xl:w-1/4 ">
+              <aside className="flex flex-col items-center bg-white text-gray-700 shadow h-full">
+                <div className="h-16 flex items-center w-full"></div>
+
+                <ul>
+                  <li
+                    onClick={() => setSideNav("home")}
+                    className="hover:bg-stone-500 text-stone-700 hover:text-stone-100  p-2 rounded cursor-pointer"
+                  >
+                    <HomeIcon className="text-3xl h-8 w-8 mx-auto" />
+                  </li>
+
+                  <li
+                    onClick={() => setSideNav("notifications")}
+                    className="hover:bg-stone-500 text-stone-700 hover:text-stone-100  p-2 rounded cursor-pointer"
+                  >
+                    <BellIcon className="text-3xl h-8 w-8 mx-auto" />
+                  </li>
+                </ul>
+              </aside>
+              {/* Left Column */}
+            </div>
 
             <div className="w-full mx-2 lg:w-2/3 xl:w-1/2  min-h-9/10">
               <div className="lg:px-8 h-9/10 overflow-y-scroll border border-stone-300 rounded-xl shadow-lg">
-                <ExplorePublications />
-                {/* <UserTimeline /> */}
+                {sideNav === "home" && <ExplorePublications />}
+                {sideNav === "notifications" && <Notifications />}
               </div>
             </div>
 
