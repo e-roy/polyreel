@@ -5,6 +5,7 @@ import { MediaFieldsFragment } from "./MediaFieldsFragment";
 export const PostProfileFragment = gql`
   fragment PostProfileFragment on Profile {
     id
+    bio
     name
     handle
     picture {

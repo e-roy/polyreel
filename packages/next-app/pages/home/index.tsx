@@ -1,13 +1,18 @@
 import type { NextPage } from "next";
+import { useState } from "react";
 import Head from "next/head";
 import {
   ExplorePublications,
   CreatePost,
   RecommendedProfiles,
+  SearchProfiles,
   UserTimeline,
 } from "@/components/home";
 
+import { SearchIcon } from "@heroicons/react/outline";
+
 const Home: NextPage = () => {
+  const [search, setSearch] = useState("");
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -30,8 +35,21 @@ const Home: NextPage = () => {
             </div>
 
             <div className="hidden md:block md:w-1/3 xl:w-1/4  xl:pr-0">
-              <div className="overflow-y-scroll h-3/4 px-4 border border-stone-300 rounded-xl mt-8 mx-4 shadow-lg">
-                <RecommendedProfiles />
+              <div className="flex border rounded-xl mx-4 shadow-lg">
+                <SearchIcon className="text-3xl text-stone-500 h-6 w-6 my-auto ml-4" />
+                <input
+                  className="w-full p-2 rounded-xl outline-none"
+                  placeholder="Search Profiles"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              <div className="overflow-y-scroll h-3/4 px-4 border border-stone-300 rounded-xl mt-4 mx-4 shadow-lg">
+                {search ? (
+                  <SearchProfiles search={search} />
+                ) : (
+                  <RecommendedProfiles />
+                )}
               </div>
             </div>
           </div>

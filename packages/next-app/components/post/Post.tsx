@@ -48,37 +48,37 @@ export const Post = ({ publication, postType }: PostProps) => {
 
       {publication.__typename === "Comment" && postType === "feed" && (
         <>
-          {publication.commentOn.id === publication.mainPost.id && (
-            <div className="">
-              <div className="mb-4">
-                {publication.mainPost.profile && (
-                  <div>
-                    <Link href={`/post/${publication.mainPost.id}`}>
-                      <div className="mb-4 ml-6 font-semibold text-stone-500 cursor-pointer">
-                        @{publication.profile.handle} Commented on @
-                        {publication.mainPost.profile.handle}
-                      </div>
-                    </Link>
-                  </div>
-                )}
-                {publication.mainPost && (
-                  <>
-                    <Link href={`/post/${publication.mainPost.id}`}>
-                      <div className="cursor-pointer">
-                        <PostBody publication={publication.mainPost} />
-                      </div>
-                    </Link>
-                    <Stats publication={publication.mainPost} />
-                  </>
-                )}
-              </div>
-              <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
-              <div className="p-4 border rounded-lg shadow-md">
-                <PostBody publication={publication} />
-                <Stats publication={publication} />
-              </div>
+          {/* {publication.commentOn.id === publication.mainPost.id && ( */}
+          <div className="">
+            <div className="mb-4">
+              {publication.mainPost.profile && (
+                <div>
+                  <Link href={`/post/${publication.mainPost.id}`}>
+                    <div className="mb-4 ml-6 font-semibold text-stone-500 cursor-pointer">
+                      @{publication.profile.handle} Commented on @
+                      {publication.mainPost.profile.handle}
+                    </div>
+                  </Link>
+                </div>
+              )}
+              {publication.mainPost && (
+                <>
+                  <Link href={`/post/${publication.mainPost.id}`}>
+                    <div className="cursor-pointer">
+                      <PostBody publication={publication.mainPost} />
+                    </div>
+                  </Link>
+                  <Stats publication={publication.mainPost} />
+                </>
+              )}
             </div>
-          )}
+            <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
+            <div className="p-4 border rounded-lg shadow-md">
+              <PostBody publication={publication} />
+              <Stats publication={publication} />
+            </div>
+          </div>
+          {/* )} */}
         </>
       )}
 

@@ -46,8 +46,18 @@ export const ExplorePublications = () => {
       {data.explorePublications &&
         data.explorePublications.items &&
         data.explorePublications.items.map((item: any, index: number) => (
-          <div key={index} className="p-4 border-b border-stone-300">
-            <Post publication={item} postType="feed" />
+          <div key={index}>
+            {item.__typename === "Comment" &&
+              item.commentOn.id === item.mainPost.id && (
+                <div key={index} className="p-4 border-b border-stone-300">
+                  <Post publication={item} postType="feed" />
+                </div>
+              )}
+            {item.__typename !== "Comment" && (
+              <div key={index} className="p-4 border-b border-stone-300">
+                <Post publication={item} postType="feed" />
+              </div>
+            )}
           </div>
         ))}
       {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
