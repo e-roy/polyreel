@@ -39,7 +39,7 @@ const SelectProfile: NextPage = () => {
         </div>
       </div>
       <div className="h-screen flex items-center justify-center text-stone-700">
-        <div className="flex flex-col rounded-lg shadow-lg w-1/2 p-10 bg-white">
+        <div className="flex flex-col rounded-lg shadow-lg w-full mx-2 md:w-1/2 p-8 bg-white">
           <div className="flex justify-center"></div>
 
           <div>
