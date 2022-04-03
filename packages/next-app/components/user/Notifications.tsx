@@ -10,7 +10,6 @@ import { NotificationCard } from "./";
 
 export const Notifications = () => {
   const { currentUser } = useContext(UserContext);
-  console.log(currentUser);
   if (!currentUser) return <Loading />;
   const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
     variables: {

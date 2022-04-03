@@ -8,7 +8,6 @@ type NotificationCardProps = {
 };
 
 export const NotificationCard = ({ item }: NotificationCardProps) => {
-  console.log(item);
   if (!item) return null;
 
   if (item.__typename === "NewCommentNotification") {
