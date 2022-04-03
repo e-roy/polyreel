@@ -71,7 +71,7 @@ export const apolloClient = () => {
             explorePublications: lensPagination(["request", ["sortCriteria"]]),
             publications: lensPagination([
               "request",
-              ["profileId", "publicationTypes"],
+              ["profileId", "publicationTypes", "commentsOf"],
             ]),
             followers: lensPagination(["request", ["profileId"]]),
             following: lensPagination(["request", ["address"]]),

@@ -61,7 +61,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
           <div key={index} className="w-full sm:w-1/3 space-2">
             <div className="m-2 p-2 border border-stone-400 shadow-lg rounded">
               <div className="">
-                <Post publication={publication} />
+                <Post publication={publication} postType="profile" />
               </div>
             </div>
           </div>

@@ -5,8 +5,7 @@ import Head from "next/head";
 import { useQuery } from "@apollo/client";
 import { GET_PUBLICATION } from "@/queries/publications/get-publication";
 
-import { Post } from "@/components/post";
-import { CommentCard } from "@/components/comment";
+import { Post, PostComments } from "@/components/post";
 
 import { Loading } from "@/components/elements";
 
@@ -23,9 +22,10 @@ const PostPage: NextPage = () => {
 
   if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
+  // console.log(data);
 
   return (
-    <div className="flex flex-1 justify-center h-screen ">
+    <div className="flex flex-1 justify-center h-screen">
       <Head>
         <title>polyreel</title>
         <meta name="description" content="polyreel" />
@@ -33,9 +33,8 @@ const PostPage: NextPage = () => {
       </Head>
 
       <div className="w-full sm:w-3/4 xl:w-1/2">
-        <Post publication={data.publication} />
-        <div className="ml-10 my-2 w-0.5 h-8 bg-gray-400" />
-        <CommentCard publicationId={id as string} />
+        <Post publication={data.publication} postType="page" />
+        <PostComments postId={id as string} />
       </div>
     </div>
   );

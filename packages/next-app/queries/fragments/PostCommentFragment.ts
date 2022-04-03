@@ -27,6 +27,39 @@ export const PostCommentFragment = gql`
       ... on Post {
         ...PostPostFragment
       }
+      ... on Mirror {
+        id
+        metadata {
+          name
+          description
+          content
+          image
+          media {
+            original {
+              url
+              width
+              height
+              size
+              mimeType
+            }
+          }
+        }
+        profile {
+          id
+          handle
+          picture {
+            ... on MediaSet {
+              original {
+                url
+                width
+                height
+                size
+                mimeType
+              }
+            }
+          }
+        }
+      }
     }
     commentOn {
       ... on Post {
