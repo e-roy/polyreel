@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client/core";
 
+import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+
 export const GET_NOTIFICATIONS = gql`
   query ($request: NotificationRequest!) {
     notifications(request: $request) {
@@ -95,6 +97,11 @@ export const GET_NOTIFICATIONS = gql`
     handle
     picture {
       ...ProfileMediaFields
+      ... on MediaSet {
+        original {
+          ...MediaFieldsFragment
+        }
+      }
     }
   }
   fragment CompactPublicationStats on PublicationStats {
@@ -191,4 +198,5 @@ export const GET_NOTIFICATIONS = gql`
       ...CompactProfile
     }
   }
+  ${MediaFieldsFragment}
 `;

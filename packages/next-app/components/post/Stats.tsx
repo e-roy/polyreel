@@ -17,6 +17,7 @@ type StatsProps = {
 export const Stats = ({ publication }: StatsProps) => {
   const [showComment, setShowComment] = useState(false);
   const { stats } = publication;
+
   if (!publication.stats) return null;
 
   return (

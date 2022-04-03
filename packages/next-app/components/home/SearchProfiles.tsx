@@ -6,7 +6,7 @@ import { RecommendCard } from "@/components/cards";
 
 import { Loading } from "@/components/elements";
 
-type SearchProfilesProps = {
+export type SearchProfilesProps = {
   search?: string;
 };
 
