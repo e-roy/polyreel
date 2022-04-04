@@ -16,31 +16,35 @@ export const Post = ({ publication, postType }: PostProps) => {
     <div className="">
       {publication.__typename === "Post" && (
         <>
-          <Link href={`/post/${publication.id}`}>
-            <div className="cursor-pointer">
-              <PostBody publication={publication} />
-            </div>
-          </Link>
+          {/* <Link href={`/post/${publication.id}`}> */}
+          <div className="">
+            <PostBody publication={publication} />
+          </div>
+          {/* </Link> */}
           <Stats publication={publication} />
         </>
       )}
 
       {publication.__typename === "Mirror" && (
         <div>
-          <Link href={`/profile/${publication.mirrorOf.profile.handle}`}>
-            <div className="cursor-pointer">
-              {publication.mirrorOf.profile.handle && (
-                <div className="mb-4 ml-6 font-semibold text-stone-500 cursor-pointer hover:text-stone-900">
-                  mirrored from{" "}
-                  <span className="text-stone-700">
-                    @{publication.mirrorOf.profile.handle}
-                  </span>
-                </div>
-              )}
+          {/* <Link href={`/profile/${publication.mirrorOf.profile.handle}`}> */}
+          <div className="cursor-pointer">
+            {publication.mirrorOf.profile.handle && (
+              <>
+                <Link href={`/profile/${publication.mirrorOf.profile.handle}`}>
+                  <div className="mb-4 ml-6 font-semibold text-stone-500 cursor-pointer hover:text-stone-900">
+                    mirrored from{" "}
+                    <span className="text-stone-700">
+                      @{publication.mirrorOf.profile.handle}
+                    </span>
+                  </div>
+                </Link>
+              </>
+            )}
 
-              <PostBody publication={publication} />
-            </div>
-          </Link>
+            <PostBody publication={publication} />
+          </div>
+          {/* </Link> */}
 
           <Stats publication={publication} />
         </div>
