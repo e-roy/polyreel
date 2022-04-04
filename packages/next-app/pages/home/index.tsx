@@ -27,7 +27,7 @@ const Home: NextPage = () => {
         <div className="flex-1 w-full overflow-y-hidden ">
           {/* 3 column wrapper */}
           <div className="flex xl:px-8 2xl:px-32 h-9/10">
-            <div className="lg:w-16 xl:w-1/4 ">
+            <div className="lg:w-16 xl:w-1/4 hidden sm:block">
               <aside className="flex flex-col w-16 bg-white text-gray-700 shadow h-full">
                 <div className="h-16 flex items-center w-full"></div>
 

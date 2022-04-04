@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "@/components/layout";
 import { Dialog } from "@headlessui/react";
-import { Button } from "@/components/elements";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_POST_TYPED_DATA } from "@/queries/publications/create-post";
@@ -10,15 +9,30 @@ import { uploadIpfs } from "@/lib/ipfs/ipfs";
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
-import { Modal, Avatar } from "@/components/elements";
+import {
+  Button,
+  Modal,
+  Avatar,
+  AddEmoji,
+  AddGif,
+  AddPhoto,
+} from "@/components/elements";
+
+import { EmojiIcon, GifIcon } from "@/icons";
+import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 
 import LENS_ABI from "@/abis/Lens.json";
 const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
 
 export const CreatePost = () => {
   const { currentUser } = useContext(UserContext);
-  // const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
+  const [isGifOpen, setIsGifOpen] = useState(false);
+  const [isPhotoOpen, setIsPhotoOpen] = useState(false);
+
+  const [selectedPicture, setSelectedPicture] = useState(null);
 
   // const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -91,13 +105,25 @@ export const CreatePost = () => {
   );
 
   const handlePost = async () => {
-    const result = await uploadIpfs({
+    let media = [] as any[];
+    if (selectedPicture) {
+      media = [
+        {
+          item: selectedPicture,
+          type: "image/gif",
+        },
+      ];
+    }
+    const payload = {
       name: "Post from @" + currentUser?.handle,
-      description: content,
+      description: "",
       content,
-    });
+      media: media,
+    };
+    const result = await uploadIpfs({ payload });
     // console.log(result);
     setContent("");
+    setSelectedPicture(null);
     setIsModalOpen(!isModalOpen);
 
     createPostTypedData({
@@ -114,7 +140,7 @@ export const CreatePost = () => {
         },
       },
     });
-    // setIsModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -132,29 +158,93 @@ export const CreatePost = () => {
             setIsModalOpen(false);
           }}
         >
-          <div className="bg-white p-4">
-            <div className=" items-start justify-between">
-              <Dialog.Title className="text-lg font-medium text-gray-900">
+          <div className="bg-white p-4 w-full">
+            <div className="items-start justify-between">
+              <Dialog.Title className="text-lg font-bold text-stone-600">
                 Create Post
               </Dialog.Title>
-              <div className="flex mt-6">
-                <Avatar profile={currentUser} size={"small"} />
-                <div className="w-full pl-4">
-                  <textarea
-                    rows={8}
-                    className="p-2 block w-full sm:text-sm resize-none focus-none border border-stone-400  rounded-lg"
-                    placeholder=""
-                    value={content}
-                    onChange={(e) => {
-                      setContent(e.target.value);
-                    }}
-                  />
+              <div className="max-h-screen overflow-y-scroll">
+                <div className="flex mt-6">
+                  <Avatar profile={currentUser} size={"small"} />
+                  <div className="w-full sm:ml-4 border border-stone-400 rounded-lg p-2">
+                    <textarea
+                      rows={6}
+                      className="block w-full sm:text-sm resize-none focus-none outline-none"
+                      placeholder=""
+                      value={content}
+                      onChange={(e) => {
+                        setContent(e.target.value);
+                      }}
+                    />
+                    <div className="mx-auto">
+                      {selectedPicture && (
+                        <div className="flex">
+                          <img
+                            src={selectedPicture}
+                            className="w-auto max-h-60 mx-auto"
+                            alt="selected gif"
+                          />
+                          <XCircleIcon
+                            onClick={() => setSelectedPicture(null)}
+                            className="h-6 w-6 text-stone-500 hover:text-stone-700 cursor-pointer"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="my-4 flex justify-between">
-                <div></div>
-                <div className="w-30">
-                  <Button onClick={() => handlePost()}> post</Button>
+                <div className="my-4 flex justify-between">
+                  <div className="flex ml-12">
+                    <div
+                      onClick={() => {
+                        setIsEmojiOpen(!isEmojiOpen);
+                        setIsGifOpen(false);
+                        setIsPhotoOpen(false);
+                      }}
+                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                    >
+                      <EmojiIcon />
+                    </div>
+                    <div
+                      onClick={() => {
+                        setIsGifOpen(!isGifOpen);
+                        setIsPhotoOpen(false);
+                        setIsEmojiOpen(false);
+                      }}
+                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                    >
+                      <GifIcon />
+                    </div>
+                    <div
+                      onClick={() => {
+                        setIsPhotoOpen(!isPhotoOpen);
+                        setIsGifOpen(false);
+                        setIsEmojiOpen(false);
+                      }}
+                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                    >
+                      <PhotographIcon className="text-3xl h-8 w-8 mx-auto " />
+                    </div>
+                  </div>
+                  <div className="w-30">
+                    <Button onClick={() => handlePost()}> post</Button>
+                  </div>
+                </div>
+                <div className="">
+                  {isEmojiOpen ? (
+                    <AddEmoji
+                      onSelect={(emoji) => {
+                        setIsEmojiOpen(!isEmojiOpen);
+                        setContent(content + emoji);
+                      }}
+                    />
+                  ) : null}
+                  {isGifOpen && (
+                    <AddGif onSelect={(gif) => setSelectedPicture(gif)} />
+                  )}
+                  {isPhotoOpen && (
+                    <AddPhoto onSelect={(photo) => console.log(photo)} />
+                  )}
                 </div>
               </div>
             </div>

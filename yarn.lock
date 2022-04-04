@@ -592,6 +592,29 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
+"@giphy/js-fetch-api@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@giphy/js-fetch-api/-/js-fetch-api-4.1.2.tgz#0c4a975567efa6591fd47d04d5d7f7012a2c527f"
+  integrity sha512-wDfDQu8HiVkLb+YXcZf8QFbznmMHWbg86ZBydYmnp2mfuHyaHKsz9n9PnxdH3RorMS9YM/Ca/zqAM5y89Qj+Hw==
+  dependencies:
+    "@giphy/js-types" "^4.1.0"
+    "@giphy/js-util" "^4.0.1"
+    qs "^6.9.4"
+
+"@giphy/js-types@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@giphy/js-types/-/js-types-4.1.0.tgz#987b184bf848c81092ba61ab10895096eefa78de"
+  integrity sha512-+qSN4Mx4TmrjLQm4SC0I/ZBkb5eWM94sljXwfjIlqn0GMSR3geqEqwmE9Uf/ldgzFh+XMMCasQjIdUl2nWc++Q==
+
+"@giphy/js-util@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@giphy/js-util/-/js-util-4.0.1.tgz#dc1987465cf69267a1aa92ae027c7de3d3dab3b2"
+  integrity sha512-46wXgt5Y+MxZjuzjE6JlvMLE+6Vlag+PYxbyTxpsunhmOKNoYK99d51E09iynmXTFuZWYgWJR9LcfnzqsWHy+Q==
+  dependencies:
+    "@giphy/js-types" "^4.1.0"
+    dompurify "^2.2.2"
+    uuid "^8.3.0"
+
 "@graphql-typed-document-node/core@^3.0.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
@@ -1887,6 +1910,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+dompurify@^2.2.2:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.3.6.tgz#2e019d7d7617aacac07cbbe3d88ae3ad354cf875"
+  integrity sha512-OFP2u/3T1R5CEgWCEONuJ1a5+MFKnOYpkywpUSxv/dj1LeBT1erK+JwM7zK0ROy2BRhqVCf0LRw/kHqKuMkVGg==
+
 eip1193-provider@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/eip1193-provider/-/eip1193-provider-1.0.1.tgz#420d29cf4f6c443e3f32e718fb16fafb250637c3"
@@ -1918,6 +1946,11 @@ elliptic@6.5.4, elliptic@^6.5.2, elliptic@^6.5.4:
     inherits "^2.0.4"
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
+
+emoji-picker-react@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/emoji-picker-react/-/emoji-picker-react-3.5.1.tgz#dbb4cda675a58dc86624d2fc488f75c2f4fc377d"
+  integrity sha512-cuSthFAvUO8Q1N7KJPEgZ7N0JNIWPKgN5GUmKe71UlSD4qFYI/p05RT9nohlWOq6YSFhEy2mI/60zBZiaku4mg==
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -3864,6 +3897,13 @@ qrcode@1.4.4:
     pngjs "^3.3.0"
     yargs "^13.2.4"
 
+qs@^6.9.4:
+  version "6.10.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
+  integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
+  dependencies:
+    side-channel "^1.0.4"
+
 query-string@6.13.5:
   version "6.13.5"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.13.5.tgz#99e95e2fb7021db90a6f373f990c0c814b3812d8"
@@ -4497,7 +4537,7 @@ util-deprecate@^1.0.1, util-deprecate@^1.0.2:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-uuid@^8.3.2:
+uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==

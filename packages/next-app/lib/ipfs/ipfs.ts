@@ -7,8 +7,17 @@ const client = create({
   protocol: "https",
 });
 
-export const uploadIpfs = async (payload: any) => {
-  console.log("ipfs upload payload", payload);
+type uploadIpfsProps = {
+  payload: {
+    name: string;
+    description: string;
+    content: string;
+    media: any[];
+  };
+};
+
+export const uploadIpfs = async ({ payload }: uploadIpfsProps) => {
+  // console.log("ipfs upload payload", payload);
   const result = await client.add(
     JSON.stringify({
       version: "1.0.0",
@@ -20,12 +29,7 @@ export const uploadIpfs = async (payload: any) => {
       imageMimeType: null,
       name: payload.name,
       attributes: [],
-      media: [
-        // {
-        //   item: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Gfp-far-landscape-view.jpg",
-        //   type: "image/jpeg",
-        // },
-      ],
+      media: payload.media || [],
       appId: "polyreel.xyz",
     })
   );

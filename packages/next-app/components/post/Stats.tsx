@@ -24,10 +24,14 @@ export const Stats = ({ publication }: StatsProps) => {
     <>
       <div
         className="flex text-stone-700 mt-4 cursor-pointer"
-        onClick={() => setShowComment(!showComment)}
+        // onClick={() => setShowComment(!showComment)}
       >
         {stats.totalAmountOfComments}
-        <ChatAlt2Icon className="h-6 w-6 ml-2" aria-hidden="true" />
+        <ChatAlt2Icon
+          onClick={() => setShowComment(!showComment)}
+          className="h-6 w-6 ml-2"
+          aria-hidden="true"
+        />
         <Mirror publication={publication} />
         {/* <Collect publication={publication} /> */}
       </div>

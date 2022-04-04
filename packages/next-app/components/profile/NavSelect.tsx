@@ -30,7 +30,7 @@ export const NavSelect = ({ select, profile }: NavSelectProps) => {
           {profile.stats.totalComments}
         </span>
       </div>
-      <div
+      {/* <div
         onClick={() => select("COLLECT")}
         className="flex py-2 px-4 border border-stone-400 text-stone-700 hover:bg-stone-400 cursor-pointer"
       >
@@ -38,7 +38,7 @@ export const NavSelect = ({ select, profile }: NavSelectProps) => {
         <span className="pl-1 font-semibold">
           {profile.stats.totalCollects}
         </span>
-      </div>
+      </div> */}
       <div
         onClick={() => select("MIRROR")}
         className="flex py-2 px-4 border border-stone-400 text-stone-700 hover:bg-stone-400 cursor-pointer"

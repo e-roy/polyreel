@@ -30,36 +30,37 @@ export const PostBody = ({ publication }: any) => {
       </div>
       {publication.metadata && (
         <Linkify tagName="div" options={linkifyOptions}>
-          <div className="overflow-hidden my-2 linkify line-clamp-4">
+          {/* <div className="overflow-hidden my-2 linkify line-clamp-4">
             {publication.metadata.description}
           </div>
           {publication.metadata.description !==
-            publication.metadata.content && (
-            <div className="overflow-hidden my-2 linkify line-clamp-4">
-              {publication.metadata.content}
-            </div>
-          )}
+            publication.metadata.content && ( */}
+          <div className="overflow-hidden my-2 linkify line-clamp-4">
+            {publication.metadata.content}
+          </div>
+          {/* )} */}
         </Linkify>
       )}
-
-      <div>
-        {publication.metadata && publication.metadata.media && (
-          <div className="flex flex-wrap">
-            {publication.metadata.media.map((media: any, index: number) => (
-              <div key={index}>
-                {media.original.url &&
-                  media.original.mimeType !== "video/mp4" && (
-                    <Image media={media.original} />
-                  )}
-                {media.original.url &&
-                  media.original.mimeType === "video/mp4" && (
-                    <VideoPlayer media={media.original} />
-                  )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <Link href={`/post/${publication.id}`}>
+        <div>
+          {publication.metadata && publication.metadata.media && (
+            <div className="flex flex-wrap">
+              {publication.metadata.media.map((media: any, index: number) => (
+                <div key={index}>
+                  {media.original.url &&
+                    media.original.mimeType !== "video/mp4" && (
+                      <Image media={media.original} />
+                    )}
+                  {media.original.url &&
+                    media.original.mimeType === "video/mp4" && (
+                      <VideoPlayer media={media.original} />
+                    )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Link>
     </div>
   );
 };

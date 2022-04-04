@@ -7,10 +7,20 @@ import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 import { uploadIpfs } from "@/lib/ipfs/ipfs";
 
+import {
+  Button,
+  Modal,
+  Avatar,
+  AddEmoji,
+  AddGif,
+  AddPhoto,
+} from "@/components/elements";
+
+import { EmojiIcon, GifIcon } from "@/icons";
+import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
+
 import LENS_ABI from "@/abis/Lens.json";
 const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
-
-import { Button, Avatar } from "@/components/elements";
 
 type CommentCardProps = {
   publicationId: string;
@@ -19,8 +29,12 @@ type CommentCardProps = {
 
 export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   const { currentUser } = useContext(UserContext);
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
+  const [isGifOpen, setIsGifOpen] = useState(false);
+  const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   //   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
+  const [selectedPicture, setSelectedPicture] = useState(null);
 
   const [{ data: signData }, signTypedData] = useSignTypedData();
   const [
@@ -83,7 +97,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
             }
           });
         }
-        console.log(res);
+        // console.log(res);
       });
     },
   });
@@ -92,12 +106,23 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
 
   const handleComment = async () => {
     if (!publicationId) return;
-    // console.log(content);
-    const result = await uploadIpfs({
-      name: "Comment from @" + currentUser?.handle,
-      description: content,
+    let media = [] as any[];
+    if (selectedPicture) {
+      media = [
+        {
+          item: selectedPicture,
+          type: "image/gif",
+        },
+      ];
+    }
+    const payload = {
+      name: "Post from @" + currentUser?.handle,
+      description: "",
       content,
-    });
+      media: media,
+    };
+    const result = await uploadIpfs({ payload });
+
     // console.log(result);
     createCommentTypedData({
       variables: {
@@ -117,27 +142,85 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   };
 
   return (
-    <div className="my-4">
+    <div className="my-2">
       <div className="border rounded-lg border-stone-300 p-2 shadow-lg">
-        <div className="flex relative mt-6 flex-1 px-4 sm:px-6">
+        <div className="flex relative mt-4 flex-1 px-2">
           <Avatar profile={currentUser} size={"small"} />
-          <div className="w-full ml-4">
+          <div className="w-full sm:ml-4 border border-stone-400 rounded-lg p-2">
             <textarea
-              rows={8}
-              className="p-2 block w-full sm:text-sm resize-none focus-none border border-stone-400  rounded-lg"
+              rows={6}
+              className="block w-full sm:text-sm resize-none focus-none outline-none"
               placeholder=""
               value={content}
               onChange={(e) => {
                 setContent(e.target.value);
               }}
             />
+            <div className="mx-auto">
+              {selectedPicture && (
+                <div className="flex">
+                  <img
+                    src={selectedPicture}
+                    className="w-auto max-h-60 mx-auto"
+                    alt="selected gif"
+                  />
+                  <XCircleIcon
+                    onClick={() => setSelectedPicture(null)}
+                    className="h-6 w-6 text-stone-500 hover:text-stone-700 cursor-pointer"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="my-4 flex justify-between px-4 sm:px-6">
-          <div></div>
+          <div className="flex ml-12">
+            <div
+              onClick={() => {
+                setIsEmojiOpen(!isEmojiOpen);
+                setIsGifOpen(false);
+                setIsPhotoOpen(false);
+              }}
+              className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+            >
+              <EmojiIcon />
+            </div>
+            <div
+              onClick={() => {
+                setIsGifOpen(!isGifOpen);
+                setIsPhotoOpen(false);
+                setIsEmojiOpen(false);
+              }}
+              className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+            >
+              <GifIcon />
+            </div>
+            <div
+              onClick={() => {
+                setIsPhotoOpen(!isPhotoOpen);
+                setIsGifOpen(false);
+                setIsEmojiOpen(false);
+              }}
+              className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+            >
+              <PhotographIcon className="text-3xl h-8 w-8 mx-auto " />
+            </div>
+          </div>
           <div className="w-30">
             <Button onClick={() => handleComment()}>Comment</Button>
           </div>
+        </div>
+        <div className="">
+          {isEmojiOpen ? (
+            <AddEmoji
+              onSelect={(emoji) => {
+                setIsEmojiOpen(!isEmojiOpen);
+                setContent(content + emoji);
+              }}
+            />
+          ) : null}
+          {isGifOpen && <AddGif onSelect={(gif) => setSelectedPicture(gif)} />}
+          {isPhotoOpen && <AddPhoto onSelect={(photo) => console.log(photo)} />}
         </div>
       </div>
     </div>

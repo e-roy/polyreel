@@ -4,3 +4,6 @@ export { TextField } from "./TextField";
 export { TextBox } from "./TextBox";
 export { Avatar } from "./Avatar";
 export { Loading } from "./Loading";
+export { AddEmoji } from "./AddEmoji";
+export { AddGif } from "./AddGif";
+export { AddPhoto } from "./AddPhoto";
