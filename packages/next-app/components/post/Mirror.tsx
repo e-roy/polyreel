@@ -83,7 +83,7 @@ export const Mirror = ({ publication }: any) => {
   );
 
   const handleMirror = () => {
-    console.log("mirror");
+    // console.log("mirror");
     createMirrorTypedData({
       variables: {
         request: {
@@ -98,7 +98,10 @@ export const Mirror = ({ publication }: any) => {
   };
 
   return (
-    <div className="flex ml-4 cursor-pointer" onClick={() => handleMirror()}>
+    <div
+      className="flex ml-4 hover:text-stone-700 cursor-pointer"
+      onClick={() => handleMirror()}
+    >
       {stats.totalAmountOfMirrors}
       <DocumentDuplicateIcon className="h-6 w-6 ml-2" aria-hidden="true" />
     </div>

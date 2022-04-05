@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -21,9 +21,7 @@ import { Avatar, Loading } from "@/components/elements";
 
 import { GetUserNfts } from "@/components/lens/nfts";
 
-import Linkify from "linkify-react";
-import { linkifyOptions } from "@/lib/linkifyOptions";
-import "linkify-plugin-mention";
+import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
 const ProfilePage: NextPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -44,7 +42,6 @@ const ProfilePage: NextPage = () => {
 
   if (!profile) return null;
   return (
-    // <div className="flex flex-col h-screen overflow-hidden">
     <div>
       <Head>
         <title>polyreel</title>
@@ -111,17 +108,18 @@ const ProfilePage: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="px-2 text-sm sm:text-base text-stone-800">
+        <div className="px-2 text-sm sm:text-base text-stone-700 font-medium">
           {/* {profile.id} */}
-          <div className="font-semibold">
-            <Linkify tagName="div" options={linkifyOptions}>
-              Bio :
-              <span className="font-normal pl-1 linkify">{profile.bio}</span>
-            </Linkify>
+          <div className="font-bold">
+            <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
+              <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
+                Bio :<span className="font-medium pl-1">{profile.bio}</span>
+              </LinkItProfile>
+            </LinkItUrl>
           </div>
-          <div className="font-semibold py-2">
+          <div className="font-bold py-2">
             Location :
-            <span className="font-normal pl-1">{profile.location}</span>
+            <span className="font-medium pl-1">{profile.location}</span>
           </div>
           <div className="sm:flex justify-between">
             <div className="font-semibold">

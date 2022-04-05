@@ -2,19 +2,21 @@ import Link from "next/link";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
 import { Avatar } from "@/components/elements";
-import Linkify from "linkify-react";
-import { linkifyOptions } from "@/lib/linkifyOptions";
-import "linkify-plugin-mention";
+
+import { LinkItUrl, LinkItProfile, LinkItComment } from "@/lib/links";
 
 export const PostBody = ({ publication }: any) => {
+  // console.log(publication);
   return (
     <div className="text-stone-700 font-medium">
       <div className="flex justify-between">
         {publication.profile && (
           <Link href={`/profile/${publication.profile.handle}`}>
-            <div className="flex cursor-pointer">
-              <Avatar profile={publication.profile} size={"small"} />
-              <div>
+            <div className="ml-4 flex cursor-pointer hover:text-stone-900 shadow hover:shadow-xl rounded-r-xl border-r pr-4 ">
+              <div className="-ml-4">
+                <Avatar profile={publication.profile} size={"small"} />
+              </div>
+              <div className="-mt-0.5">
                 <div className="ml-4 my-auto font-semibold">
                   @{publication.profile.handle}
                 </div>
@@ -29,20 +31,21 @@ export const PostBody = ({ publication }: any) => {
         <div className="text-xs">{cardFormatDate(publication.createdAt)}</div>
       </div>
       {publication.metadata && (
-        <Linkify tagName="div" options={linkifyOptions}>
-          {/* <div className="overflow-hidden my-2 linkify line-clamp-4">
-            {publication.metadata.description}
-          </div>
-          {publication.metadata.description !==
-            publication.metadata.content && ( */}
-          <div className="overflow-hidden my-2 linkify line-clamp-4">
-            {publication.metadata.content}
-          </div>
-          {/* )} */}
-        </Linkify>
+        <div className="overflow-hidden my-2 line-clamp-4">
+          <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
+            <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
+              <LinkItComment
+                className=" cursor-pointer"
+                publicationId={publication.id}
+              >
+                {publication.metadata.content}
+              </LinkItComment>
+            </LinkItProfile>
+          </LinkItUrl>
+        </div>
       )}
       <Link href={`/post/${publication.id}`}>
-        <div>
+        <div className="cursor-pointer">
           {publication.metadata && publication.metadata.media && (
             <div className="flex flex-wrap">
               {publication.metadata.media.map((media: any, index: number) => (

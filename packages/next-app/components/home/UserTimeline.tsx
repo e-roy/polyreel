@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_TIMELINE } from "@/queries/timeline/user-timeline";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-import { FeedCard } from "@/components/cards";
+// import { FeedCard } from "@/components/cards"; old card
 
 export type UserTimelineProps = {};
 
@@ -62,7 +62,7 @@ export const UserTimeline = ({}: UserTimelineProps) => {
           data.explorePublications.items &&
           data.explorePublications.items.map((item: any, index: number) => (
             <div key={index} className="rounded">
-              <FeedCard publication={item} />
+              {/* <FeedCard publication={item} /> */}
             </div>
           ))}
         {pageInfo.next && (

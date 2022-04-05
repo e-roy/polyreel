@@ -19,6 +19,12 @@ export const PostMirrorFragment = gql`
         }
       }
       ... on Comment {
+        id
+        mainPost {
+          ... on Post {
+            id
+          }
+        }
         profile {
           ...PostProfileFragment
         }

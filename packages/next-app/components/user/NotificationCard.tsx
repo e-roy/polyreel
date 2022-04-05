@@ -43,7 +43,9 @@ const CommentCard = ({ item }: NotificationCardProps) => {
       </div>
 
       <Link href={`/post/${item.comment.commentOn.id}`}>
-        <div className="cursor-pointer">{item.comment.metadata.content}</div>
+        <div className="cursor-pointer font-medium text-stone-700">
+          {item.comment.metadata.content}
+        </div>
       </Link>
       <Stats publication={item.comment} />
     </div>

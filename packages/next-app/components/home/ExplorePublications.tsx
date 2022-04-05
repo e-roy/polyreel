@@ -51,13 +51,15 @@ export const ExplorePublications = () => {
         data.explorePublications.items &&
         data.explorePublications.items.map((item: any, index: number) => (
           <div key={index}>
-            {item.__typename === "Comment" &&
+            {/* <div className="h-60 bg-red-500">empty box</div> */}
+            {item &&
+              item.__typename === "Comment" &&
               item.commentOn.id === item.mainPost.id && (
                 <div key={index} className="p-4 border-b border-stone-300">
                   <Post publication={item} postType="feed" />
                 </div>
               )}
-            {item.__typename !== "Comment" && (
+            {item && item.__typename !== "Comment" && (
               <div key={index} className="p-4 border-b border-stone-300">
                 <Post publication={item} postType="feed" />
               </div>
