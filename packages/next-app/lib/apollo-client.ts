@@ -68,13 +68,10 @@ export const apolloClient = () => {
       typePolicies: {
         Query: {
           fields: {
-            explorePublications: lensPagination([
-              "request",
-              ["sortCriteria", "limit", "sources"],
-            ]),
+            explorePublications: lensPagination(["request", ["sortCriteria"]]),
             publications: lensPagination([
               "request",
-              ["profileId", "publicationTypes", "commentsOf", "limit"],
+              ["profileId", "publicationTypes", "commentsOf"],
             ]),
             followers: lensPagination(["request", ["profileId"]]),
             following: lensPagination(["request", ["address"]]),

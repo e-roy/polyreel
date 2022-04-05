@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -113,8 +113,7 @@ const ProfilePage: NextPage = () => {
           <div className="font-bold">
             <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
               <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
-                Bio :
-                <span className="font-medium pl-1 linkify">{profile.bio}</span>
+                Bio :<span className="font-medium pl-1">{profile.bio}</span>
               </LinkItProfile>
             </LinkItUrl>
           </div>

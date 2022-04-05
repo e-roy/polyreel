@@ -26,8 +26,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
-
-.linkify a {
-  @apply text-sky-500 dark:text-sky-400;
-  @apply hover:text-sky-600 dark:hover:text-sky-500;
-}
