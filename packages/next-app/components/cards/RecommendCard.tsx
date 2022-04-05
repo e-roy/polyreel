@@ -18,7 +18,7 @@ export const RecommendCard = ({ profile }: any) => {
       </div>
       {profile.bio && (
         <div className="text-stone-700 font-medium line-clamp-3">
-          Bio :<span className="font-normal">{profile.bio}</span>
+          Bio : <span className="font-normal">{profile.bio}</span>
         </div>
       )}
 

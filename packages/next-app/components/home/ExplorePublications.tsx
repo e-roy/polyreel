@@ -37,12 +37,13 @@ export const ExplorePublications = () => {
     hasNextPage: pageInfo?.next,
     onLoadMore: loadMore,
     disabled: !!error,
-    rootMargin: "0px 0px 400px 0px",
+    rootMargin: "0px 0px 600px 0px",
   });
   if (!data) return null;
-  // console.log(data);
+  console.log(data);
+  console.log(data.explorePublications.items.length);
   return (
-    <div className="p-2">
+    <div className="p-2 mb-12">
       <div className="text-stone-700 font-medium text-lg text-center">
         Explore
       </div>
@@ -51,13 +52,15 @@ export const ExplorePublications = () => {
         data.explorePublications.items &&
         data.explorePublications.items.map((item: any, index: number) => (
           <div key={index}>
-            {item.__typename === "Comment" &&
+            {/* <div className="h-60 bg-red-500">empty box</div> */}
+            {item &&
+              item.__typename === "Comment" &&
               item.commentOn.id === item.mainPost.id && (
                 <div key={index} className="p-4 border-b border-stone-300">
                   <Post publication={item} postType="feed" />
                 </div>
               )}
-            {item.__typename !== "Comment" && (
+            {item && item.__typename !== "Comment" && (
               <div key={index} className="p-4 border-b border-stone-300">
                 <Post publication={item} postType="feed" />
               </div>
@@ -65,6 +68,7 @@ export const ExplorePublications = () => {
           </div>
         ))}
       {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
+      <div>loading</div>
     </div>
   );
 };

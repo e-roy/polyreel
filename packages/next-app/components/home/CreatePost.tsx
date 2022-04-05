@@ -145,7 +145,7 @@ export const CreatePost = () => {
 
   return (
     <>
-      <div className="flex bg-transparent w-32">
+      <div className="flex w-32 z-50">
         <Button onClick={() => setIsModalOpen(!isModalOpen)}>
           create post
         </Button>

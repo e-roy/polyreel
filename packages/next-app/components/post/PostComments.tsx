@@ -33,13 +33,15 @@ export const PostComments = ({ postId }: PostCommentsProps) => {
 const CommentedBranch = ({ publication }: any) => {
   return (
     <>
-      <div className="pl-2 pt-4 w-full">
+      <div className="pl-2 mt-6 w-full">
         <Post publication={publication} postType="commment" />
       </div>
       {publication.stats.totalAmountOfComments > 0 ? (
-        <div className="pl-4 pt-4 w-full">
-          <div className="w-0.5 h-8 ml-12 bg-gray-400 " />
-          <Comment postId={publication.id} />
+        <div className="pl-4 w-full">
+          <div className="w-0.5 h-8 ml-10 bg-gray-400 " />
+          <div className="-mt-6">
+            <Comment postId={publication.id} />
+          </div>
         </div>
       ) : null}
     </>

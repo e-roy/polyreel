@@ -82,7 +82,7 @@ const Home: NextPage = () => {
             <div className="hidden sm:block"></div>
             <div className="hidden sm:block"></div>
             <div></div>
-            <div className="-mt-12 w-32 ml-8 sm:ml-0">
+            <div className="-mt-12 w-32 ml-8 sm:ml-0 z-50">
               <CreatePost />
             </div>
           </div>

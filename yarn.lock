@@ -3291,21 +3291,6 @@ linkify-it@^2.0.3:
   dependencies:
     uc.micro "^1.0.1"
 
-linkify-plugin-mention@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/linkify-plugin-mention/-/linkify-plugin-mention-3.0.4.tgz#60276ec2b6a8087a9d709dce2d3568d112eabe43"
-  integrity sha512-8zttb+zpkV/+BZMAC6AGpC1pB2bjx9vV1TAWNodVuDe6Jr+Bi6b4QPUgZr/05UP+T/EIw1b8TM2Y+CEcqE2Qng==
-
-linkify-react@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/linkify-react/-/linkify-react-3.0.4.tgz#5f41ef63efe23eba34d23a091c0054f328323522"
-  integrity sha512-ar/fLlBw4/pbg5BmpH65dSXpGWhts/+BDV8tCdLN8Pd0P/vtHKjaEw9Gf4Za3Utpn5FhWlQyf57SWriPtoBHtw==
-
-linkifyjs@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/linkifyjs/-/linkifyjs-3.0.5.tgz#99e51a3a0c0e232fcb63ebb89eea3ff923378f34"
-  integrity sha512-1Y9XQH65eQKA9p2xtk+zxvnTeQBG7rdAXSkUG97DmuI/Xhji9uaUzaWxRj6rf9YC0v8KKHkxav7tnLX82Sz5Fg==
-
 loadjs@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-4.2.0.tgz#2a0336376397a6a43edf98c9ec3229ddd5abb6f6"
