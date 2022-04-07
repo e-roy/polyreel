@@ -22,7 +22,8 @@ import { EmojiIcon, GifIcon } from "@/icons";
 import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 
 import LENS_ABI from "@/abis/Lens.json";
-const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+
+import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export const CreatePost = () => {
   const { currentUser } = useContext(UserContext);
@@ -34,75 +35,68 @@ export const CreatePost = () => {
 
   const [selectedPicture, setSelectedPicture] = useState(null);
 
-  // const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
 
-  const [{ data: signData }, signTypedData] = useSignTypedData();
-  const [
-    { data, error: writeContractError, loading: writeContractLoading },
-    write,
-  ] = useContractWrite(
+  const [{}, signTypedData] = useSignTypedData();
+  const [{}, write] = useContractWrite(
     {
-      addressOrName: LENS_CONTRACT,
+      addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
     },
     "postWithSig"
   );
 
-  const [createPostTypedData, { loading, error }] = useMutation(
-    CREATE_POST_TYPED_DATA,
-    {
-      onCompleted({ createPostTypedData }: any) {
-        const { typedData } = createPostTypedData;
-        if (!createPostTypedData) console.log("createPost is null");
-        const {
-          profileId,
-          contentURI,
-          collectModule,
-          collectModuleData,
-          referenceModule,
-          referenceModuleData,
-        } = typedData?.value;
+  const [createPostTypedData, {}] = useMutation(CREATE_POST_TYPED_DATA, {
+    onCompleted({ createPostTypedData }: any) {
+      console.log("on completed");
+      const { typedData } = createPostTypedData;
+      if (!createPostTypedData) console.log("createPost is null");
+      const {
+        profileId,
+        contentURI,
+        collectModule,
+        collectModuleData,
+        referenceModule,
+        referenceModuleData,
+      } = typedData?.value;
 
-        signTypedData({
-          domain: omit(typedData?.domain, "__typename"),
-          types: omit(typedData?.types, "__typename"),
-          value: omit(typedData?.value, "__typename"),
-        }).then((res) => {
-          if (!res.error) {
-            const { v, r, s } = splitSignature(res.data);
-            const postARGS = {
-              profileId,
-              contentURI,
-              collectModule,
-              collectModuleData,
-              referenceModule,
-              referenceModuleData,
-              sig: {
-                v,
-                r,
-                s,
-                deadline: typedData.value.deadline,
-              },
-            };
-            write({ args: postARGS }).then((res) => {
-              if (!res.error) {
-                console.log(res.data);
-
-                // reset form  and other closing actions
-              } else {
-                console.log(res.error);
-              }
-            });
-          }
-          console.log(res);
-        });
-      },
-      onError(error) {
-        console.log(error);
-      },
-    }
-  );
+      signTypedData({
+        domain: omit(typedData?.domain, "__typename"),
+        types: omit(typedData?.types, "__typename"),
+        value: omit(typedData?.value, "__typename"),
+      }).then((res) => {
+        if (!res.error) {
+          const { v, r, s } = splitSignature(res.data);
+          const postARGS = {
+            profileId,
+            contentURI,
+            collectModule,
+            collectModuleData,
+            referenceModule,
+            referenceModuleData,
+            sig: {
+              v,
+              r,
+              s,
+              deadline: typedData.value.deadline,
+            },
+          };
+          write({ args: postARGS }).then((res) => {
+            if (!res.error) {
+              setIsModalOpen(false);
+              // reset form  and other closing actions
+            } else {
+              console.log(res.error);
+            }
+          });
+        }
+        console.log(res);
+      });
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
 
   const handlePost = async () => {
     let media = [] as any[];
@@ -121,18 +115,16 @@ export const CreatePost = () => {
       media: media,
     };
     const result = await uploadIpfs({ payload });
-    // console.log(result);
     setContent("");
     setSelectedPicture(null);
-    setIsModalOpen(!isModalOpen);
 
     createPostTypedData({
       variables: {
         request: {
           profileId: currentUser?.id,
-          contentURI: "ipfs://" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
           collectModule: {
-            emptyCollectModule: true,
+            revertCollectModule: true,
           },
           referenceModule: {
             followerOnlyReferenceModule: false,
@@ -140,7 +132,6 @@ export const CreatePost = () => {
         },
       },
     });
-    setIsModalOpen(!isModalOpen);
   };
 
   return (

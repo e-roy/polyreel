@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
 import { Avatar } from "@/components/elements";
@@ -7,12 +8,24 @@ import { LinkItUrl, LinkItProfile, LinkItComment } from "@/lib/links";
 
 export const PostBody = ({ publication }: any) => {
   // console.log(publication);
+  const [adjustBorder, setAdjustBorder] = useState("");
+  useEffect(() => {
+    // console.log(publication.appId);
+    if (publication.appId === "Lenster") setAdjustBorder("border-purple-700");
+    if (publication.appId === "Lenster Community")
+      setAdjustBorder("border-purple-400");
+    if (publication.appId === "polyreel.xyz")
+      setAdjustBorder("border-blue-600");
+  }, [publication.appId]);
+
   return (
     <div className="text-stone-700 font-medium">
       <div className="flex justify-between">
         {publication.profile && (
           <Link href={`/profile/${publication.profile.handle}`}>
-            <div className="ml-4 flex cursor-pointer hover:text-stone-900 shadow hover:shadow-xl rounded-r-xl border-r pr-4 ">
+            <div
+              className={`ml-4 flex cursor-pointer hover:text-stone-900 shadow hover:shadow-xl rounded-r-xl border-r pr-4 ${adjustBorder}`}
+            >
               <div className="-ml-4">
                 <Avatar profile={publication.profile} size={"small"} />
               </div>

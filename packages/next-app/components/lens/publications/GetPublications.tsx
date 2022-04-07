@@ -53,6 +53,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
 
   if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
+  // console.log(data);
 
   return (
     <div className="mt-2">

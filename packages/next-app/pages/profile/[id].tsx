@@ -41,6 +41,7 @@ const ProfilePage: NextPage = () => {
   let profile = data.profiles.items[0];
 
   if (!profile) return null;
+  // console.log(data);
   return (
     <div>
       <Head>
