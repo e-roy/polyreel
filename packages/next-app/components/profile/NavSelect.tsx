@@ -12,6 +12,7 @@ type NavSelectProps = {
 };
 
 export const NavSelect = ({ select, profile }: NavSelectProps) => {
+  // console.log("profile", profile);
   return (
     <div className="flex justify-center">
       <div

@@ -8,7 +8,8 @@ import { useMutation } from "@apollo/client";
 import { CREATE_FOLLOW_TYPED_DATA } from "@/queries/follow/follow";
 
 import LENS_ABI from "@/abis/Lens.json";
-const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+
+import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 type FollowProfileButtonProps = {
   profileId: string;
@@ -24,7 +25,7 @@ export const FollowProfileButton = ({
 
   const [{}, write] = useContractWrite(
     {
-      addressOrName: LENS_CONTRACT,
+      addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
     },
     "followWithSig"

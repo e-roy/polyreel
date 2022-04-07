@@ -9,7 +9,6 @@ import { uploadIpfs } from "@/lib/ipfs/ipfs";
 
 import {
   Button,
-  Modal,
   Avatar,
   AddEmoji,
   AddGif,
@@ -20,7 +19,8 @@ import { EmojiIcon, GifIcon } from "@/icons";
 import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 
 import LENS_ABI from "@/abis/Lens.json";
-const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+
+import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 type CommentCardProps = {
   publicationId: string;
@@ -36,13 +36,10 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   const [content, setContent] = useState("");
   const [selectedPicture, setSelectedPicture] = useState(null);
 
-  const [{ data: signData }, signTypedData] = useSignTypedData();
-  const [
-    { data, error: writeContractError, loading: writeContractLoading },
-    write,
-  ] = useContractWrite(
+  const [{}, signTypedData] = useSignTypedData();
+  const [{}, write] = useContractWrite(
     {
-      addressOrName: LENS_CONTRACT,
+      addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
     },
     "commentWithSig"
@@ -100,9 +97,10 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         // console.log(res);
       });
     },
+    onError(error) {
+      console.log(error);
+    },
   });
-
-  //   console.log(currentUser);
 
   const handleComment = async () => {
     if (!publicationId) return;
@@ -129,9 +127,9 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         request: {
           profileId: currentUser?.id,
           publicationId: publicationId,
-          contentURI: "ipfs://" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
           collectModule: {
-            emptyCollectModule: true,
+            revertCollectModule: true,
           },
           referenceModule: {
             followerOnlyReferenceModule: false,

@@ -9,7 +9,9 @@ import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
 import LENS_ABI from "@/abis/Lens.json";
-const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+// const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+
+import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export const Collect = ({ publication }: any) => {
   const { currentUser } = useContext(UserContext);
@@ -22,19 +24,19 @@ export const Collect = ({ publication }: any) => {
     write,
   ] = useContractWrite(
     {
-      addressOrName: LENS_CONTRACT,
+      addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
     },
     "mirrorWithSig"
   );
 
-  const [createMirrorTypedData, { loading, error }] = useMutation(
+  const [createCollectTypedData, { loading, error }] = useMutation(
     CREATE_COLLECT_TYPED_DATA,
     {
-      onCompleted({ createMirrorTypedData }: any) {
-        const { typedData } = createMirrorTypedData;
-        if (!createMirrorTypedData)
-          console.log("createMirrorTypedData is null");
+      onCompleted({ createCollectTypedData }: any) {
+        const { typedData } = createCollectTypedData;
+        if (!createCollectTypedData)
+          console.log("createCollectTypedData is null");
         const { collector, profileId, pubId, data } = typedData?.value;
 
         signTypedData({
@@ -75,9 +77,9 @@ export const Collect = ({ publication }: any) => {
     }
   );
 
-  const handleMirror = () => {
-    console.log("mirror");
-    createMirrorTypedData({
+  const handleCollect = () => {
+    console.log("collect");
+    createCollectTypedData({
       variables: {
         request: {
           publicationId: publication.id,
@@ -87,7 +89,7 @@ export const Collect = ({ publication }: any) => {
   };
 
   return (
-    <div className="flex ml-4 cursor-pointer" onClick={() => handleMirror()}>
+    <div className="flex ml-4 cursor-pointer" onClick={() => handleCollect()}>
       {stats.totalAmountOfMirrors}
       <CollectionIcon className="h-6 w-6 ml-2" aria-hidden="true" />
     </div>

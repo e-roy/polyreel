@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Avatar } from "@/components/elements";
 import { Stats } from "@/components/post";
 import { cardFormatDate } from "@/utils/formatDate";
+import { addressShorten } from "@/utils/address-shorten";
 
 type NotificationCardProps = {
   item: any;
@@ -55,8 +56,14 @@ const CommentCard = ({ item }: NotificationCardProps) => {
 const NewFollowerCard = ({ item }: NotificationCardProps) => {
   return (
     <div className="border p-2 my-1 rounded-xl">
-      <div className="flex justify-between font-medium text-stone-600">
-        <div className="">New Follower</div>
+      <div className="flex justify-between font-medium text-stone-700">
+        <div className="flex">
+          <Avatar profile={item.profile} size={"small"} />
+          <span className="ml-2 my-auto">
+            {addressShorten(item.wallet.address)} started following you
+          </span>
+        </div>
+
         <div className="text-sm">at {cardFormatDate(item.createdAt)}</div>
       </div>
     </div>

@@ -76,18 +76,12 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
     refechProfiles();
     setIsOpen(false);
   };
-  //https://ipfs.io/ipfs/QmaZdyGNxdM2AB37PXp4bUjF3Mc5VR33r8pwMqmJF3P6be/dev_4504.png
-  // console.log(currentUser);
-  // console.log(data);
-  // console.log(loading);
-  // console.log(error);
 
   return (
     <>
       <Button className="w-30" onClick={() => handleButton()}>
         edit profile
       </Button>
-      {/* <SetProfileImage profileId={currentUser?.id as string} /> */}
       <Modal isOpen={isOpen} onClose={handleClose}>
         <div className="bg-white rounded p-2 -z-20">
           <div className="flex justify-between pb-2">
@@ -120,15 +114,19 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
             <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
           )}
 
-          <div
-            className="-mt-8 ml-4 z-20 flex cursor-pointer"
-            onClick={() => setEditProfileImage(!editProfileImage)}
-          >
-            <Avatar profile={currentUser} size={"medium"} />
-            <div className="mt-10 -ml-4 p-1 rounded-full bg-stone-200">
-              <PencilIcon className="h-4 w-4" aria-hidden="true" />
+          <div className="flex justify-between">
+            <div
+              className="-mt-8 ml-4 z-20 flex cursor-pointer"
+              onClick={() => setEditProfileImage(!editProfileImage)}
+            >
+              <Avatar profile={currentUser} size={"medium"} />
+              <div className="mt-10 -ml-4 p-1 rounded-full bg-stone-200">
+                <PencilIcon className="h-4 w-4" aria-hidden="true" />
+              </div>
             </div>
+            <div></div>
           </div>
+
           {editProfileImage ? (
             <div className="h-1/2 py-8 px-4">
               <SetProfileImage profileId={currentUser?.id as string} />
