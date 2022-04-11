@@ -24,9 +24,6 @@ export const Notifications = () => {
   // console.log(data);
   return (
     <div className="p-2">
-      <div className="text-stone-700 font-medium text-lg text-center">
-        Notifications
-      </div>
       {data.notifications &&
         data.notifications.items &&
         data.notifications.items.map((item: any, index: number) => (

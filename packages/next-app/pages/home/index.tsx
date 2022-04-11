@@ -10,11 +10,34 @@ import {
 } from "@/components/home";
 import { Notifications } from "@/components/user";
 
-import { SearchIcon, HomeIcon, BellIcon } from "@heroicons/react/outline";
+import {
+  SearchIcon,
+  HomeIcon,
+  BellIcon,
+  GlobeIcon,
+} from "@heroicons/react/outline";
+
+const sidebarNav = [
+  {
+    id: 1,
+    label: "Home",
+    icon: <HomeIcon className="text-3xl h-8 w-8 mx-auto" />,
+  },
+  {
+    id: 2,
+    label: "Explore",
+    icon: <GlobeIcon className="text-3xl h-8 w-8 mx-auto" />,
+  },
+  {
+    id: 3,
+    label: "Notifications",
+    icon: <BellIcon className="text-3xl h-8 w-8 mx-auto" />,
+  },
+];
 
 const Home: NextPage = () => {
   const [search, setSearch] = useState("");
-  const [sideNav, setSideNav] = useState("home");
+  const [sideNav, setSideNav] = useState("Home");
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -28,23 +51,26 @@ const Home: NextPage = () => {
           {/* 3 column wrapper */}
           <div className="flex xl:px-8 2xl:px-32 h-9/10">
             <div className="lg:w-16 xl:w-1/4 hidden sm:block">
-              <aside className="flex flex-col w-16 bg-white text-gray-700 shadow h-full">
+              <aside className="flex flex-col ml-1 w-12 xl:w-64 bg-white text-gray-700 shadow h-full">
                 <div className="h-16 flex items-center w-full"></div>
 
                 <ul className="">
-                  <li
-                    onClick={() => setSideNav("home")}
-                    className="hover:bg-stone-500 text-stone-700 hover:text-stone-100  p-2 rounded cursor-pointer"
-                  >
-                    <HomeIcon className="text-3xl h-8 w-8 mx-auto" />
-                  </li>
-
-                  <li
-                    onClick={() => setSideNav("notifications")}
-                    className="hover:bg-stone-500 text-stone-700 hover:text-stone-100  p-2 rounded cursor-pointer"
-                  >
-                    <BellIcon className="text-3xl h-8 w-8 mx-auto" />
-                  </li>
+                  {sidebarNav.map((item: any, index: number) => (
+                    <li
+                      key={index}
+                      onClick={() => setSideNav(item.label)}
+                      className={`flex hover:bg-stone-500 text-stone-700 hover:text-stone-100 my-1 p-2 rounded cursor-pointer ${
+                        sideNav === item.label
+                          ? "bg-stone-500 text-stone-100"
+                          : ""
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span className="pl-2 my-auto font-semibold hidden xl:block">
+                        {item.label}
+                      </span>
+                    </li>
+                  ))}
                 </ul>
               </aside>
               {/* Left Column */}
@@ -52,8 +78,12 @@ const Home: NextPage = () => {
 
             <div className="w-full mx-2 lg:w-2/3 xl:w-1/2  min-h-9/10">
               <div className="lg:px-8 h-9/10 overflow-y-scroll border border-stone-300 rounded-xl shadow-lg">
-                {sideNav === "home" && <ExplorePublications />}
-                {sideNav === "notifications" && <Notifications />}
+                <div className="pb-4 text-center text-stone-700 text-2xl font-bold sticky top-0 bg-white z-40">
+                  {sideNav}
+                </div>
+                {sideNav === "Home" && <UserTimeline />}
+                {sideNav === "Explore" && <ExplorePublications />}
+                {sideNav === "Notifications" && <Notifications />}
               </div>
             </div>
 

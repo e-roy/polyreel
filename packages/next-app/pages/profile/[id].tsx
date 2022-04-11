@@ -51,12 +51,12 @@ const ProfilePage: NextPage = () => {
       <div>
         <div className="-mt-14">
           {profile.coverPicture ? (
-            <div className="rounded-t-xl h-64 max-h-64 w-full shadow-xl -z-10">
+            <div className="flex justify-center h-64 max-h-64 w-full shadow-xl -z-10 bg-stone-900/50">
               <img
                 src={profile.coverPicture.original.url}
                 alt=""
-                className="h-64 max-h-64 w-full"
-                object-fit="fill"
+                className="h-64 h-full"
+                object-fit=""
               />
             </div>
           ) : (
@@ -64,10 +64,10 @@ const ProfilePage: NextPage = () => {
           )}
         </div>
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
-          <div className="flex px-12">
+          <div className="flex pl-12">
             <Avatar profile={profile} size={"profile"} />
-
-            <div className="mt-6 ml-6 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
+            <div className="w-24"></div>
+            <div className="mt-6 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
               <div className="py-1 my-auto font-semibold text-md sm:text-xl md:text-2xl lg:text-3xl">
                 @{profile.handle}
               </div>

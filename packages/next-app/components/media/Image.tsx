@@ -16,8 +16,12 @@ export const Image = ({ media }: ImageProps) => {
 
   return (
     <div>
-      <div className="relative border-2 rounded -xl">
-        <img src={checkImage(media.url as string)} alt="" className="" />
+      <div className="relative border rounded-lg shadow-lg">
+        <img
+          src={checkImage(media.url as string)}
+          alt=""
+          className="rounded-lg"
+        />
       </div>
     </div>
   );

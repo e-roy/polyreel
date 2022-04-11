@@ -21,6 +21,7 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
 };
 
 const CommentCard = ({ item }: NotificationCardProps) => {
+  console.log(item);
   return (
     <div className="border p-2 my-1 rounded-xl">
       <div className="flex justify-between mb-2 pr-4">
