@@ -99,14 +99,14 @@ export const Post = ({ publication, postType }: PostProps) => {
       )}
 
       {publication.__typename === "Comment" && postType === "profile" && (
-        <div className="p-4 border rounded-lg shadow-md">
+        <div className="p-4">
           <div className="">
             <div className="mb-4">
               <PostBody publication={publication.mainPost} />
               <Stats publication={publication.mainPost} />
             </div>
             <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
-            <div className="p-4 border rounded-lg shadow-md">
+            <div className="p-4 border rounded-lg shadow-lg">
               <PostBody publication={publication} />
               <Stats publication={publication} />
             </div>

@@ -4,7 +4,6 @@ import {
   HttpLink,
   ApolloLink,
 } from "@apollo/client";
-// import { gql } from "@apollo/client/core";
 
 import {
   getAuthenticationToken,
@@ -30,21 +29,14 @@ const authLink = new ApolloLink((operation, forward) => {
   const token = getAuthenticationToken() as string;
   const refreshToken = getRefreshToken() as string;
   if (token) decoded = jwt_decode(token as string);
-  // console.log(decoded);
-  // if (!token) return null;
-
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
       "x-access-token": token ? `Bearer ${token}` : "",
     },
   });
-  // console.log(decoded.exp);
-  // console.log(Date.now() / 1000);
 
   if (token && decoded.exp < Date.now() / 1000) {
-    console.log("token is expired");
-
     refreshAuth(refreshToken).then((res) => {
       operation.setContext({
         headers: {

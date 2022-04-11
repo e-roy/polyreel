@@ -7,19 +7,17 @@ import Head from "next/head";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 
-import { GetPublications } from "@/components/lens/publications";
-
 import { TwitterIcon, WebIcon } from "@/icons";
 import {
   EditProfileButton,
   FollowersButton,
   DoesFollow,
   NavSelect,
+  GetUserNfts,
+  GetPublications,
 } from "@/components/profile";
 
 import { Avatar, Loading } from "@/components/elements";
-
-import { GetUserNfts } from "@/components/lens/nfts";
 
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
@@ -141,8 +139,6 @@ const ProfilePage: NextPage = () => {
           navSelect === "MIRROR") && (
           <GetPublications profileId={profile.id} filter={navSelect} />
         )}
-
-        {/* <UserTimeline profileId={profile.id} /> */}
       </div>
     </div>
   );

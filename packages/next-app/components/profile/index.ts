@@ -7,3 +7,5 @@ export { FollowProfileButton } from "./FollowProfileButton";
 export { UnFollowProfileButton } from "./UnFollowProfileButton";
 export { SetProfileImage } from "./SetProfileImage";
 export { NavSelect } from "./NavSelect";
+export { GetUserNfts } from "./GetUserNfts";
+export { GetPublications } from "./GetPublications";

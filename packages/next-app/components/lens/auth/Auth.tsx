@@ -13,7 +13,7 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
   const [{}, signMessage] = useSignMessage();
 
   const handleLogin = async () => {
-    console.log("login component");
+    // console.log("login component");
 
     const challenge = await generateChallenge(accountData?.address as string);
     if (!challenge) return;
