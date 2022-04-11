@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Button } from "@/components/elements";
-import { useConnect, useAccount } from "wagmi";
+import { useConnect } from "wagmi";
 
 import metamaskLogo from "@/images/metamask-logo.png";
 import walletConnectLogo from "@/images/walletconnect-logo.png";
