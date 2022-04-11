@@ -32,11 +32,11 @@ const AvatarIcon = ({ profile, size }: AvatarProps) => {
           <img
             src={checkIpfs(profile?.picture.original.url)}
             alt={`@${profile.handle}`}
-            className={`inline-block rounded-full h-20 sm:h-24 md:h-32 w-20 sm:w-24 md:w-32 p-1 bg-white shadow-xl`}
+            className={`rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 p-1 bg-white shadow-xl`}
           />
         ) : (
           <UserIcon
-            className={`inline-block rounded-full h-20 sm:h-24 md:h-32 w-20 sm:w-24 md:w-32 text-stone-500 p-1 bg-white shadow-xl`}
+            className={`rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl`}
           />
         )}
       </>
