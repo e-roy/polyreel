@@ -39,7 +39,7 @@ const connectors = ({ chainId }: ConnectorsConfig) => {
     // new WalletLinkConnector({
     //   chains,
     //   options: {
-    //     appName: 'create-web3-frontend',
+    //     appName: 'polyreel',
     //     jsonRpcUrl: `${rpcUrl}/${infuraId}`,
     //   },
     // }),

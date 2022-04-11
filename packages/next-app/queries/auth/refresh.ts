@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client/core";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
+import { LENS_API_URL } from "@/lib/constants";
+
 export const REFRESH_AUTHENTICATION = `
   mutation ($request: RefreshRequest!) {
     refresh(request: $request) {
@@ -21,9 +23,7 @@ export const refreshAuth = (refreshToken: string) => {
   });
 };
 
-const APIURL = "https://api-mumbai.lens.dev/";
-
 const apolloClient = new ApolloClient({
-  uri: APIURL,
+  uri: LENS_API_URL,
   cache: new InMemoryCache(),
 });

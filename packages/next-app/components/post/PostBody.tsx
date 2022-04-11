@@ -11,11 +11,10 @@ export const PostBody = ({ publication }: any) => {
   const [adjustBorder, setAdjustBorder] = useState("");
   useEffect(() => {
     // console.log(publication.appId);
-    if (publication.appId === "Lenster") setAdjustBorder("border-purple-700");
-    if (publication.appId === "Lenster Community")
-      setAdjustBorder("border-purple-400");
+    if (publication.appId?.includes("Lenster"))
+      setAdjustBorder("border-purple-600");
     if (publication.appId === "polyreel.xyz")
-      setAdjustBorder("border-blue-600");
+      setAdjustBorder("border-blue-500");
   }, [publication.appId]);
 
   return (

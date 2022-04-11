@@ -20,7 +20,9 @@ export const Logout = ({ className }: LogoutProps) => {
     if (accountData?.address) {
       disconnect();
       await removeAuthenticationToken();
-      // setCurrentUser(undefined);
+      router.push("/");
+    } else {
+      await removeAuthenticationToken();
       router.push("/");
     }
   };
