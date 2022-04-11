@@ -4,6 +4,8 @@ import {
   HttpLink,
   ApolloLink,
 } from "@apollo/client";
+// import { gql } from "@apollo/client/core";
+
 import {
   getAuthenticationToken,
   getRefreshToken,
@@ -12,6 +14,7 @@ import {
 import jwt_decode from "jwt-decode";
 
 import { refreshAuth } from "@/queries/auth/refresh";
+import { LENS_API_URL } from "@/lib/constants";
 
 type decodedType = {
   exp: number;
@@ -21,8 +24,7 @@ type decodedType = {
 };
 let decoded: decodedType;
 
-const APIURL = "https://api-mumbai.lens.dev/";
-const httpLink = new HttpLink({ uri: APIURL });
+const httpLink = new HttpLink({ uri: LENS_API_URL });
 
 const authLink = new ApolloLink((operation, forward) => {
   const token = getAuthenticationToken() as string;
@@ -41,14 +43,13 @@ const authLink = new ApolloLink((operation, forward) => {
   // console.log(Date.now() / 1000);
 
   if (token && decoded.exp < Date.now() / 1000) {
-    // console.log("token is expired");
+    console.log("token is expired");
+
     refreshAuth(refreshToken).then((res) => {
-      // console.log("refreshAuth");
-      // console.log(res.data.refresh);
       operation.setContext({
         headers: {
           "x-access-token": token
-            ? `Bearer ${res.data.refresh.accessToken}`
+            ? `Bearer ${res?.data?.refresh?.accessToken}`
             : "",
         },
       });
@@ -63,7 +64,7 @@ const authLink = new ApolloLink((operation, forward) => {
 export const apolloClient = () => {
   const apolloClient = new ApolloClient({
     link: authLink.concat(httpLink),
-    uri: APIURL,
+    uri: LENS_API_URL,
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

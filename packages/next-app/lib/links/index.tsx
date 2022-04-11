@@ -92,6 +92,7 @@ function findText(
 export const LinkIt: React.FC<{
   component: Component;
   regex: RegExp;
+  children: ReactNode;
 }> = (props) => {
   return (
     <Fragment>

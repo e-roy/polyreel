@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface LinkProps {
   /** String that matched the regex */
   match: string;
@@ -9,6 +11,7 @@ export interface LinkProps {
 }
 
 export interface HOCLinkProps {
+  children: ReactNode;
   /** Optional class which is passed to the linked component */
   className?: string;
   publicationId?: string;

@@ -80,7 +80,9 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className={`py-2 px-8 flex justify-between sticky top-0 z-20`}>
+    <header
+      className={`py-2 px-2 sm:px-8 flex justify-between sticky top-0 z-20`}
+    >
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="flex cursor-pointer">
           {currentUser?.picture ? (
