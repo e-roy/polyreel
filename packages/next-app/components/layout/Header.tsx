@@ -121,7 +121,7 @@ export const Header = ({}: HeaderProps) => {
         <Dialog
           initialFocus={completeButtonRef}
           as="div"
-          className="fixed inset-0 overflow-hidden dialog z-20"
+          className="fixed inset-0 overflow-hidden dialog z-50"
           onClose={setOpen}
         >
           <div className="absolute inset-0 overflow-hidden transistion">

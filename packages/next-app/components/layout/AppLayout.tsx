@@ -31,7 +31,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   }, []);
 
   useEffect(() => {
-    // console.log("accountData", accountData);
     accountData?.connector?.on("change", () => {
       removeAuthenticationToken();
     });

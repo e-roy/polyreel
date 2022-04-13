@@ -1,9 +1,22 @@
-const imageSrc = "https://source.unsplash.com/640x390/?tech,app";
-
 export const Hero = () => {
+  const imageSrc = "https://source.unsplash.com/640x390/?tech,app";
+  const repeat = 25;
+  const images = [];
+
+  for (let i = 1; i <= repeat; i++) {
+    const image = (
+      <div
+        key={i}
+        className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3"
+      >
+        <img src={imageSrc} className="object-cover w-full h-auto" />
+      </div>
+    );
+    images.push(image);
+  }
   return (
     <div className="flex flex-col w-full mx-auto -mt-20 overflow-hidden bg-gradient-to-r from-sky-900 to-sky-900">
-      <div className="relative z-20 flex w-full px-5 pt-20 mx-auto sm:px-12  max-w-7xl sm:pt-0 lg:px-0">
+      <div className="relative z-10 flex w-full px-5 pt-20 mx-auto sm:px-12  max-w-7xl sm:pt-0 lg:px-0">
         <div className="w-full md:w-2/3">
           <div className="flex flex-col items-start justify-center w-full h-full pb-20">
             <div className="relative w-full lg:pl-10">
@@ -18,7 +31,8 @@ export const Hero = () => {
 
             <div className="flex flex-col items-start my-4 text-left lg:pl-10">
               <p className="max-w-md mb-10 text-base text-stone-200 font-semibold sm:text-lg lg:text-xl dark:text-dark-200">
-                Social Network built with Lens Protocol on the Mumbai Blockchain
+                A Social Network built with Lens Protocol on the Mumbai
+                Blockchain
               </p>
             </div>
           </div>
@@ -32,81 +46,7 @@ export const Hero = () => {
           <div className="absolute top-0 right-0 hidden w-full h-full sm:block">
             <div className="flex items-center justify-center w-screen h-screen transform scale-75 -rotate-12 -translate-x-80 sm:-translate-x-64 sm:scale-125 md:scale-125 min-w-persp md:-translate-x-24">
               <div className="flex flex-col flex-wrap items-start justify-start w-full h-screen mx-auto space-x-3 space-y-3 transformPerspective">
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
-                <div className="h-auto bg-cover rounded-lg overflow-hidden bg-top-center w-auto max-w-sm mt-3 ml-3">
-                  <img src={imageSrc} className="object-cover w-full h-auto" />
-                </div>
+                {images}
               </div>
             </div>
           </div>

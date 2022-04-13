@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Hero } from "@/components/landing";
+import { Hero, What, How, Why } from "@/components/landing";
 
 const Landing: NextPage = () => {
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="">
       <Head>
         <title>polyreel</title>
         <meta name="description" content="polyreel" />
@@ -12,6 +12,9 @@ const Landing: NextPage = () => {
       </Head>
 
       <Hero />
+      <What />
+      <How />
+      {/* <Why /> */}
     </div>
   );
 };
