@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
+
 import { useQuery } from "@apollo/client";
-
 import { SEARCH_PROFILES } from "@/queries/profile/search-profiles";
-import { RecommendCard } from "@/components/cards";
 
+import { RecommendCard } from "@/components/cards";
 import { Loading } from "@/components/elements";
 
 export type SearchProfilesProps = {

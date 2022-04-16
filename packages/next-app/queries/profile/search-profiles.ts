@@ -13,6 +13,11 @@ export const SEARCH_PROFILES = gql`
             stats {
               totalFollowers
               totalFollowing
+              totalPosts
+              totalComments
+              totalMirrors
+              totalPublications
+              totalCollects
             }
           }
         }

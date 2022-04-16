@@ -37,7 +37,7 @@ const sidebarNav = [
 
 const Home: NextPage = () => {
   const [search, setSearch] = useState("");
-  const [sideNav, setSideNav] = useState("Home");
+  const [sideNav, setSideNav] = useState("Explore");
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
 
             <div className="w-full mx-2 lg:w-2/3 xl:w-1/2  min-h-9/10">
               <div className="lg:px-8 h-9/10 overflow-y-scroll border border-stone-300 rounded-xl shadow-lg">
-                <div className="pb-4 text-center text-stone-700 text-2xl font-bold sticky top-0 bg-white z-40">
+                <div className="pb-4 text-center text-stone-700 text-2xl font-bold sticky top-0 bg-white z-10">
                   {sideNav}
                 </div>
                 {sideNav === "Home" && <UserTimeline />}
@@ -112,7 +112,7 @@ const Home: NextPage = () => {
             <div className="hidden sm:block"></div>
             <div className="hidden sm:block"></div>
             <div></div>
-            <div className="-mt-12 w-32 ml-8 sm:ml-0 z-50">
+            <div className="-mt-12 w-32 ml-8 sm:ml-0 z-10">
               <CreatePost />
             </div>
           </div>

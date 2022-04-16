@@ -4,7 +4,12 @@ import { cardFormatDate } from "@/utils/formatDate";
 import { VideoPlayer, Image } from "@/components/media";
 import { Avatar } from "@/components/elements";
 
-import { LinkItUrl, LinkItProfile, LinkItComment } from "@/lib/links";
+import {
+  LinkItUrl,
+  LinkItProfile,
+  LinkItComment,
+  LinkItHashtag,
+} from "@/lib/links";
 
 export const PostBody = ({ publication }: any) => {
   // console.log(publication);
@@ -46,12 +51,14 @@ export const PostBody = ({ publication }: any) => {
         <div className="overflow-hidden my-2 line-clamp-4">
           <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
             <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
-              <LinkItComment
-                className=" cursor-pointer"
-                publicationId={publication.id}
-              >
-                {publication.metadata.content}
-              </LinkItComment>
+              <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">
+                <LinkItComment
+                  className=" cursor-pointer"
+                  publicationId={publication.id}
+                >
+                  {publication.metadata.content}
+                </LinkItComment>
+              </LinkItHashtag>
             </LinkItProfile>
           </LinkItUrl>
         </div>

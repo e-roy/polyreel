@@ -4,6 +4,7 @@ import type { Component, HOCLinkProps } from "./types";
 import { UrlComponent, urlRegex } from "./url";
 import { ProfileComponent, profileRegex } from "./profile";
 import { CommentComponent, commentRegex } from "./comment";
+import { HashtagComponent, hashtagRegex } from "./hashtag";
 import { getKey } from "./get-key";
 
 const ctrlCharactersRegex =
@@ -140,7 +141,7 @@ export const LinkItProfile: React.FC<HOCLinkProps> = (props) => {
 };
 
 /**
- * Link Profile handles
+ * Link Comments
  */
 export const LinkItComment: React.FC<HOCLinkProps> = (props) => {
   return (
@@ -161,7 +162,29 @@ export const LinkItComment: React.FC<HOCLinkProps> = (props) => {
   );
 };
 
+/**
+ * Link Hashtags
+ */
+export const LinkItHashtag: React.FC<HOCLinkProps> = (props) => {
+  return (
+    <Fragment>
+      {findText(
+        props.children,
+        (match, key) => (
+          <HashtagComponent
+            key={key}
+            match={match}
+            className={props.className}
+          />
+        ),
+        hashtagRegex
+      )}
+    </Fragment>
+  );
+};
+
 export * from "./url";
 export * from "./profile";
 export * from "./comment";
 export * from "./types";
+export * from "./hashtag";
