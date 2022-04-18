@@ -34,7 +34,7 @@ export const GET_TIMELINE = gql`
     bio
     location
     website
-    twitterUrl
+    twitter
     handle
     picture {
       ... on NftImage {

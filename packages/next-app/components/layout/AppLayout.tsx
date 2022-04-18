@@ -69,8 +69,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     refechProfiles: refetch,
   };
 
-  if (userProfilesLoading) return <Loading />;
-  if (currentProfileLoading) return <Loading />;
+  if (userProfilesLoading || currentProfileLoading) return <Loading />;
 
   if (router.pathname === "/home" && !currentProfileData) {
     router.push("/select-profile");

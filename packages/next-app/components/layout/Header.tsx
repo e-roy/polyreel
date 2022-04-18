@@ -155,12 +155,11 @@ export const Header = ({}: HeaderProps) => {
                         router.push(`/profile/${currentUser?.handle}`)
                       }
                     >
-                      {currentUser?.coverPicture &&
-                      currentUser?.coverPicture.original ? (
+                      {currentUser?.coverPicture ? (
                         <div className=" h-40 sm:h-56">
                           <img
                             className=" max-h-56 w-full sm:border-2 border-transparent"
-                            src={currentUser?.coverPicture.original.url}
+                            src={currentUser?.coverPicture}
                             alt=""
                           />
                         </div>
