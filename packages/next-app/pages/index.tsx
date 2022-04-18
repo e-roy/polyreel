@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Hero, What, How, Why } from "@/components/landing";
+import { Hero, What, How, Why, Creators } from "@/components/landing";
 
 const Landing: NextPage = () => {
   return (
@@ -15,6 +15,7 @@ const Landing: NextPage = () => {
       <What />
       <How />
       {/* <Why /> */}
+      <Creators />
     </div>
   );
 };
