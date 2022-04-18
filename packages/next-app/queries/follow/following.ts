@@ -12,7 +12,7 @@ export const GET_FOLLOWING = gql`
           bio
           location
           website
-          twitterUrl
+          twitter
           handle
           picture {
             ... on NftImage {

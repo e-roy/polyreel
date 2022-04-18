@@ -5,17 +5,17 @@ import { XIcon, PencilIcon } from "@heroicons/react/outline";
 import { UserContext } from "@/components/layout";
 import { useMutation } from "@apollo/client";
 import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
+import { uploadIpfsProfile } from "@/lib/ipfs/ipfsProfile";
 
 import { SetProfileImage } from "@/components/profile";
 
-type EditProfileButtonProps = {};
+import { useSignTypedData, useContractWrite } from "wagmi";
+import { omit, splitSignature } from "@/lib/helpers";
+import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
 
-type coverPhotoType = {
-  original: {
-    url: string;
-    mime: string;
-  };
-};
+import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
+
+type EditProfileButtonProps = {};
 
 export const EditProfileButton = ({}: EditProfileButtonProps) => {
   const { currentUser, refechProfiles } = useContext(UserContext);
@@ -27,33 +27,62 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
   const [updateLocation, setUpdateLocation] = useState<string>("");
   const [updateWebsite, setUpdateWebsite] = useState<string>("");
   const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string>("");
-  // const [updateCoverPicture, setUpdateCoverPicture] =
-  //   useState<coverPhotoType | null>(null);
+  const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
 
-  const [updateProfile, { data, loading, error }] = useMutation(
-    UPDATE_PROFILE,
+  const [{}, signTypedData] = useSignTypedData();
+  const [{}, write] = useContractWrite(
     {
-      variables: {
-        request: {
-          profileId: currentUser?.id,
-          name: updateName,
-          bio: updateBio,
-          location: updateLocation,
-          website: updateWebsite,
-          twitterUrl: updateTwitterUrl,
-          coverPicture: null,
-          // coverPicture:
-          //   "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcHg5OTQxMjUtaW1hZ2Uta3d5bnR2bjkuanBn.jpg?s=uxd4g6GLStZpOhgieMERfaFq8znwXOMC8XBAOnr1x8k",
-          // {
-          //   original: {
-          //     url: "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcHg5OTQxMjUtaW1hZ2Uta3d5bnR2bjkuanBn.jpg?s=uxd4g6GLStZpOhgieMERfaFq8znwXOMC8XBAOnr1x8k",
-          //     mime: "image/jpeg",
-          //   },
-          // },
-        },
-      },
-    }
+      addressOrName: LENS_PERIPHERY_CONTRACT,
+      contractInterface: LENS_PERIPHERY_ABI,
+    },
+    "setProfileMetadataURIWithSig"
   );
+
+  const [createSetProfileMetadataTypedData, {}] = useMutation(UPDATE_PROFILE, {
+    onCompleted({ createSetProfileMetadataTypedData }: any) {
+      const { typedData } = createSetProfileMetadataTypedData;
+      if (!createSetProfileMetadataTypedData)
+        console.log("createSetProfileMetadataTypedData is null");
+      const { profileId, metadata } = typedData?.value;
+      // console.log("HERE WITH TYPE DATA", typedData);
+      // console.log(profileId);
+      // console.log(metadata);
+      signTypedData({
+        domain: omit(typedData?.domain, "__typename"),
+        types: omit(typedData?.types, "__typename"),
+        value: omit(typedData?.value, "__typename"),
+      }).then((res) => {
+        if (!res.error) {
+          const { v, r, s } = splitSignature(res.data);
+          const postARGS = {
+            user: currentUser?.ownedBy,
+            profileId,
+            metadata,
+            sig: {
+              v,
+              r,
+              s,
+              deadline: typedData.value.deadline,
+            },
+          };
+          write({ args: postARGS }).then((res) => {
+            if (!res.error) {
+              // console.log(res.data);
+              refechProfiles();
+              setIsOpen(false);
+              // reset form  and other closing actions
+            } else {
+              console.log(res.error);
+            }
+          });
+        }
+        // console.log(res);
+      });
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     if (currentUser) {
@@ -62,8 +91,8 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
       if (currentUser?.location)
         setUpdateLocation(currentUser?.location as string);
       setUpdateWebsite((currentUser?.website as string) || "");
-      setUpdateTwitterUrl((currentUser?.twitterUrl as string) || "");
-      // setUpdateCoverPicture(currentUser.coverPicture as coverPhotoType | any);
+      setUpdateTwitterUrl((currentUser?.twitter as string) || "");
+      setUpdateCoverPicture((currentUser?.coverPicture as string) || "");
     }
   }, [currentUser]);
 
@@ -72,9 +101,35 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
   };
 
   const handleSave = async () => {
-    await updateProfile();
-    refechProfiles();
-    setIsOpen(false);
+    const payload = {
+      name: updateName,
+      bio: updateBio,
+      location: updateLocation,
+      cover_picture: updateCoverPicture,
+      social: [
+        {
+          traitType: "string",
+          value: updateWebsite,
+          key: "website",
+        },
+        {
+          traitType: "string",
+          value: updateTwitterUrl,
+          key: "twitter",
+        },
+      ],
+    };
+    const result = await uploadIpfsProfile({ payload });
+    // console.log("result", result.path);
+
+    createSetProfileMetadataTypedData({
+      variables: {
+        request: {
+          profileId: currentUser?.id,
+          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
+        },
+      },
+    });
   };
 
   return (
@@ -102,11 +157,11 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               <Button onClick={() => handleSave()}>save</Button>
             </div>
           </div>
-          {currentUser?.coverPicture && currentUser?.coverPicture.original ? (
+          {currentUser?.coverPicture && currentUser?.coverPicture ? (
             <div className=" h-40 sm:h-56">
               <img
                 className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                src={currentUser?.coverPicture.original.url}
+                src={currentUser?.coverPicture}
                 alt=""
               />
             </div>

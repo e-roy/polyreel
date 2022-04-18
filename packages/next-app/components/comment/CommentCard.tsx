@@ -147,7 +147,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
           <div className="w-full sm:ml-4 border border-stone-400 rounded-lg p-2">
             <textarea
               rows={6}
-              className="block w-full sm:text-sm resize-none focus-none outline-none"
+              className="block w-full sm:text-sm resize-none focus-none outline-none font-medium text-stone-800"
               placeholder=""
               value={content}
               onChange={(e) => {

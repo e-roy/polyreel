@@ -10,7 +10,7 @@ export const RECOMMENDED_PROFILES = gql`
       bio
       location
       website
-      twitterUrl
+      twitter
       picture {
         ... on NftImage {
           contractAddress

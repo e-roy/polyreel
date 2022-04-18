@@ -14,7 +14,7 @@ export const GET_FOLLOWERS = gql`
             bio
             location
             website
-            twitterUrl
+            twitter
             handle
             picture {
               ... on NftImage {

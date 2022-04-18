@@ -2,17 +2,13 @@ import { createContext, Dispatch } from "react";
 
 type userProfile = {
   id: string;
+  ownedBy: string;
   handle?: string;
   bio?: string;
-  coverPicture?: {
-    original: {
-      url: string;
-      mimeType: string;
-    };
-  };
+  coverPicture?: string;
   location?: string;
   website?: string;
-  twitterUrl?: string | null;
+  twitter?: string | null;
   name?: string;
   picture?: {
     original: {

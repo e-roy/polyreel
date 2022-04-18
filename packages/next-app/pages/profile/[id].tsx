@@ -3,6 +3,7 @@ import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
@@ -81,16 +82,16 @@ const ProfilePage: NextPage = () => {
             <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
               {profile.website && (
                 <a
-                  href={profile.website}
+                  href={`https:\\${profile.website}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
                   <WebIcon size={30} />
                 </a>
               )}
-              {profile.twitterUrl && (
+              {profile.twitter && (
                 <a
-                  href={profile.twitterUrl}
+                  href={profile.twitter}
                   target="_blank"
                   rel="noreferrer noopener"
                 >

@@ -5,3 +5,6 @@ export const LENS_API_URL = "https://api-mumbai.lens.dev/";
 
 export const CURRENT_CHAIN_ID = "80001";
 export const CURRENT_CHAIN_NAME = "Mumbai";
+
+export const LENS_PERIPHERY_CONTRACT =
+  "0x702C22BFCD705c42B46Df8512b51311a2B5e6036";
