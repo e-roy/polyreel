@@ -17,6 +17,7 @@ export const Hero = () => {
           layout="fixed"
           className="object-cover rounded-lg my-8"
           priority={true}
+          alt="Lens Protocol Logo"
         />
         <div className="w-6 h-full border-r border-l border-stone-400/50"></div>
       </div>
