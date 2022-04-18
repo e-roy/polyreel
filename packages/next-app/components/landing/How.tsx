@@ -10,8 +10,7 @@ export const How = () => {
           networks. Namely, Web2 networks all read from their unique,
           centralized database. There is no portability. Your profile, friends,
           and content are locked to a specific network and owned by the network
-          operator. This causes each network to fight a zero-sum game for your
-          attention.
+          operator.
         </div>
         <div className="py-8">
           Lens Protocol corrects this by being a user-owned, open social graph
