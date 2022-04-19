@@ -1,13 +1,13 @@
 export const What = () => {
   return (
-    <div className="bg-sky-600">
+    <div className="bg-sky-600 text-xl sm:text-2xl">
       <div className="bg-gradient-to-t from-sky-900 to-sky-900/50 py-16  font-medium">
         <div className="sm:flex mx-auto justify-center sm:mx-16 my-16 ">
           <div className="sm:w-1/2 text-center">
-            <h3 className="text-3xl text-stone-100 font-semibold h-24">
+            <h3 className="text-3xl sm:text-4xl text-stone-100 font-semibold h-24">
               What is Lens Protocol?
             </h3>
-            <div className="border p-4 rounded-xl shadow-xl bg-sky-800/50 text-stone-100">
+            <div className="border mx-4 p-4 rounded-xl shadow-xl bg-sky-800/50 text-stone-100">
               The Lens Protocol is a user-owned, open social graph that any
               application can plug into. Each application using Lens benefits
               the whole ecosystem, turning the zero-sum game into a
@@ -17,11 +17,12 @@ export const What = () => {
         </div>
 
         <div className="sm:flex mx-4 sm:mx-16 my-16">
-          <div className="sm:w-1/2"></div>
-          <div className="sm:w-1/2 text-center">
-            <h3 className="text-3xl text-stone-100 font-semibold h-24">
+          <div className="sm:w-1/2">
+            <h3 className="text-3xl text-stone-100 font-semibold h-24 mx-4">
               What does the mean to YOU the user?
             </h3>
+          </div>
+          <div className="sm:w-1/2 text-center">
             <div className="border p-4 rounded-xl shadow-xl bg-sky-800/50 text-stone-100">
               This means all your information can be accessed by any application
               built on top of Lens Protocol.

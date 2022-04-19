@@ -30,7 +30,10 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
 
   return (
     <div>
-      <Button className="" onClick={() => handleLogin()}>
+      <Button
+        className="text-2xl font-bold py-2 px-4"
+        onClick={() => handleLogin()}
+      >
         Login
       </Button>
     </div>

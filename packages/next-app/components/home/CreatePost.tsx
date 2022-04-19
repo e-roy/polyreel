@@ -136,8 +136,11 @@ export const CreatePost = () => {
 
   return (
     <>
-      <div className="flex w-32 z-50">
-        <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+      <div className="flex z-50">
+        <Button
+          className="px-2 py-1"
+          onClick={() => setIsModalOpen(!isModalOpen)}
+        >
           create post
         </Button>
       </div>
@@ -157,11 +160,11 @@ export const CreatePost = () => {
               <div className="max-h-screen overflow-y-scroll">
                 <div className="flex mt-6">
                   <Avatar profile={currentUser} size={"small"} />
-                  <div className="w-full sm:ml-4 border border-stone-400 rounded-lg p-2">
+                  <div className="w-full sm:ml-4 p-2">
                     <textarea
                       rows={6}
-                      className="block w-full sm:text-sm resize-none focus-none outline-none"
-                      placeholder=""
+                      className="block w-full sm:text-sm resize-none focus-auto outline-none"
+                      placeholder="create a post"
                       value={content}
                       onChange={(e) => {
                         setContent(e.target.value);
@@ -192,7 +195,7 @@ export const CreatePost = () => {
                         setIsGifOpen(false);
                         setIsPhotoOpen(false);
                       }}
-                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                      className="p-1 mx-1 text-stone-500 hover:text-stone-800 hover:bg-stone-200 hover:shadow-xl cursor-pointer my-auto rounded-2xl"
                     >
                       <EmojiIcon />
                     </div>
@@ -202,7 +205,7 @@ export const CreatePost = () => {
                         setIsPhotoOpen(false);
                         setIsEmojiOpen(false);
                       }}
-                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                      className="p-1 mx-1 text-stone-500 hover:text-stone-800 hover:bg-stone-200 hover:shadow-xl cursor-pointer my-auto rounded-2xl"
                     >
                       <GifIcon />
                     </div>
@@ -212,13 +215,21 @@ export const CreatePost = () => {
                         setIsGifOpen(false);
                         setIsEmojiOpen(false);
                       }}
-                      className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg"
+                      className="p-1 mx-1 text-stone-500 hover:text-stone-800 hover:bg-stone-200 hover:shadow-xl cursor-pointer my-auto rounded-2xl"
                     >
-                      <PhotographIcon className="text-3xl h-8 w-8 mx-auto " />
+                      <PhotographIcon className="text-3xl h-5 w-5 mx-auto " />
                     </div>
                   </div>
                   <div className="w-30">
-                    <Button onClick={() => handlePost()}> post</Button>
+                    <Button
+                      disabled={
+                        selectedPicture || content.length !== 0 ? false : true
+                      }
+                      className="px-2 py-1"
+                      onClick={() => handlePost()}
+                    >
+                      post
+                    </Button>
                   </div>
                 </div>
                 <div className="">

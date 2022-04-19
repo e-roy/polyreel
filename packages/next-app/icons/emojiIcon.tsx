@@ -1,7 +1,13 @@
-export const EmojiIcon = () => {
+type EmojiIconProps = {
+  size?: string;
+};
+
+export const EmojiIcon = ({ size = "5" }: EmojiIconProps) => {
+  const sizePx = `w-${size} h-${size}`;
+
   return (
     <svg
-      className="w-8 h-8"
+      className={sizePx}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

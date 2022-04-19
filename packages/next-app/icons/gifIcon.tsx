@@ -1,8 +1,13 @@
-export const GifIcon = () => {
+type GifIconProps = {
+  size?: string;
+};
+
+export const GifIcon = ({ size = "5" }: GifIconProps) => {
+  const sizePx = `w-${size} h-${size}`;
   return (
     <div>
       <svg
-        className="w-8 h-8"
+        className={sizePx}
         viewBox="0 0 16 16"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"

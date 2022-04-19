@@ -246,7 +246,7 @@ export const Header = ({}: HeaderProps) => {
               {router.pathname === "/" ? (
                 <div className="flex justify-end">
                   <Button
-                    className="w-30"
+                    className="text-2xl font-bold py-2 px-4"
                     onClick={() => router.push("./home")}
                   >
                     Home

@@ -1,7 +1,7 @@
 export const Creators = () => {
   return (
-    <div className="bg-sky-900 py-16 font-medium">
-      <h3 className="text-center text-3xl text-stone-100 font-semibold h-24">
+    <div className="bg-sky-900 py-16 font-medium text-xl sm:text-2xl">
+      <h3 className="text-center text-3xl sm:text-4xl text-stone-100 font-semibold h-24">
         Are you a Creator?
       </h3>
       <div className="sm:flex mx-4 sm:mx-16 my-16">

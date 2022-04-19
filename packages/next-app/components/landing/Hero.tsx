@@ -40,10 +40,10 @@ export const Hero = () => {
             </div>
 
             <div className="flex flex-col items-start my-4 text-left lg:pl-10">
-              <p className="max-w-md my-2 text-base text-stone-200 font-semibold sm:text-lg lg:text-xl dark:text-dark-200">
+              <p className="max-w-md my-2 text-xl text-stone-200 font-semibold lg:text-2xl dark:text-dark-200">
                 A Social Network built with Lens Protocol
               </p>
-              <p className="max-w-md mb-10 text-base text-stone-200 font-semibold sm:text-lg lg:text-xl dark:text-dark-200">
+              <p className="max-w-md mb-10 text-xl text-stone-200 font-semibold lg:text-2xl dark:text-dark-200">
                 Currently in BETA on the Mumbai Testnet
               </p>
             </div>

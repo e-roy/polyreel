@@ -51,12 +51,15 @@ export const ExplorePublications = () => {
             {item &&
               item.__typename === "Comment" &&
               item.commentOn.id === item.mainPost.id && (
-                <div key={index} className="p-4 border-b border-stone-300">
+                <div key={index} className="p-4 border-b-4 border-stone-400/40">
                   <Post publication={item} postType="feed" />
                 </div>
               )}
             {item && item.__typename !== "Comment" && (
-              <div key={index} className="p-4 border-b border-stone-300">
+              <div
+                key={index}
+                className="p-4 border-b border-b-4 border-stone-400/40"
+              >
                 <Post publication={item} postType="feed" />
               </div>
             )}

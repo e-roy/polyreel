@@ -61,7 +61,7 @@ const provider = ({ chainId }: ProviderConfig) =>
   );
 const webSocketProvider = ({ chainId }: ProviderConfig) =>
   isChainSupported(chainId)
-    ? new providers.AlchemyWebSocketProvider(chainId, infuraId)
+    ? new providers.AlchemyWebSocketProvider(chainId, alchemyId)
     : undefined;
 
 function MyApp({ Component, pageProps }: AppProps) {
