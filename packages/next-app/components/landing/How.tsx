@@ -1,7 +1,7 @@
 export const How = () => {
   return (
-    <div className="bg-sky-900 py-16 font-medium">
-      <h3 className="text-center text-3xl text-stone-100 font-semibold h-24">
+    <div className="bg-sky-900 py-16 font-medium text-xl sm:text-2xl">
+      <h3 className="text-center text-3xl sm:text-4xl text-stone-100 font-semibold h-24">
         How is Lens Protocol Different from Existing Social Networks?
       </h3>
       <div className="text-stone-100 mx-4 sm:mx-16">

@@ -12,18 +12,20 @@ export const Button: React.FC<ButtonProps> = ({
   children,
 }) => {
   const btnBase =
-    "flex rounded-xl px-4 py-2 border border-black rounded-lg shadow-md font-medium bg-stone-200/70 hover:bg-stone-100/90";
+    "flex rounded-xl border border-stone-600 rounded-lg shadow-md hover:shadow-xl font-medium text-stone-700 bg-stone-200/80 hover:bg-stone-100/90";
 
   if (disabled)
     return (
-      <div className={`${btnBase} ${className} p-[1px]`}>
-        <div className="m-[2px]">{children}</div>
+      <div
+        className={`${btnBase} ${className} w-full border-stone-200/90 shadow-sm hover:shadow-sm text-stone-500/70`}
+      >
+        <div className="m-[3px]hover:shadow-xl mx-auto">{children}</div>
       </div>
     );
 
   return (
     <button
-      className={`${btnBase} ${className} w-full`}
+      className={`${className} ${btnBase} w-full `}
       type={type}
       onClick={onClick}
     >

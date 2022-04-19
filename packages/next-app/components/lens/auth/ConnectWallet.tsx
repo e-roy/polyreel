@@ -17,7 +17,12 @@ export const ConnectWallet = () => {
 
   return (
     <div>
-      <Button onClick={() => setIsModalOpen(true)}>Connect Wallet</Button>
+      <Button
+        className="text-2xl font-bold py-2 px-4"
+        onClick={() => setIsModalOpen(true)}
+      >
+        Connect Wallet
+      </Button>
 
       {isModalOpen && (
         <Modal
