@@ -34,6 +34,8 @@ const ProfilePage: NextPage = () => {
     },
   });
 
+  // console.log(error);
+
   if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 

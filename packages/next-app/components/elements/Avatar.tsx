@@ -6,6 +6,8 @@ type AvatarProps = {
 };
 
 export const Avatar = ({ profile, size }: AvatarProps) => {
+  // console.log(profile);
+  if (!profile?.picture?.original) return null;
   if (profile?.picture?.original.url === "") return null;
   if (
     profile?.picture?.original.url.startsWith(
