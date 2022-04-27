@@ -134,7 +134,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
 
   return (
     <>
-      <Button className="w-30" onClick={() => handleButton()}>
+      <Button className="py-2 px-4" onClick={() => handleButton()}>
         edit profile
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>
@@ -150,11 +150,13 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
                   <span className="sr-only">Close panel</span>
                   <XIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
-                <span className="pl-4"> Edit Profile</span>
+                <span className="pl-4">Edit Profile</span>
               </div>
             </div>
             <div>
-              <Button onClick={() => handleSave()}>save</Button>
+              <Button className="py-1 px-2" onClick={() => handleSave()}>
+                save
+              </Button>
             </div>
           </div>
           {currentUser?.coverPicture && currentUser?.coverPicture ? (

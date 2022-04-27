@@ -58,7 +58,7 @@ const ProfilePage: NextPage = () => {
               <img
                 src={profile.coverPicture.original.url}
                 alt=""
-                className="h-64 h-full"
+                className="h-64"
                 object-fit=""
               />
             </div>

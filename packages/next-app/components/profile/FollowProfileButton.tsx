@@ -80,17 +80,17 @@ export const FollowProfileButton = ({
   return (
     <>
       {!txComplete && !txError && (
-        <Button className="w-30" onClick={() => handleFollow()}>
+        <Button className="py-2 px-4" onClick={() => handleFollow()}>
           follow
         </Button>
       )}
       {txComplete && (
-        <Button className="w-30" disabled>
+        <Button className="py-2 px-4" disabled>
           success
         </Button>
       )}
       {txError && (
-        <Button className="w-30" disabled>
+        <Button className="py-2 px-4" disabled>
           error
         </Button>
       )}

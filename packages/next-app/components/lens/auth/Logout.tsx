@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { useAccount } from "wagmi";
 import { removeAuthenticationToken } from "@/lib/auth/state";
+import { Button } from "@/components/elements";
 
 type LogoutProps = {
   className?: string;

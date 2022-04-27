@@ -33,7 +33,7 @@ const SelectProfile: NextPage = () => {
       </Head>
       <div className="flex justify-end mx-8 mt-4">
         <div>
-          <Button className="w-30">
+          <Button className="py-2 px-4">
             <Logout />
           </Button>
         </div>

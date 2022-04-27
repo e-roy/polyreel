@@ -147,7 +147,7 @@ export const Header = ({}: HeaderProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <div className="pointer-events-auto  max-w-md">
+                <div className="pointer-events-auto max-w-md">
                   <div className="flex h-full flex-col overflow-y-hidden bg-white pb-6 shadow">
                     <div
                       className="hover:bg-sky-200 cursor-pointer border-b shadow"
