@@ -2,17 +2,26 @@ import { gql } from "@apollo/client";
 
 import { MediaFieldsFragment } from "./MediaFieldsFragment";
 
-export const PostProfileFragment = gql`
-  fragment PostProfileFragment on Profile {
+export const ProfileFragment = gql`
+  fragment ProfileFragment on Profile {
     id
-    bio
-    name
     handle
+    name
+    bio
+    location
+    website
+    twitter
     picture {
       ... on MediaSet {
         original {
           ...MediaFieldsFragment
         }
+      }
+      ... on NftImage {
+        contractAddress
+        tokenId
+        uri
+        verified
       }
     }
   }

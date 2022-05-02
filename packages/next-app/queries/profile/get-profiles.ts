@@ -7,6 +7,7 @@ export const GET_PROFILES = gql`
     profiles(request: $request) {
       items {
         id
+        handle
         name
         bio
         location

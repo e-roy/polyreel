@@ -3,7 +3,6 @@ import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
@@ -38,6 +37,16 @@ const ProfilePage: NextPage = () => {
 
   if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
+
+  const checkWebsite = (url: string) => {
+    // console.log(handle);
+    return url;
+  };
+
+  const checkTwitter = (handle: string) => {
+    // console.log(handle);
+    return handle;
+  };
 
   let profile = data.profiles.items[0];
 
@@ -84,7 +93,7 @@ const ProfilePage: NextPage = () => {
             <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
               {profile.website && (
                 <a
-                  href={`https:\\${profile.website}`}
+                  href={`${checkWebsite(profile.website)}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
@@ -93,7 +102,7 @@ const ProfilePage: NextPage = () => {
               )}
               {profile.twitter && (
                 <a
-                  href={profile.twitter}
+                  href={`https://twitter.com/${checkTwitter(profile.twitter)}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >

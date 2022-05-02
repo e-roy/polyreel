@@ -6,6 +6,7 @@ export const RECOMMENDED_PROFILES = gql`
   query {
     recommendedProfiles {
       id
+      handle
       name
       bio
       location

@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+
 import { Button, Modal, TextField, Avatar } from "@/components/elements";
 import { XIcon, PencilIcon } from "@heroicons/react/outline";
 
@@ -92,7 +93,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
         setUpdateLocation(currentUser?.location as string);
       setUpdateWebsite((currentUser?.website as string) || "");
       setUpdateTwitterUrl((currentUser?.twitter as string) || "");
-      setUpdateCoverPicture((currentUser?.coverPicture as string) || "");
+      setUpdateCoverPicture((currentUser?.coverPicture as any) || "");
     }
   }, [currentUser]);
 
@@ -161,11 +162,20 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
           </div>
           {currentUser?.coverPicture && currentUser?.coverPicture ? (
             <div className=" h-40 sm:h-56">
-              <img
-                className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                src={currentUser?.coverPicture}
-                alt=""
-              />
+              {currentUser.coverPicture.__typename === "MediaSet" && (
+                <img
+                  className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
+                  src={currentUser.coverPicture.original.url}
+                  alt=""
+                />
+              )}
+              {currentUser.coverPicture.__typename === "NftImage" && (
+                <img
+                  className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
+                  src={currentUser.coverPicture.uri}
+                  alt=""
+                />
+              )}
             </div>
           ) : (
             <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
@@ -176,7 +186,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               className="-mt-8 ml-4 z-20 flex cursor-pointer"
               onClick={() => setEditProfileImage(!editProfileImage)}
             >
-              <Avatar profile={currentUser} size={"medium"} />
+              <Avatar profile={currentUser as any} size={"medium"} />
               <div className="mt-10 -ml-4 p-1 rounded-full bg-stone-200">
                 <PencilIcon className="h-4 w-4" aria-hidden="true" />
               </div>
@@ -225,7 +235,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               <TextField
                 className="my-4"
                 name="twitter"
-                label="Update Your Twitter Url"
+                label="Update Your Twitter Handle"
                 value={updateTwitterUrl || ""}
                 placeholder="location"
                 onChange={(e) => setUpdateTwitterUrl(e.target.value)}

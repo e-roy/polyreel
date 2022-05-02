@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { PostProfileFragment } from "../fragments/PostProfileFragment";
+import { ProfileFragment } from "../fragments/ProfileFragment";
 
 export const SEARCH_PROFILES = gql`
   query ($request: SearchQueryRequest!) {
@@ -9,7 +9,7 @@ export const SEARCH_PROFILES = gql`
         __typename
         items {
           ... on Profile {
-            ...PostProfileFragment
+            ...ProfileFragment
             stats {
               totalFollowers
               totalFollowing
@@ -28,5 +28,5 @@ export const SEARCH_PROFILES = gql`
       }
     }
   }
-  ${PostProfileFragment}
+  ${ProfileFragment}
 `;

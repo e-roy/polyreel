@@ -1,79 +1,57 @@
+import { useState, useEffect } from "react";
 import { UserIcon } from "@heroicons/react/outline";
+import { Profile } from "@/types/lenstypes";
 
 type AvatarProps = {
-  profile: any;
+  profile: Profile;
   size: string;
 };
 
-export const Avatar = ({ profile, size }: AvatarProps) => {
-  // console.log(profile);
-  if (!profile?.picture?.original) return null;
-  if (profile?.picture?.original.url === "") return null;
-  if (
-    profile?.picture?.original.url.startsWith(
-      "https://statics-mumbai-lens.s3.amazonaws.com/profile"
-    )
-  )
-    return null;
+const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl`;
+const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-1 bg-white shadow-xl`;
+const SmallAvatar = `inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`;
 
-  return <AvatarIcon profile={profile} size={size} />;
+export const Avatar = ({ profile, size }: AvatarProps) => {
+  const [avatarSize, setAvatarSize] = useState("");
+
+  useEffect(() => {
+    if (size) {
+      if (size === "small") {
+        setAvatarSize(SmallAvatar);
+      } else if (size === "medium") {
+        setAvatarSize(MediumAvatar);
+      } else {
+        setAvatarSize(LargeAvatar);
+      }
+    }
+  }, [size]);
+
+  if (!profile || avatarSize === "") return null;
+
+  if (profile.picture?.__typename === "NftImage") {
+    return (
+      <img
+        src={profile.picture.uri}
+        alt={`@${profile.handle}`}
+        className={avatarSize}
+      />
+    );
+  } else if (profile.picture?.__typename === "MediaSet") {
+    return (
+      <img
+        src={checkIpfs(profile?.picture.original.url)}
+        alt={`@${profile.handle}`}
+        className={avatarSize}
+      />
+    );
+  } else {
+    return <UserIcon className={avatarSize} />;
+  }
 };
 
 const checkIpfs = (url: string) => {
   if (url.startsWith("ipfs://")) {
     const ipfs = url.replace("ipfs://", "");
-    return `https://ipfs.io/ipfs/${ipfs}`;
+    return `https://ipfs.infura.io/ipfs/${ipfs}`;
   } else return url;
-};
-
-const AvatarIcon = ({ profile, size }: AvatarProps) => {
-  if (size === "profile") {
-    return (
-      <>
-        {profile?.picture ? (
-          <img
-            src={checkIpfs(profile?.picture.original.url)}
-            alt={`@${profile.handle}`}
-            className={`rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 p-1 bg-white shadow-xl`}
-          />
-        ) : (
-          <UserIcon
-            className={`rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl`}
-          />
-        )}
-      </>
-    );
-  } else if (size === "medium") {
-    return (
-      <>
-        {profile?.picture && profile.picture.original.url ? (
-          <img
-            src={checkIpfs(profile?.picture.original.url)}
-            alt={`@${profile.handle}`}
-            className={`inline-block rounded-full h-16 w-16 p-1 bg-white shadow-xl`}
-          />
-        ) : (
-          <UserIcon
-            className={`inline-block rounded-full h-16 w-16 text-stone-500 p-1 bg-white shadow-xl`}
-          />
-        )}
-      </>
-    );
-  } else if (size === "small") {
-    return (
-      <>
-        {profile?.picture && profile.picture.original.url ? (
-          <img
-            src={checkIpfs(profile?.picture.original.url)}
-            alt={`@${profile.handle}`}
-            className={`inline-block rounded-full h-10 w-10 p-0.5 bg-white shadow-lg`}
-          />
-        ) : (
-          <UserIcon
-            className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
-          />
-        )}
-      </>
-    );
-  } else return null;
 };

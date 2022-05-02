@@ -159,7 +159,7 @@ export const CreatePost = () => {
               </Dialog.Title>
               <div className="max-h-screen overflow-y-scroll">
                 <div className="flex mt-6">
-                  <Avatar profile={currentUser} size={"small"} />
+                  <Avatar profile={currentUser as any} size={"small"} />
                   <div className="w-full sm:ml-4 p-2">
                     <textarea
                       rows={6}

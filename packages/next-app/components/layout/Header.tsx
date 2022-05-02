@@ -88,7 +88,7 @@ export const Header = ({}: HeaderProps) => {
           {currentUser?.picture ? (
             <Avatar profile={currentUser} size={"small"} />
           ) : (
-            <Avatar profile={currentUser} size={"small"} />
+            <Avatar profile={currentUser as any} size={"small"} />
           )}
           <div className="px-4 font-medium">
             <div>@{currentUser?.handle}</div>
@@ -157,11 +157,22 @@ export const Header = ({}: HeaderProps) => {
                     >
                       {currentUser?.coverPicture ? (
                         <div className=" h-40 sm:h-56">
-                          <img
-                            className=" max-h-56 w-full sm:border-2 border-transparent"
-                            src={currentUser?.coverPicture}
-                            alt=""
-                          />
+                          {currentUser.coverPicture.__typename ===
+                            "MediaSet" && (
+                            <img
+                              className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
+                              src={currentUser.coverPicture.original.url}
+                              alt=""
+                            />
+                          )}
+                          {currentUser.coverPicture.__typename ===
+                            "NftImage" && (
+                            <img
+                              className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
+                              src={currentUser.coverPicture.uri}
+                              alt=""
+                            />
+                          )}
                         </div>
                       ) : (
                         <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64"></div>
@@ -169,7 +180,7 @@ export const Header = ({}: HeaderProps) => {
 
                       <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                         <div className="sm:flex-1 flex">
-                          <Avatar profile={currentUser} size={"small"} />
+                          <Avatar profile={currentUser as any} size={"small"} />
                           <div className="px-4 font-medium">
                             <div>@{currentUser?.handle}</div>
                             <div>{currentUser?.name}</div>

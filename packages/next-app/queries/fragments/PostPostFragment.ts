@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { PostProfileFragment } from "./PostProfileFragment";
+import { ProfileFragment } from "./ProfileFragment";
 import { MediaFieldsFragment } from "./MediaFieldsFragment";
 
 export const PostPostFragment = gql`
@@ -8,7 +8,7 @@ export const PostPostFragment = gql`
     id
 
     profile {
-      ...PostProfileFragment
+      ...ProfileFragment
     }
 
     metadata {
@@ -31,6 +31,6 @@ export const PostPostFragment = gql`
     createdAt
     appId
   }
-  ${PostProfileFragment}
+  ${ProfileFragment}
   ${MediaFieldsFragment}
 `;
