@@ -13,17 +13,17 @@ import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 type FollowProfileButtonProps = {
   profileId: string;
+  refetch: () => void;
 };
 
 export const FollowProfileButton = ({
   profileId,
+  refetch,
 }: FollowProfileButtonProps) => {
-  const [txComplete, setTxComplete] = useState(false);
-  const [txError, setTxError] = useState(false);
-  const [{ data: accountData }] = useAccount();
-  const [{}, signTypedData] = useSignTypedData();
-
-  const [{}, write] = useContractWrite(
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { data: accountData } = useAccount();
+  const { signTypedDataAsync } = useSignTypedData();
+  const { writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -32,42 +32,50 @@ export const FollowProfileButton = ({
   );
   const [createFollowTypedData, {}] = useMutation(CREATE_FOLLOW_TYPED_DATA, {
     onCompleted({ createFollowTypedData }: any) {
-      const { typedData } = createFollowTypedData;
       if (!createFollowTypedData) console.log("createFollow is null");
+
+      const { typedData } = createFollowTypedData;
       const { profileIds, datas } = typedData?.value;
 
-      signTypedData({
+      signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
       }).then((res) => {
-        if (!res.error) {
-          const { v, r, s } = splitSignature(res.data);
-          const postARGS = {
-            follower: accountData?.address,
-            profileIds,
-            datas,
-            sig: {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            },
-          };
-          write({ args: postARGS }).then((res) => {
-            if (!res.error) {
-              setTxComplete(true);
-            } else {
-              setTxError(true);
-            }
+        const { v, r, s } = splitSignature(res);
+        const postARGS = {
+          follower: accountData?.address,
+          profileIds,
+          datas,
+          sig: {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          },
+        };
+
+        writeAsync({ args: postARGS })
+          .then((res) => {
+            res.wait(1).then(() => {
+              refetch();
+              setIsUpdating(false);
+            });
+          })
+          .catch((error) => {
+            console.log("follow error");
+            console.log(error);
+            setIsUpdating(false);
           });
-        }
-        // console.log(res);
       });
+    },
+    onError(error) {
+      console.log(error);
     },
   });
 
   const handleFollow = async () => {
+    setIsUpdating(true);
     createFollowTypedData({
       variables: {
         request: {
@@ -77,23 +85,17 @@ export const FollowProfileButton = ({
     });
   };
 
+  if (isUpdating) {
+    return (
+      <Button className="py-2 px-4" disabled>
+        Updating...
+      </Button>
+    );
+  }
+
   return (
-    <>
-      {!txComplete && !txError && (
-        <Button className="py-2 px-4" onClick={() => handleFollow()}>
-          follow
-        </Button>
-      )}
-      {txComplete && (
-        <Button className="py-2 px-4" disabled>
-          success
-        </Button>
-      )}
-      {txError && (
-        <Button className="py-2 px-4" disabled>
-          error
-        </Button>
-      )}
-    </>
+    <Button className="py-2 px-4" onClick={() => handleFollow()}>
+      follow
+    </Button>
   );
 };

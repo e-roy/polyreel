@@ -16,9 +16,11 @@ import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
 
 import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
 
-type EditProfileButtonProps = {};
+type EditProfileButtonProps = {
+  refetch: () => void;
+};
 
-export const EditProfileButton = ({}: EditProfileButtonProps) => {
+export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
   const { currentUser, refechProfiles } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
@@ -30,8 +32,8 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
   const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string>("");
   const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
 
-  const [{}, signTypedData] = useSignTypedData();
-  const [{}, write] = useContractWrite(
+  const { signTypedData, signTypedDataAsync } = useSignTypedData();
+  const { write, writeAsync } = useContractWrite(
     {
       addressOrName: LENS_PERIPHERY_CONTRACT,
       contractInterface: LENS_PERIPHERY_ABI,
@@ -48,13 +50,13 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
       // console.log("HERE WITH TYPE DATA", typedData);
       // console.log(profileId);
       // console.log(metadata);
-      signTypedData({
+      signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
       }).then((res) => {
-        if (!res.error) {
-          const { v, r, s } = splitSignature(res.data);
+        if (res) {
+          const { v, r, s } = splitSignature(res);
           const postARGS = {
             user: currentUser?.ownedBy,
             profileId,
@@ -66,14 +68,14 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
               deadline: typedData.value.deadline,
             },
           };
-          write({ args: postARGS }).then((res) => {
-            if (!res.error) {
+          writeAsync({ args: postARGS }).then((res) => {
+            if (res) {
               // console.log(res.data);
               refechProfiles();
               setIsOpen(false);
               // reset form  and other closing actions
             } else {
-              console.log(res.error);
+              console.log(res);
             }
           });
         }
@@ -131,6 +133,11 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
         },
       },
     });
+  };
+
+  const handleRefetch = async () => {
+    await refetch();
+    setEditProfileImage(!editProfileImage);
   };
 
   return (
@@ -196,7 +203,10 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
 
           {editProfileImage ? (
             <div className="h-1/2 py-8 px-4">
-              <SetProfileImage profileId={currentUser?.id as string} />
+              <SetProfileImage
+                profileId={currentUser?.id as string}
+                refetch={handleRefetch}
+              />
             </div>
           ) : (
             <div className="h-1/2 overflow-y-scroll">
@@ -237,7 +247,7 @@ export const EditProfileButton = ({}: EditProfileButtonProps) => {
                 name="twitter"
                 label="Update Your Twitter Handle"
                 value={updateTwitterUrl || ""}
-                placeholder="location"
+                placeholder="Twitter Handle"
                 onChange={(e) => setUpdateTwitterUrl(e.target.value)}
               />
             </div>

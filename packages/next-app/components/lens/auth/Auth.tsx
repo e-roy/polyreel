@@ -9,21 +9,21 @@ type AuthProps = {
 };
 
 export const Auth = ({ userLoggedIn }: AuthProps) => {
-  const [{ data: accountData }] = useAccount();
-  const [{}, signMessage] = useSignMessage();
+  const { data: accountData } = useAccount();
+  const { signMessageAsync } = useSignMessage();
 
   const handleLogin = async () => {
-    // console.log("login component");
-
     const challenge = await generateChallenge(accountData?.address as string);
     if (!challenge) return;
-    const signature = await signMessage({
+    const signature = await signMessageAsync({
       message: challenge.data.challenge.text,
     });
+
     const accessTokens = await authenticate(
       accountData?.address as string,
-      signature.data as string
+      signature as string
     );
+
     setAuthenticationToken({ token: accessTokens.data.authenticate });
     userLoggedIn();
   };

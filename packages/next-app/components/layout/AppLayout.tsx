@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { useAccount } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 
 import { removeAuthenticationToken } from "@/lib/auth/state";
 
@@ -18,7 +18,9 @@ type AppLayoutProps = {
 export const AppLayout = ({ children }: AppLayoutProps) => {
   const router = useRouter();
 
-  const [{ data: accountData }] = useAccount();
+  const { data: accountData } = useAccount();
+  const { activeConnector } = useConnect();
+  const { disconnect } = useDisconnect();
 
   const [currentUserProfileId, setCurrentUserProfileId] = useState<
     string | null
@@ -31,8 +33,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   }, []);
 
   useEffect(() => {
-    accountData?.connector?.on("change", () => {
+    activeConnector?.on("change", () => {
       removeAuthenticationToken();
+      disconnect();
     });
   }, [accountData?.address]);
 

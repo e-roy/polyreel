@@ -32,12 +32,12 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [isGifOpen, setIsGifOpen] = useState(false);
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
-  //   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [selectedPicture, setSelectedPicture] = useState(null);
 
-  const [{}, signTypedData] = useSignTypedData();
-  const [{}, write] = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+
+  const { write } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -61,44 +61,35 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         referenceModuleData,
       } = typedData?.value;
 
-      signTypedData({
+      signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
       }).then((res) => {
-        if (!res.error) {
-          const { v, r, s } = splitSignature(res.data);
-          const postARGS = {
-            profileId,
-            contentURI,
-            profileIdPointed,
-            pubIdPointed,
-            collectModule,
-            collectModuleData,
-            referenceModule,
-            referenceModuleData,
-            sig: {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            },
-          };
-          write({ args: postARGS }).then((res) => {
-            if (!res.error) {
-              // console.log(res.data);
-              onClose();
-              // reset form  and other closing actions
-            } else {
-              console.log(res.error);
-            }
-          });
-        }
-        // console.log(res);
+        const { v, r, s } = splitSignature(res);
+        const postARGS = {
+          profileId,
+          contentURI,
+          profileIdPointed,
+          pubIdPointed,
+          collectModule,
+          collectModuleData,
+          referenceModule,
+          referenceModuleData,
+          sig: {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          },
+        };
+        write({ args: postARGS });
+        onClose();
       });
     },
     onError(error) {
       console.log(error);
+      onClose();
     },
   });
 
@@ -121,7 +112,6 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
     };
     const result = await uploadIpfs({ payload });
 
-    // console.log(result);
     createCommentTypedData({
       variables: {
         request: {

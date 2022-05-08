@@ -29,7 +29,7 @@ export const Header = ({}: HeaderProps) => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
-  const [{ data: accountData, loading: accountLoading }] = useAccount();
+  const { data: accountData } = useAccount();
 
   // console.log("currentUser", currentUser);
 
@@ -73,7 +73,7 @@ export const Header = ({}: HeaderProps) => {
   const baseClass =
     "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
 
-  if (accountLoading || profileLoading || verifyLoading) {
+  if (profileLoading || verifyLoading) {
     return (
       <header className="py-2 px-4 mx-4 bg-white h-16 flex justify-between sticky"></header>
     );

@@ -17,8 +17,8 @@ export const Mirror = ({ publication }: any) => {
 
   const { stats } = publication;
 
-  const [{}, signTypedData] = useSignTypedData();
-  const [{}, write] = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+  const { write } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -38,36 +38,26 @@ export const Mirror = ({ publication }: any) => {
         referenceModuleData,
       } = typedData?.value;
 
-      signTypedData({
+      signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
       }).then((res) => {
-        if (!res.error) {
-          const { v, r, s } = splitSignature(res.data);
-          const postARGS = {
-            profileId,
-            profileIdPointed,
-            pubIdPointed,
-            referenceModule,
-            referenceModuleData,
-            sig: {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            },
-          };
-          write({ args: postARGS }).then((res) => {
-            if (!res.error) {
-              // console.log(res.data);
-              // reset form  and other closing actions
-            } else {
-              console.log(res.error);
-            }
-          });
-        }
-        console.log(res);
+        const { v, r, s } = splitSignature(res);
+        const postARGS = {
+          profileId,
+          profileIdPointed,
+          pubIdPointed,
+          referenceModule,
+          referenceModuleData,
+          sig: {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          },
+        };
+        write({ args: postARGS });
       });
     },
     onError(error) {
