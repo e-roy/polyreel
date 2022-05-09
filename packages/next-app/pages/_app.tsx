@@ -1,10 +1,9 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Connector, Provider, chain, defaultChains } from "wagmi";
+import { Provider, chain, defaultChains, createClient } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import { providers } from "ethers";
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "@/lib";
@@ -22,56 +21,39 @@ const chains = defaultChains;
 const defaultChain = chain.mainnet;
 
 // Set up connectors
-type ConnectorsConfig = { chainId?: number };
-const connectors = ({ chainId }: ConnectorsConfig) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    defaultChain.rpcUrls[0];
-  return [
-    new InjectedConnector({ chains }),
-    // new WalletConnectConnector({
-    //   chains,
-    //   options: {
-    //     infuraId,
-    //     qrcode: true,
-    //   },
-    // }),
-    // new WalletLinkConnector({
-    //   chains,
-    //   options: {
-    //     appName: 'polyreel',
-    //     jsonRpcUrl: `${rpcUrl}/${infuraId}`,
-    //   },
-    // }),
-  ];
-};
-
-// Set up providers
-type ProviderConfig = { chainId?: number; connector?: Connector };
-const isChainSupported = (chainId?: number) =>
-  chains.some((x) => x.id === chainId);
-
-const provider = ({ chainId }: ProviderConfig) =>
-  providers.getDefaultProvider(
-    isChainSupported(chainId) ? chainId : defaultChain.id,
-    {
-      alchemyId,
-      infuraId,
-    }
-  );
-const webSocketProvider = ({ chainId }: ProviderConfig) =>
-  isChainSupported(chainId)
-    ? new providers.AlchemyWebSocketProvider(chainId, alchemyId)
-    : undefined;
+const client = createClient({
+  autoConnect: true,
+  connectors({ chainId }) {
+    const chain = chains.find((x) => x.id === chainId) ?? defaultChain;
+    const rpcUrl = chain.rpcUrls.alchemy
+      ? `${chain.rpcUrls.alchemy}/${alchemyId}`
+      : typeof chain.rpcUrls.default === "string"
+      ? chain.rpcUrls.default
+      : chain.rpcUrls.default[0];
+    return [
+      new InjectedConnector(),
+      // new CoinbaseWalletConnector({
+      //   options: {
+      //     appName: 'polyreel.xyz',
+      //     chainId: chain.id,
+      //     jsonRpcUrl: rpcUrl,
+      //   },
+      // }),
+      // new WalletConnectConnector({
+      //   options: {
+      //     qrcode: true,
+      //     rpc: {
+      //       [chain.id]: rpcUrl,
+      //     },
+      //   },
+      // }),
+    ];
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider
-      autoConnect
-      connectors={connectors}
-      provider={provider}
-      webSocketProvider={webSocketProvider}
-    >
+    <Provider client={client}>
       <ApolloProvider client={apolloClient()}>
         <ThemeProvider defaultTheme="light" attribute="class">
           <AppLayout>

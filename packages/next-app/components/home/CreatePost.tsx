@@ -37,8 +37,8 @@ export const CreatePost = () => {
 
   const [content, setContent] = useState("");
 
-  const [{}, signTypedData] = useSignTypedData();
-  const [{}, write] = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+  const { write } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -48,9 +48,8 @@ export const CreatePost = () => {
 
   const [createPostTypedData, {}] = useMutation(CREATE_POST_TYPED_DATA, {
     onCompleted({ createPostTypedData }: any) {
-      console.log("on completed");
-      const { typedData } = createPostTypedData;
       if (!createPostTypedData) console.log("createPost is null");
+      const { typedData } = createPostTypedData;
       const {
         profileId,
         contentURI,
@@ -60,41 +59,33 @@ export const CreatePost = () => {
         referenceModuleData,
       } = typedData?.value;
 
-      signTypedData({
+      signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
-      }).then((res) => {
-        if (!res.error) {
-          const { v, r, s } = splitSignature(res.data);
-          const postARGS = {
-            profileId,
-            contentURI,
-            collectModule,
-            collectModuleData,
-            referenceModule,
-            referenceModuleData,
-            sig: {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            },
-          };
-          write({ args: postARGS }).then((res) => {
-            if (!res.error) {
-              setIsModalOpen(false);
-              // reset form  and other closing actions
-            } else {
-              console.log(res.error);
-            }
-          });
-        }
-        console.log(res);
+      }).then((res: any) => {
+        const { v, r, s } = splitSignature(res);
+        const postARGS = {
+          profileId,
+          contentURI,
+          collectModule,
+          collectModuleData,
+          referenceModule,
+          referenceModuleData,
+          sig: {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          },
+        };
+        write({ args: postARGS });
+        setIsModalOpen(false);
       });
     },
     onError(error) {
       console.log(error);
+      setIsModalOpen(false);
     },
   });
 
@@ -115,6 +106,7 @@ export const CreatePost = () => {
       media: media,
     };
     const result = await uploadIpfs({ payload });
+    // console.log(result);
     setContent("");
     setSelectedPicture(null);
 
@@ -122,7 +114,8 @@ export const CreatePost = () => {
       variables: {
         request: {
           profileId: currentUser?.id,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          // contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result,
           collectModule: {
             revertCollectModule: true,
           },
@@ -220,12 +213,12 @@ export const CreatePost = () => {
                       <PhotographIcon className="text-3xl h-5 w-5 mx-auto " />
                     </div>
                   </div>
-                  <div className="w-30">
+                  <div className="mx-4">
                     <Button
                       disabled={
                         selectedPicture || content.length !== 0 ? false : true
                       }
-                      className="px-2 py-1"
+                      className="px-4 py-1"
                       onClick={() => handlePost()}
                     >
                       post

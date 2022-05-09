@@ -15,16 +15,19 @@ import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export type SetProfileImageProps = {
   profileId: string;
+  refetch: () => void;
 };
 
-export const SetProfileImage = ({ profileId }: SetProfileImageProps) => {
+export const SetProfileImage = ({
+  profileId,
+  refetch,
+}: SetProfileImageProps) => {
   const [profileImage, setProfileImage] = useState([]);
   const [updating, setUpdating] = useState(false);
-  const [imageUpdated, setImageUpdated] = useState(false);
   const maxNumber = 1;
 
-  const [{}, signTypedData] = useSignTypedData();
-  const [{}, write] = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+  const { writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -38,38 +41,37 @@ export const SetProfileImage = ({ profileId }: SetProfileImageProps) => {
       onCompleted({ createSetProfileImageURITypedData }: any) {
         const { typedData } = createSetProfileImageURITypedData;
 
-        signTypedData({
+        signTypedDataAsync({
           domain: omit(typedData?.domain, "__typename"),
           types: omit(typedData?.types, "__typename"),
           value: omit(typedData?.value, "__typename"),
         }).then((res) => {
-          if (!res.error) {
-            setUpdating(true);
-            const { profileId, imageURI } = typedData?.value;
-            const { v, r, s } = splitSignature(res.data);
-            const postARGS = {
-              profileId,
-              imageURI,
-              sig: {
-                v,
-                r,
-                s,
-                deadline: typedData.value.deadline,
-              },
-            };
-            write({ args: postARGS }).then((res) => {
-              if (!res.error) {
-                // console.log(res.data);
+          setUpdating(true);
+          const { profileId, imageURI } = typedData?.value;
+          const { v, r, s } = splitSignature(res);
+          const postARGS = {
+            profileId,
+            imageURI,
+            sig: {
+              v,
+              r,
+              s,
+              deadline: typedData.value.deadline,
+            },
+          };
+          writeAsync({ args: postARGS })
+            .then((res) => {
+              res.wait(1).then(() => {
                 setUpdating(false);
                 setProfileImage([]);
-                setImageUpdated(true);
-                // reset form  and other closing actions
-              } else {
-                console.log(res.error);
-              }
+                refetch();
+              });
+            })
+            .catch((error) => {
+              setUpdating(false);
+              console.log("follow error");
+              console.log(error);
             });
-          }
-          // console.log("res", res);
         });
       },
     }
@@ -78,15 +80,6 @@ export const SetProfileImage = ({ profileId }: SetProfileImageProps) => {
   if (error) return <p>Updating error! {error.message}</p>;
 
   if (updating) return <Loading />;
-
-  if (imageUpdated)
-    return (
-      <div className="flex text-center justify-center h-full">
-        <p className="stroke-neutral-700 text-2xl font-medium">
-          Image updated!
-        </p>
-      </div>
-    );
 
   const onImageUpdate = async (image: any) => {
     const ipfsImage = await uploadImageIpfs(image);
@@ -127,10 +120,16 @@ export const SetProfileImage = ({ profileId }: SetProfileImageProps) => {
                   <div key={index} className="flex w-full justify-between mt-4">
                     <img src={image.data_url} alt="" width="100" />
                     <div className="flex flex-col space-y-4">
-                      <Button className="" onClick={() => onImageUpdate(image)}>
+                      <Button
+                        className="py-1 px-2"
+                        onClick={() => onImageUpdate(image)}
+                      >
                         Update
                       </Button>
-                      <Button onClick={() => onImageRemove(index)}>
+                      <Button
+                        className="py-1 px-2"
+                        onClick={() => onImageRemove(index)}
+                      >
                         Remove
                       </Button>
                     </div>

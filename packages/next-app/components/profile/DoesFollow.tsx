@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { DOES_FOLLOW } from "@/queries/follow/does-follow";
@@ -12,9 +13,15 @@ type DoesFollowProps = {
 };
 
 export const DoesFollow = ({ profileId }: DoesFollowProps) => {
-  const [{ data: accountData }] = useAccount();
+  const { data: accountData } = useAccount();
 
-  const { data: doesFollowData, loading } = useQuery(DOES_FOLLOW, {
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
+  const {
+    data: doesFollowData,
+    loading,
+    refetch,
+  } = useQuery(DOES_FOLLOW, {
     variables: {
       request: {
         followInfos: [
@@ -25,16 +32,28 @@ export const DoesFollow = ({ profileId }: DoesFollowProps) => {
         ],
       },
     },
+    onCompleted: (data) => {
+      const { doesFollow } = data;
+      const { follows } = doesFollow[0];
+      setIsFollowing(follows);
+    },
   });
-  if (loading) return <div>loading</div>;
 
-  return (
-    <div>
-      {doesFollowData?.doesFollow[0].follows ? (
-        <UnFollowProfileButton profileId={profileId} />
-      ) : (
-        <FollowProfileButton profileId={profileId} />
-      )}
-    </div>
-  );
+  // return null if loading
+  if (loading) return null;
+  // return null if no data
+  if (!doesFollowData.doesFollow[0]) return null;
+
+  const handleRefetch = async () => {
+    await refetch();
+  };
+
+  if (isFollowing)
+    return (
+      <UnFollowProfileButton profileId={profileId} refetch={handleRefetch} />
+    );
+  else
+    return (
+      <FollowProfileButton profileId={profileId} refetch={handleRefetch} />
+    );
 };

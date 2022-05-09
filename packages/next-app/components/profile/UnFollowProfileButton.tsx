@@ -12,61 +12,65 @@ import LENS_FOLLOW_NFT_ABI from "@/abis/Lens-follow";
 
 type UnFollowProfileButtonProps = {
   profileId: string;
+  refetch: () => void;
 };
 
 export const UnFollowProfileButton = ({
   profileId,
+  refetch,
 }: UnFollowProfileButtonProps) => {
-  const [txComplete, setTxComplete] = useState(false);
-  const [txError, setTxError] = useState(false);
-  const [{}, signTypedData] = useSignTypedData();
-  const [{ data: signerData }] = useSigner();
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const { signTypedDataAsync } = useSignTypedData();
+  const { data: signerData } = useSigner();
 
   const [createUnfollowTypedData, {}] = useMutation(
     CREATE_UNFOLLOW_TYPED_DATA,
     {
       onCompleted({ createUnfollowTypedData }: any) {
-        const { typedData } = createUnfollowTypedData;
         if (!createUnfollowTypedData) console.log("createUnFollow is null");
+
+        const { typedData } = createUnfollowTypedData;
         const { tokenId } = typedData?.value;
         const { verifyingContract } = typedData?.domain;
 
-        signTypedData({
+        signTypedDataAsync({
           domain: omit(typedData?.domain, "__typename"),
           types: omit(typedData?.types, "__typename"),
           value: omit(typedData?.value, "__typename"),
         }).then((res) => {
-          if (!res.error) {
-            const { v, r, s } = splitSignature(res.data);
-            const followContract = new ethers.Contract(
-              verifyingContract,
-              LENS_FOLLOW_NFT_ABI,
-              signerData
-            );
-            const sig = {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            };
-            const excuteContract = async () => {
-              const tx = await followContract.burnWithSig(tokenId, sig);
-              if (tx.hash) {
-                setTxComplete(true);
-              } else {
-                setTxError(true);
-              }
-            };
-            return excuteContract();
-          } else {
-            setTxError(true);
-          }
+          const { v, r, s } = splitSignature(res);
+          const followContract = new ethers.Contract(
+            verifyingContract,
+            LENS_FOLLOW_NFT_ABI,
+            signerData as ethers.Signer
+          );
+          const sig = {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          };
+          const excuteContract = async () => {
+            const tx = await followContract.burnWithSig(tokenId, sig);
+            tx.wait(1)
+              .then(() => {
+                refetch();
+                setIsUpdating(false);
+              })
+              .catch((error: any) => {
+                console.log(error);
+                setIsUpdating(false);
+              });
+          };
+          return excuteContract();
         });
       },
     }
   );
 
   const handleUnFollow = async () => {
+    setIsUpdating(true);
     createUnfollowTypedData({
       variables: {
         request: {
@@ -76,23 +80,17 @@ export const UnFollowProfileButton = ({
     });
   };
 
+  if (isUpdating) {
+    return (
+      <Button className="py-2 px-4" disabled>
+        Updating...
+      </Button>
+    );
+  }
+
   return (
-    <>
-      {!txComplete && !txError && (
-        <Button className="w-30" onClick={() => handleUnFollow()}>
-          unfollow
-        </Button>
-      )}
-      {txComplete && (
-        <Button className="w-30" disabled>
-          success
-        </Button>
-      )}
-      {txError && (
-        <Button className="w-30" disabled>
-          error
-        </Button>
-      )}
-    </>
+    <Button className="py-2 px-4" onClick={() => handleUnFollow()}>
+      unfollow
+    </Button>
   );
 };

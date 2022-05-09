@@ -52,6 +52,11 @@ const ProfilePage: NextPage = () => {
 
   if (!profile) return null;
   // console.log(data);
+
+  const handleRefetch = async () => {
+    await refetch();
+  };
+
   return (
     <div>
       <Head>
@@ -112,7 +117,7 @@ const ProfilePage: NextPage = () => {
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
               {currentUser?.handle === id ? (
-                <EditProfileButton />
+                <EditProfileButton refetch={handleRefetch} />
               ) : (
                 <DoesFollow profileId={profile.id} />
               )}

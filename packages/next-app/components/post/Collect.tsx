@@ -18,11 +18,8 @@ export const Collect = ({ publication }: any) => {
 
   const { stats } = publication;
 
-  const [{ data: signData }, signTypedData] = useSignTypedData();
-  const [
-    { data, error: writeContractError, loading: writeContractLoading },
-    write,
-  ] = useContractWrite(
+  const { signTypedData, signTypedDataAsync } = useSignTypedData();
+  const { write, writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -39,13 +36,13 @@ export const Collect = ({ publication }: any) => {
           console.log("createCollectTypedData is null");
         const { collector, profileId, pubId, data } = typedData?.value;
 
-        signTypedData({
+        signTypedDataAsync({
           domain: omit(typedData?.domain, "__typename"),
           types: omit(typedData?.types, "__typename"),
           value: omit(typedData?.value, "__typename"),
         }).then((res) => {
-          if (!res.error) {
-            const { v, r, s } = splitSignature(res.data);
+          if (res) {
+            const { v, r, s } = splitSignature(res);
             const postARGS = {
               collector,
               profileId,
@@ -58,7 +55,7 @@ export const Collect = ({ publication }: any) => {
                 deadline: typedData.value.deadline,
               },
             };
-            write({ args: postARGS }).then((res) => {
+            writeAsync({ args: postARGS }).then((res: any) => {
               if (!res.error) {
                 console.log(res.data);
 

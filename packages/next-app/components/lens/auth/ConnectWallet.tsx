@@ -7,13 +7,7 @@ import walletConnectLogo from "@/images/walletconnect-logo.png";
 
 export const ConnectWallet = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [
-    {
-      data: { connector, connectors },
-      loading,
-    },
-    connect,
-  ] = useConnect();
+  const { error, connectors, connect } = useConnect();
 
   return (
     <div>
@@ -72,7 +66,7 @@ export const ConnectWallet = () => {
                 </div>
                 <div>
                   {!x.ready && " (unsupported)"}
-                  {loading && x.name === connector?.name && "…"}
+                  {error && <div>{error.message}</div>}
                 </div>
               </button>
             ))}

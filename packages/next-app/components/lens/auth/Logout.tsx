@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import { LogoutIcon } from "@heroicons/react/outline";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { removeAuthenticationToken } from "@/lib/auth/state";
-import { Button } from "@/components/elements";
 
 type LogoutProps = {
   className?: string;
@@ -11,7 +10,8 @@ type LogoutProps = {
 export const Logout = ({ className }: LogoutProps) => {
   const router = useRouter();
 
-  const [{ data: accountData }, disconnect] = useAccount();
+  const { data: accountData } = useAccount();
+  const { disconnect } = useDisconnect();
 
   const handleLogout = async () => {
     if (accountData?.address) {
