@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 //   protocol: "https",
 // });
 
+// @ts-ignore
 import IPFSNetwork from "./IPFSNetwork";
 const client = new IPFSNetwork();
 
