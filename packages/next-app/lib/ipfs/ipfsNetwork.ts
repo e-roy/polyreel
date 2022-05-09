@@ -1,13 +1,14 @@
 export default class IPFSNetwork {
+  endpoint: string;
   constructor() {
-    this.endpoint = new URL("https://ipfs.infura.io:5001");
+    this.endpoint = new URL("https://ipfs.infura.io:5001") as any;
   }
 
   /**
    * @param {Blob|File} blob
    * @returns {Promise<String|Error>}
    */
-  async storeBlob(blob) {
+  async storeBlob(blob: any) {
     const url = new URL("/api/v0/add?stream-channels=true", this.endpoint);
 
     if (blob.size === 0) {
@@ -34,7 +35,7 @@ export default class IPFSNetwork {
    * @param {Blob|File} blob
    * @returns {Promise<String|Error>}
    */
-  async add(content) {
+  async add(content: any) {
     // console.log(content);
 
     const url = new URL("/api/v0/add?stream-channels=true", this.endpoint);
