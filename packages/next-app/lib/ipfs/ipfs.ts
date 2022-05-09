@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 // });
 
 // @ts-ignore
-import IPFSNetwork from "./IPFSNetwork";
+import IPFSNetwork from "./IPFSNetwork.js";
 const client = new IPFSNetwork();
 
 type uploadIpfsProps = {
