@@ -129,7 +129,8 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
       variables: {
         request: {
           profileId: currentUser?.id,
-          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
+          metadata: "https://ipfs.infura.io/ipfs/" + result,
+          // metadata: "https://ipfs.infura.io/ipfs/" + result.path,
         },
       },
     });

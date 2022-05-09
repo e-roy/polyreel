@@ -106,6 +106,7 @@ export const CreatePost = () => {
       media: media,
     };
     const result = await uploadIpfs({ payload });
+    // console.log(result);
     setContent("");
     setSelectedPicture(null);
 
@@ -113,7 +114,8 @@ export const CreatePost = () => {
       variables: {
         request: {
           profileId: currentUser?.id,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          // contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result,
           collectModule: {
             revertCollectModule: true,
           },

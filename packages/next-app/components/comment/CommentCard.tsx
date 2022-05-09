@@ -117,7 +117,8 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         request: {
           profileId: currentUser?.id,
           publicationId: publicationId,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result,
+          // contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
           collectModule: {
             revertCollectModule: true,
           },

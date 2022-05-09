@@ -1,11 +1,14 @@
-import { create } from "ipfs-http-client";
+// import { create } from "ipfs-http-client";
 import { v4 as uuidv4 } from "uuid";
 
-const client = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-});
+// const client = create({
+//   host: "ipfs.infura.io",
+//   port: 5001,
+//   protocol: "https",
+// });
+
+import IPFSNetwork from "./IPFSNetwork";
+const client = new IPFSNetwork();
 
 type uploadIpfsProfileProps = {
   payload: {
@@ -32,17 +35,8 @@ export const uploadIpfsProfile = async ({
       cover_picture: payload.cover_picture,
       social: payload.social,
       attributes: [],
-
-      //   description: payload.description,
-      //   content: payload.content,
-      //   external_url: null,
-      //   image: payload.media.length > 0 ? payload.media[0]?.item : null,
-      //   imageMimeType: payload.media.length > 0 ? payload.media[0]?.type : null,
-      //   name: payload.name,
-      //   media: payload.media || [],
     })
   );
 
-  // console.log("upload result ipfs", result);
   return result;
 };
