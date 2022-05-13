@@ -59,7 +59,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
     <div className="mt-2">
       <div className="flex flex-wrap">
         {data.publications.items.map((publication: any, index: number) => (
-          <div key={index} className="w-full sm:w-1/3 space-2">
+          <div key={index} className="w-full sm:w-1/2 lg:w-1/3 space-2">
             <div className="m-2 p-2 border border-stone-400 shadow-lg rounded">
               <div className="">
                 <Post publication={publication} postType="profile" />

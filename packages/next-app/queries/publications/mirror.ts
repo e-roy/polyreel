@@ -26,6 +26,7 @@ export const CREATE_MIRROR_TYPED_DATA = gql`
           pubIdPointed
           referenceModule
           referenceModuleData
+          referenceModuleInitData
         }
       }
     }

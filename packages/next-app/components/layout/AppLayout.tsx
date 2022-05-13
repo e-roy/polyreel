@@ -74,9 +74,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
 
   if (userProfilesLoading || currentProfileLoading) return <Loading />;
 
-  if (router.pathname === "/home" && !currentProfileData) {
-    router.push("/select-profile");
-  }
+  // if (router.pathname === "/home" && !currentProfileData) {
+  //   router.push("/select-profile");
+  // }
 
   return (
     <UserContext.Provider value={injectContext}>

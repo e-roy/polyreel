@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "@/components/layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -27,31 +27,39 @@ const ProfilePage: NextPage = () => {
   const { id } = router.query;
   const [navSelect, setNavSelect] = useState("POST");
 
-  const { loading, error, data, refetch } = useQuery(GET_PROFILES, {
+  const {
+    data: profileData,
+    loading,
+    error,
+    refetch,
+  } = useQuery(GET_PROFILES, {
     variables: {
       request: { handles: [id] },
     },
   });
 
-  // console.log(error);
+  useEffect(() => {
+    if (profileData?.profiles[0]) {
+    }
+  }, [profileData]);
 
   if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
-  const checkWebsite = (url: string) => {
-    // console.log(handle);
-    return url;
+  const profile = profileData.profiles.items[0];
+
+  const checkWebsite = () => {
+    const website = filterAttributes(profile.attributes, "website");
+    if (website[0]) return website[0].value;
   };
 
-  const checkTwitter = (handle: string) => {
-    // console.log(handle);
-    return handle;
+  const checkTwitter = () => {
+    const twitter = filterAttributes(profile.attributes, "twitter");
+    if (twitter[0]) return twitter[0].value;
   };
-
-  let profile = data.profiles.items[0];
 
   if (!profile) return null;
-  // console.log(data);
+  // console.log(profileData);
 
   const handleRefetch = async () => {
     await refetch();
@@ -96,18 +104,18 @@ const ProfilePage: NextPage = () => {
 
           <div className="flex justify-between w-full px-8">
             <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
-              {profile.website && (
+              {profile.attributes && checkWebsite() && (
                 <a
-                  href={`${checkWebsite(profile.website)}`}
+                  href={`${checkWebsite()}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
                   <WebIcon size={30} />
                 </a>
               )}
-              {profile.twitter && (
+              {profile.attributes && checkTwitter() && (
                 <a
-                  href={`https://twitter.com/${checkTwitter(profile.twitter)}`}
+                  href={`https://twitter.com/${checkTwitter()}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
@@ -125,7 +133,6 @@ const ProfilePage: NextPage = () => {
           </div>
         </div>
         <div className="px-2 text-sm sm:text-base text-stone-700 font-medium">
-          {/* {profile.id} */}
           <div className="font-bold">
             <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
               <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
@@ -133,10 +140,10 @@ const ProfilePage: NextPage = () => {
               </LinkItProfile>
             </LinkItUrl>
           </div>
-          <div className="font-bold py-2">
+          {/* <div className="font-bold py-2">
             Location :
             <span className="font-medium pl-1">{profile.location}</span>
-          </div>
+          </div> */}
           <div className="sm:flex justify-between">
             <div className="font-semibold">
               <FollowersButton
@@ -150,15 +157,21 @@ const ProfilePage: NextPage = () => {
             <div className="sm:w-1/6"></div>
           </div>
         </div>
-        {navSelect === "NFTS" && <GetUserNfts ownedBy={profile.ownedBy} />}
-        {(navSelect === "POST" ||
-          navSelect === "COMMENT" ||
-          navSelect === "MIRROR") && (
-          <GetPublications profileId={profile.id} filter={navSelect} />
-        )}
+        <div className="mb-12">
+          {navSelect === "NFTS" && <GetUserNfts ownedBy={profile.ownedBy} />}
+          {(navSelect === "POST" ||
+            navSelect === "COMMENT" ||
+            navSelect === "MIRROR") && (
+            <GetPublications profileId={profile.id} filter={navSelect} />
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default ProfilePage;
+
+const filterAttributes = (attributes: any, key: string) => {
+  return attributes.filter((attribute: any) => attribute.key === key);
+};

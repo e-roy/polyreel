@@ -1,15 +1,11 @@
-// import { create } from "ipfs-http-client";
+import { create } from "ipfs-http-client";
 import { v4 as uuidv4 } from "uuid";
 
-// const client = create({
-//   host: "ipfs.infura.io",
-//   port: 5001,
-//   protocol: "https",
-// });
-
-// @ts-ignore
-import IPFSNetwork from "./ipfsNetwork";
-const client = new IPFSNetwork();
+const client = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+});
 
 type uploadIpfsProps = {
   payload: {

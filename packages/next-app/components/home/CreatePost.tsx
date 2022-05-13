@@ -21,8 +21,7 @@ import {
 import { EmojiIcon, GifIcon } from "@/icons";
 import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 
-import LENS_ABI from "@/abis/Lens.json";
-
+import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export const CreatePost = () => {
@@ -38,7 +37,7 @@ export const CreatePost = () => {
   const [content, setContent] = useState("");
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { write } = useContractWrite(
+  const { write, writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -54,9 +53,9 @@ export const CreatePost = () => {
         profileId,
         contentURI,
         collectModule,
-        collectModuleData,
+        collectModuleInitData,
         referenceModule,
-        referenceModuleData,
+        referenceModuleInitData,
       } = typedData?.value;
 
       signTypedDataAsync({
@@ -69,9 +68,9 @@ export const CreatePost = () => {
           profileId,
           contentURI,
           collectModule,
-          collectModuleData,
+          collectModuleInitData,
           referenceModule,
-          referenceModuleData,
+          referenceModuleInitData,
           sig: {
             v,
             r,
@@ -106,7 +105,7 @@ export const CreatePost = () => {
       media: media,
     };
     const result = await uploadIpfs({ payload });
-    // console.log(result);
+
     setContent("");
     setSelectedPicture(null);
 
@@ -114,8 +113,7 @@ export const CreatePost = () => {
       variables: {
         request: {
           profileId: currentUser?.id,
-          // contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
           collectModule: {
             revertCollectModule: true,
           },

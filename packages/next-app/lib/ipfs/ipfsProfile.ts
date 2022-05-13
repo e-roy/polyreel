@@ -1,23 +1,18 @@
-// import { create } from "ipfs-http-client";
+import { create } from "ipfs-http-client";
 import { v4 as uuidv4 } from "uuid";
 
-// const client = create({
-//   host: "ipfs.infura.io",
-//   port: 5001,
-//   protocol: "https",
-// });
-
-// @ts-ignore
-import IPFSNetwork from "./ipfsNetwork";
-const client = new IPFSNetwork();
+const client = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+});
 
 type uploadIpfsProfileProps = {
   payload: {
     name: string;
     bio: string;
-    location: string;
     cover_picture: string;
-    social: any[];
+    attributes: any[];
   };
 };
 
@@ -32,10 +27,8 @@ export const uploadIpfsProfile = async ({
       appId: "polyreel.xyz",
       name: payload.name,
       bio: payload.bio,
-      location: payload.location,
-      cover_picture: payload.cover_picture,
-      social: payload.social,
-      attributes: [],
+      cover_picture: payload.cover_picture || null,
+      attributes: payload.attributes || [],
     })
   );
 

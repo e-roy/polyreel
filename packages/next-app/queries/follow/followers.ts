@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client/core";
 
-import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
+import { ProfileFragmentLite } from "../fragments/ProfileFragmentLite";
 
 export const GET_FOLLOWERS = gql`
   query ($request: FollowersRequest!) {
@@ -9,68 +9,10 @@ export const GET_FOLLOWERS = gql`
         wallet {
           address
           defaultProfile {
-            id
-            name
-            bio
-            location
-            website
-            twitter
-            handle
-            picture {
-              ... on NftImage {
-                contractAddress
-                tokenId
-                uri
-                verified
-              }
-              ... on MediaSet {
-                original {
-                  ...MediaFieldsFragment
-                }
-              }
-            }
-            coverPicture {
-              ... on NftImage {
-                contractAddress
-                tokenId
-                uri
-                verified
-              }
-              ... on MediaSet {
-                original {
-                  ...MediaFieldsFragment
-                }
-              }
-            }
-            ownedBy
-            depatcher {
-              address
-              canUseRelay
-            }
+            ...ProfileFragmentLite
             stats {
               totalFollowers
               totalFollowing
-              totalPosts
-              totalComments
-              totalMirrors
-              totalPublications
-              totalCollects
-            }
-            followModule {
-              ... on FeeFollowModuleSettings {
-                type
-                contractAddress
-                amount {
-                  asset {
-                    name
-                    symbol
-                    decimals
-                    address
-                  }
-                  value
-                }
-                recipient
-              }
             }
           }
         }
@@ -83,5 +25,5 @@ export const GET_FOLLOWERS = gql`
       }
     }
   }
-  ${MediaFieldsFragment}
+  ${ProfileFragmentLite}
 `;

@@ -25,10 +25,11 @@ export const CREATE_COMMENT_TYPED_DATA = gql`
           profileIdPointed
           pubIdPointed
           contentURI
-          collectModule
-          collectModuleData
-          referenceModule
           referenceModuleData
+          collectModule
+          collectModuleInitData
+          referenceModule
+          referenceModuleInitData
         }
       }
     }

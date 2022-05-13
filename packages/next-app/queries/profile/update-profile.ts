@@ -28,18 +28,3 @@ export const UPDATE_PROFILE = gql`
     }
   }
 `;
-
-// old update profile
-
-// export const UPDATE_PROFILE = gql`
-//   mutation ($request: UpdateProfileRequest!) {
-//     updateProfile(request: $request) {
-//       id
-//       name
-//       location
-//       website
-//       twitter
-//       bio
-//     }
-//   }
-// `;

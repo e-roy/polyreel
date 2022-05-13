@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client/core";
 
 import { MediaFieldsFragment } from "../fragments/MediaFieldsFragment";
-import { ProfileFragment } from "../fragments/ProfileFragment";
+import { ProfileFragmentLite } from "../fragments/ProfileFragmentLite";
 
 export const GET_NOTIFICATIONS = gql`
   query ($request: NotificationRequest!) {
@@ -71,7 +71,7 @@ export const GET_NOTIFICATIONS = gql`
     __typename
     createdAt
     profile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
     publication {
       ... on Post {
@@ -86,7 +86,7 @@ export const GET_NOTIFICATIONS = gql`
     __typename
     createdAt
     profile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
     comment {
       ...CommentWithCommentedPublicationFields
@@ -127,7 +127,7 @@ export const GET_NOTIFICATIONS = gql`
       ...CompactMetadata
     }
     profile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
     collectedBy {
       ...Wallet
@@ -143,7 +143,7 @@ export const GET_NOTIFICATIONS = gql`
       ...CompactMetadata
     }
     profile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
     createdAt
   }
@@ -196,9 +196,9 @@ export const GET_NOTIFICATIONS = gql`
   fragment Wallet on Wallet {
     address
     defaultProfile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
   }
   ${MediaFieldsFragment}
-  ${ProfileFragment}
+  ${ProfileFragmentLite}
 `;
