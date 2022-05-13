@@ -36,6 +36,7 @@ export const Mirror = ({ publication }: any) => {
         pubIdPointed,
         referenceModule,
         referenceModuleData,
+        referenceModuleInitData,
       } = typedData?.value;
 
       signTypedDataAsync({
@@ -50,6 +51,7 @@ export const Mirror = ({ publication }: any) => {
           pubIdPointed,
           referenceModule,
           referenceModuleData,
+          referenceModuleInitData,
           sig: {
             v,
             r,

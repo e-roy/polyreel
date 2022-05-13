@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-import { ProfileFragment } from "../fragments/ProfileFragment";
 import { ProfileFragmentLite } from "../fragments/ProfileFragmentLite";
 
 export const SEARCH_PROFILES = gql`
