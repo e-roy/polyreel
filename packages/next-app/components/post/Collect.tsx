@@ -8,8 +8,7 @@ import { CREATE_COLLECT_TYPED_DATA } from "@/queries/publications/collect";
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
-import LENS_ABI from "@/abis/Lens.json";
-// const LENS_CONTRACT = "0xd7B3481De00995046C7850bCe9a5196B7605c367";
+import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 

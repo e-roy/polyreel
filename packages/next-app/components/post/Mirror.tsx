@@ -8,7 +8,7 @@ import { CREATE_MIRROR_TYPED_DATA } from "@/queries/publications/mirror";
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
-import LENS_ABI from "@/abis/Lens.json";
+import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 

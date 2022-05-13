@@ -18,7 +18,7 @@ import {
 import { EmojiIcon, GifIcon } from "@/icons";
 import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 
-import LENS_ABI from "@/abis/Lens.json";
+import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
@@ -37,7 +37,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
 
   const { signTypedDataAsync } = useSignTypedData();
 
-  const { write } = useContractWrite(
+  const { writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
@@ -55,10 +55,11 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         contentURI,
         profileIdPointed,
         pubIdPointed,
-        collectModule,
-        collectModuleData,
-        referenceModule,
         referenceModuleData,
+        collectModule,
+        collectModuleInitData,
+        referenceModule,
+        referenceModuleInitData,
       } = typedData?.value;
 
       signTypedDataAsync({
@@ -72,10 +73,11 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
           contentURI,
           profileIdPointed,
           pubIdPointed,
-          collectModule,
-          collectModuleData,
-          referenceModule,
           referenceModuleData,
+          collectModule,
+          collectModuleInitData,
+          referenceModule,
+          referenceModuleInitData,
           sig: {
             v,
             r,
@@ -83,8 +85,13 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
             deadline: typedData.value.deadline,
           },
         };
-        write({ args: postARGS });
-        onClose();
+        writeAsync({ args: postARGS }).then((res) => {
+          onClose();
+          res.wait(1).then(() => {
+            console.log("res", res);
+            // onClose();
+          });
+        });
       });
     },
     onError(error) {
@@ -117,8 +124,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         request: {
           profileId: currentUser?.id,
           publicationId: publicationId,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result,
-          // contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
           collectModule: {
             revertCollectModule: true,
           },

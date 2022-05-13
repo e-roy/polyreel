@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 
-import { RECOMMENDED_PROFILES } from "@/queries/profile/recommended-profiles";
+import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
+
+export const RECOMMENDED_PROFILES = gql`
+  query {
+    recommendedProfiles {
+      ...ProfileFragmentLite
+      stats {
+        totalFollowers
+        totalFollowing
+      }
+    }
+  }
+  ${ProfileFragmentLite}
+`;
+
 import { RecommendCard } from "@/components/cards";
-
 import { Loading } from "@/components/elements";
 
 type RecommendedProfilesProps = {};

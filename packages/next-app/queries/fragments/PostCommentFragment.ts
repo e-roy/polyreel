@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { ProfileFragment } from "./ProfileFragment";
+import { ProfileFragmentLite } from "./ProfileFragmentLite";
 import { PostPostFragment } from "./PostPostFragment";
 import { MediaFieldsFragment } from "./MediaFieldsFragment";
 
@@ -9,7 +9,7 @@ export const PostCommentFragment = gql`
     id
 
     profile {
-      ...ProfileFragment
+      ...ProfileFragmentLite
     }
 
     metadata {
@@ -36,28 +36,12 @@ export const PostCommentFragment = gql`
           image
           media {
             original {
-              url
-              width
-              height
-              size
-              mimeType
+              ...MediaFieldsFragment
             }
           }
         }
         profile {
-          id
-          handle
-          picture {
-            ... on MediaSet {
-              original {
-                url
-                width
-                height
-                size
-                mimeType
-              }
-            }
-          }
+          ...ProfileFragmentLite
         }
       }
     }
@@ -90,7 +74,7 @@ export const PostCommentFragment = gql`
     createdAt
     appId
   }
-  ${ProfileFragment}
+  ${ProfileFragmentLite}
   ${PostPostFragment}
   ${MediaFieldsFragment}
 `;

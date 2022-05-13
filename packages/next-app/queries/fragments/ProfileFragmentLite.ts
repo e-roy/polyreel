@@ -2,15 +2,13 @@ import { gql } from "@apollo/client";
 
 import { MediaFieldsFragment } from "./MediaFieldsFragment";
 
-export const ProfileFragment = gql`
-  fragment ProfileFragment on Profile {
+export const ProfileFragmentLite = gql`
+  fragment ProfileFragmentLite on Profile {
     id
     handle
     name
     bio
-    location
-    website
-    twitter
+    ownedBy
     picture {
       ... on MediaSet {
         original {
@@ -18,7 +16,6 @@ export const ProfileFragment = gql`
         }
       }
       ... on NftImage {
-        contractAddress
         tokenId
         uri
         verified

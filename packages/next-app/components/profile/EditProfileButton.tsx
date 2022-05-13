@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import { Button, Modal, TextField, Avatar } from "@/components/elements";
 import { XIcon, PencilIcon } from "@heroicons/react/outline";
 
+import { Loading } from "@/components/elements";
+
 import { UserContext } from "@/components/layout";
 import { useMutation } from "@apollo/client";
 import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
@@ -13,7 +15,6 @@ import { SetProfileImage } from "@/components/profile";
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
-
 import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
 
 type EditProfileButtonProps = {
@@ -23,6 +24,7 @@ type EditProfileButtonProps = {
 export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
   const { currentUser, refechProfiles } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
   const handleClose = () => setIsOpen(false);
   const [updateName, setUpdateName] = useState<string>("");
@@ -32,8 +34,8 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
   const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string>("");
   const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
 
-  const { signTypedData, signTypedDataAsync } = useSignTypedData();
-  const { write, writeAsync } = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+  const { writeAsync } = useContractWrite(
     {
       addressOrName: LENS_PERIPHERY_CONTRACT,
       contractInterface: LENS_PERIPHERY_ABI,
@@ -47,9 +49,7 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
       if (!createSetProfileMetadataTypedData)
         console.log("createSetProfileMetadataTypedData is null");
       const { profileId, metadata } = typedData?.value;
-      // console.log("HERE WITH TYPE DATA", typedData);
-      // console.log(profileId);
-      // console.log(metadata);
+
       signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
@@ -69,21 +69,18 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
             },
           };
           writeAsync({ args: postARGS }).then((res) => {
-            if (res) {
-              // console.log(res.data);
+            res.wait(1).then(() => {
               refechProfiles();
               setIsOpen(false);
-              // reset form  and other closing actions
-            } else {
-              console.log(res);
-            }
+              setIsUpdating(false);
+            });
           });
         }
-        // console.log(res);
       });
     },
     onError(error) {
       console.log(error);
+      setIsUpdating(false);
     },
   });
 
@@ -104,12 +101,12 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
   };
 
   const handleSave = async () => {
+    setIsUpdating(true);
     const payload = {
       name: updateName,
       bio: updateBio,
-      location: updateLocation,
       cover_picture: updateCoverPicture,
-      social: [
+      attributes: [
         {
           traitType: "string",
           value: updateWebsite,
@@ -123,14 +120,12 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
       ],
     };
     const result = await uploadIpfsProfile({ payload });
-    // console.log("result", result.path);
 
     createSetProfileMetadataTypedData({
       variables: {
         request: {
           profileId: currentUser?.id,
-          metadata: "https://ipfs.infura.io/ipfs/" + result,
-          // metadata: "https://ipfs.infura.io/ipfs/" + result.path,
+          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
         },
       },
     });
@@ -163,9 +158,11 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
               </div>
             </div>
             <div>
-              <Button className="py-1 px-2" onClick={() => handleSave()}>
-                save
-              </Button>
+              {!isUpdating && (
+                <Button className="py-1 px-2" onClick={() => handleSave()}>
+                  save
+                </Button>
+              )}
             </div>
           </div>
           {currentUser?.coverPicture && currentUser?.coverPicture ? (
@@ -201,57 +198,64 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
             </div>
             <div></div>
           </div>
-
-          {editProfileImage ? (
+          {isUpdating ? (
             <div className="h-1/2 py-8 px-4">
-              <SetProfileImage
-                profileId={currentUser?.id as string}
-                refetch={handleRefetch}
-              />
+              <Loading />
             </div>
           ) : (
-            <div className="h-1/2 overflow-y-scroll">
-              <TextField
-                className="my-4"
-                name="name"
-                label="Update Your Name"
-                value={updateName}
-                placeholder="name"
-                onChange={(e) => setUpdateName(e.target.value)}
-              />
-              <TextField
-                className="my-4"
-                name="bio"
-                label="Update Your Bio"
-                value={updateBio}
-                placeholder="bio"
-                onChange={(e) => setUpdateBio(e.target.value)}
-              />
-              <TextField
+            <>
+              {editProfileImage ? (
+                <div className="h-1/2 py-8 px-4">
+                  <SetProfileImage
+                    profileId={currentUser?.id as string}
+                    refetch={handleRefetch}
+                  />
+                </div>
+              ) : (
+                <div className="h-1/2 overflow-y-scroll">
+                  <TextField
+                    className="my-4"
+                    name="name"
+                    label="Update Your Name"
+                    value={updateName}
+                    placeholder="name"
+                    onChange={(e) => setUpdateName(e.target.value)}
+                  />
+                  <TextField
+                    className="my-4"
+                    name="bio"
+                    label="Update Your Bio"
+                    value={updateBio}
+                    placeholder="bio"
+                    onChange={(e) => setUpdateBio(e.target.value)}
+                  />
+                  {/* <TextField
                 className="my-4"
                 name="location"
                 label="Update Your Location"
                 value={updateLocation}
                 placeholder="location"
                 onChange={(e) => setUpdateLocation(e.target.value)}
-              />
-              <TextField
-                className="my-4"
-                name="website"
-                label="Update Your Website Url"
-                value={updateWebsite || ""}
-                placeholder="website"
-                onChange={(e) => setUpdateWebsite(e.target.value)}
-              />
-              <TextField
-                className="my-4"
-                name="twitter"
-                label="Update Your Twitter Handle"
-                value={updateTwitterUrl || ""}
-                placeholder="Twitter Handle"
-                onChange={(e) => setUpdateTwitterUrl(e.target.value)}
-              />
-            </div>
+              /> */}
+                  <TextField
+                    className="my-4"
+                    name="website"
+                    label="Update Your Website Url"
+                    value={updateWebsite || ""}
+                    placeholder="website"
+                    onChange={(e) => setUpdateWebsite(e.target.value)}
+                  />
+                  <TextField
+                    className="my-4"
+                    name="twitter"
+                    label="Update Your Twitter Handle"
+                    value={updateTwitterUrl || ""}
+                    placeholder="Twitter Handle"
+                    onChange={(e) => setUpdateTwitterUrl(e.target.value)}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       </Modal>

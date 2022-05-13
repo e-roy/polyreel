@@ -9,7 +9,7 @@ import { UserAddIcon } from "@heroicons/react/outline";
 import { CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA } from "@/queries/profile/set-profile-image";
 import { Button, Loading } from "@/components/elements";
 
-import LENS_ABI from "@/abis/Lens.json";
+import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
