@@ -20,6 +20,7 @@ import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { VERIFY } from "@/queries/auth/verify";
 
 import { Avatar, Button } from "@/components/elements";
+import { UserIcon } from "@heroicons/react/outline";
 
 export type HeaderProps = {};
 
@@ -84,16 +85,26 @@ export const Header = ({}: HeaderProps) => {
       className={`py-2 px-2 sm:px-8 flex justify-between sticky top-0 z-20`}
     >
       {router.pathname === "/home" ? (
-        <div onClick={() => setOpen(!open)} className="flex cursor-pointer">
-          {currentUser?.picture ? (
-            <Avatar profile={currentUser} size={"small"} />
+        <div onClick={() => setOpen(!open)} className="cursor-pointer">
+          {currentUser ? (
+            <div className="flex">
+              <Avatar profile={currentUser} size={"small"} />
+              <div className="px-4 font-medium">
+                <div>@{currentUser?.handle}</div>
+                <div>{currentUser?.name}</div>
+              </div>
+            </div>
           ) : (
-            <Avatar profile={currentUser as any} size={"small"} />
+            <div className="flex">
+              <UserIcon
+                className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
+              />
+
+              <div className="px-4 py-2 font-medium">
+                <div>Select Profile</div>
+              </div>
+            </div>
           )}
-          <div className="px-4 font-medium">
-            <div>@{currentUser?.handle}</div>
-            <div>{currentUser?.name}</div>
-          </div>
         </div>
       ) : (
         <>
@@ -177,16 +188,20 @@ export const Header = ({}: HeaderProps) => {
                       ) : (
                         <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64"></div>
                       )}
-
-                      <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
-                        <div className="sm:flex-1 flex">
-                          <Avatar profile={currentUser as any} size={"small"} />
-                          <div className="px-4 font-medium">
-                            <div>@{currentUser?.handle}</div>
-                            <div>{currentUser?.name}</div>
+                      {currentUser && (
+                        <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
+                          <div className="sm:flex-1 flex">
+                            <Avatar
+                              profile={currentUser as any}
+                              size={"small"}
+                            />
+                            <div className="px-4 font-medium">
+                              <div>@{currentUser?.handle}</div>
+                              <div>{currentUser?.name}</div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     <div className="relative mx-2 mt-2 flex-1 px-2 sm:px-4 overflow-y-scroll border rounded-xl shadow-xl">
