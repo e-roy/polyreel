@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import Link from "next/link";
+import { UserContext } from "@/components/layout";
 import { Mirror, Collect } from "@/components/post";
 
 import { ChatAlt2Icon } from "@heroicons/react/outline";
@@ -15,10 +17,25 @@ type StatsProps = {
 };
 
 export const Stats = ({ publication }: StatsProps) => {
+  const { currentUser } = useContext(UserContext);
   const [showComment, setShowComment] = useState(false);
   const { stats } = publication;
 
   if (!publication.stats) return null;
+
+  // console.log(publication);
+
+  if (!currentUser)
+    return (
+      <div className="flex font-medium text-stone-500 mt-4">
+        <Link href={`/post/${publication.id}`}>
+          <span className="hover:text-stone-700 flex cursor-pointer">
+            {stats.totalAmountOfComments}
+            <ChatAlt2Icon className="h-6 w-6 ml-2 " aria-hidden="true" />
+          </span>
+        </Link>
+      </div>
+    );
 
   return (
     <>

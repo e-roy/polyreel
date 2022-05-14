@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "@/components/layout";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { DOES_FOLLOW } from "@/queries/follow/does-follow";
@@ -13,6 +14,7 @@ type DoesFollowProps = {
 };
 
 export const DoesFollow = ({ profileId }: DoesFollowProps) => {
+  const { currentUser } = useContext(UserContext);
   const { data: accountData } = useAccount();
 
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
@@ -39,6 +41,8 @@ export const DoesFollow = ({ profileId }: DoesFollowProps) => {
     },
   });
 
+  // return null if no current user
+  if (!currentUser) return null;
   // return null if loading
   if (loading) return null;
   // return null if no data

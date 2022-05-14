@@ -125,6 +125,8 @@ export const CreatePost = () => {
     });
   };
 
+  if (!currentUser) return null;
+
   return (
     <>
       <div className="flex z-50">

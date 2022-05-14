@@ -18,7 +18,6 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
     const signature = await signMessageAsync({
       message: challenge.data.challenge.text,
     });
-
     const accessTokens = await authenticate(
       accountData?.address as string,
       signature as string

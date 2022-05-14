@@ -3,7 +3,7 @@ import { UserIcon } from "@heroicons/react/outline";
 import { Profile } from "@/types/lenstypes";
 
 type AvatarProps = {
-  profile: Profile;
+  profile?: Profile;
   size: string;
 };
 
