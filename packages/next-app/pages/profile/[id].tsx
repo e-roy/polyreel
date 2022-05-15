@@ -48,6 +48,11 @@ const ProfilePage: NextPage = () => {
 
   const profile = profileData.profiles.items[0];
 
+  const checkLocation = () => {
+    const location = filterAttributes(profile.attributes, "location");
+    if (location && location[0]) return location[0].value;
+  };
+
   const checkWebsite = () => {
     const website = filterAttributes(profile.attributes, "website");
     if (website[0]) return website[0].value;
@@ -59,6 +64,7 @@ const ProfilePage: NextPage = () => {
   };
 
   if (!profile) return null;
+  // console.log(profile);
   // console.log(profileData);
 
   const handleRefetch = async () => {
@@ -127,7 +133,7 @@ const ProfilePage: NextPage = () => {
               {currentUser?.handle === id ? (
                 <EditProfileButton refetch={handleRefetch} />
               ) : (
-                <DoesFollow profileId={profile.id} />
+                <DoesFollow profile={profile} profileId={profile.id} />
               )}
             </div>
           </div>
@@ -140,10 +146,12 @@ const ProfilePage: NextPage = () => {
               </LinkItProfile>
             </LinkItUrl>
           </div>
-          {/* <div className="font-bold py-2">
-            Location :
-            <span className="font-medium pl-1">{profile.location}</span>
-          </div> */}
+          {checkLocation() && (
+            <div className="font-bold py-2">
+              Location :
+              <span className="font-medium pl-1">{checkLocation()}</span>
+            </div>
+          )}
           <div className="sm:flex justify-between">
             <div className="font-semibold">
               <FollowersButton
@@ -173,5 +181,5 @@ const ProfilePage: NextPage = () => {
 export default ProfilePage;
 
 const filterAttributes = (attributes: any, key: string) => {
-  return attributes.filter((attribute: any) => attribute.key === key);
+  return attributes?.filter((attribute: any) => attribute.key === key);
 };

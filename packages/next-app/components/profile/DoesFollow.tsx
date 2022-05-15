@@ -3,6 +3,7 @@ import { UserContext } from "@/components/layout";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { DOES_FOLLOW } from "@/queries/follow/does-follow";
+import { Profile } from "@/types/lenstypes";
 
 import {
   FollowProfileButton,
@@ -10,10 +11,11 @@ import {
 } from "@/components/profile";
 
 type DoesFollowProps = {
+  profile: Profile;
   profileId: string;
 };
 
-export const DoesFollow = ({ profileId }: DoesFollowProps) => {
+export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   const { currentUser } = useContext(UserContext);
   const { data: accountData } = useAccount();
 
@@ -47,6 +49,9 @@ export const DoesFollow = ({ profileId }: DoesFollowProps) => {
   if (loading) return null;
   // return null if no data
   if (!doesFollowData || !doesFollowData.doesFollow[0]) return null;
+  // return null if follow module is found
+  // console.log(profile.followModule);
+  if (profile.followModule) return null;
 
   const handleRefetch = async () => {
     await refetch();
