@@ -17,6 +17,10 @@ import { omit, splitSignature } from "@/lib/helpers";
 import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
 import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
 
+const filterAttributes = (attributes: any, key: string) => {
+  return attributes?.filter((attribute: any) => attribute.key === key);
+};
+
 type EditProfileButtonProps = {
   refetch: () => void;
 };
@@ -88,13 +92,27 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
     if (currentUser) {
       if (currentUser?.name) setUpdateName(currentUser?.name as string);
       if (currentUser?.bio) setUpdateBio(currentUser?.bio as string);
-      if (currentUser?.location)
-        setUpdateLocation(currentUser?.location as string);
-      setUpdateWebsite((currentUser?.website as string) || "");
-      setUpdateTwitterUrl((currentUser?.twitter as string) || "");
+      if (checkLocation()) setUpdateLocation(checkLocation() as string);
+      if (checkWebsite()) setUpdateWebsite(checkWebsite() as string);
+      if (checkTwitter()) setUpdateTwitterUrl(checkTwitter() as string);
       setUpdateCoverPicture((currentUser?.coverPicture as any) || "");
     }
   }, [currentUser]);
+
+  const checkLocation = () => {
+    const location = filterAttributes(currentUser?.attributes, "location");
+    if (location && location[0]) return location[0].value;
+  };
+
+  const checkWebsite = () => {
+    const website = filterAttributes(currentUser?.attributes, "website");
+    if (website[0]) return website[0].value;
+  };
+
+  const checkTwitter = () => {
+    const twitter = filterAttributes(currentUser?.attributes, "twitter");
+    if (twitter[0]) return twitter[0].value;
+  };
 
   const handleButton = () => {
     setIsOpen(true);
@@ -107,6 +125,11 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
       bio: updateBio,
       cover_picture: updateCoverPicture,
       attributes: [
+        {
+          traitType: "string",
+          value: updateLocation,
+          key: "location",
+        },
         {
           traitType: "string",
           value: updateWebsite,
@@ -229,14 +252,14 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
                     placeholder="bio"
                     onChange={(e) => setUpdateBio(e.target.value)}
                   />
-                  {/* <TextField
-                className="my-4"
-                name="location"
-                label="Update Your Location"
-                value={updateLocation}
-                placeholder="location"
-                onChange={(e) => setUpdateLocation(e.target.value)}
-              /> */}
+                  <TextField
+                    className="my-4"
+                    name="location"
+                    label="Update Your Location"
+                    value={updateLocation}
+                    placeholder="location"
+                    onChange={(e) => setUpdateLocation(e.target.value)}
+                  />
                   <TextField
                     className="my-4"
                     name="website"

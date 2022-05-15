@@ -49,6 +49,27 @@ export const ProfileFragmentFull = gql`
       totalPublications
       totalCollects
     }
+    followModule {
+      ... on FeeFollowModuleSettings {
+        type
+        amount {
+          asset {
+            symbol
+            name
+            decimals
+            address
+          }
+          value
+        }
+        recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
+      }
+    }
   }
   ${MediaFieldsFragment}
 `;
