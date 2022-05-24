@@ -10,7 +10,7 @@ import { UserContext } from "@/components/layout";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
 import { ChevronLeftIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
-import { Auth, ConnectWallet, Logout } from "@/components/lens/auth";
+import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
 import { getAuthenticationToken } from "@/lib/auth/state";
 
 import { useAccount } from "wagmi";
@@ -19,8 +19,12 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 import { VERIFY } from "@/queries/auth/verify";
 
-import { Avatar, Button } from "@/components/elements";
+import { Avatar } from "@/components/elements";
 import { UserIcon } from "@heroicons/react/outline";
+
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
 export type HeaderProps = {};
 
@@ -33,6 +37,7 @@ export const Header = ({}: HeaderProps) => {
   const { data: accountData } = useAccount();
 
   // console.log("currentUser", currentUser);
+  const correctNetwork = useCheckNetwork();
 
   useEffect(() => {
     if (accountData) {
@@ -262,24 +267,30 @@ export const Header = ({}: HeaderProps) => {
       </Transition.Root>
 
       {!isWalletConnected ? (
-        <ConnectWallet />
+        <ConnectButton />
       ) : (
         <>
-          {!isVerified ? (
-            <Auth userLoggedIn={handleUserLoggedIn} />
-          ) : (
+          {correctNetwork ? (
             <>
-              {router.pathname === "/" ? (
-                <div className="flex justify-end">
-                  <Button
-                    className="text-2xl font-bold py-2 px-4"
-                    onClick={() => router.push("./home")}
-                  >
-                    Home
-                  </Button>
-                </div>
-              ) : null}
+              {!isVerified ? (
+                <Auth userLoggedIn={handleUserLoggedIn} />
+              ) : (
+                <>
+                  {router.pathname === "/" ? (
+                    <div className="flex justify-end">
+                      <button
+                        className="py-2 px-4 rounded-lg text-md font-bold bg-sky-800 text-white"
+                        onClick={() => router.push("./home")}
+                      >
+                        Home
+                      </button>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </>
+          ) : (
+            <SwitchNetwork />
           )}
         </>
       )}

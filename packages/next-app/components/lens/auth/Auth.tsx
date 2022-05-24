@@ -2,7 +2,6 @@ import React from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { generateChallenge, authenticate } from "@/lib/auth/login";
 import { setAuthenticationToken } from "@/lib/auth/state";
-import { Button } from "@/components/elements";
 
 type AuthProps = {
   userLoggedIn: () => void;
@@ -28,13 +27,11 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
   };
 
   return (
-    <div>
-      <Button
-        className="text-2xl font-bold py-2 px-4"
-        onClick={() => handleLogin()}
-      >
-        Login
-      </Button>
-    </div>
+    <button
+      className="py-2 px-4 rounded-xl text-md font-bold bg-sky-800 text-white"
+      onClick={() => handleLogin()}
+    >
+      Login
+    </button>
   );
 };
