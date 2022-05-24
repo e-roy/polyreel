@@ -32,11 +32,11 @@ export const RecommendedProfiles = ({}: RecommendedProfilesProps) => {
   // console.log(data);
 
   return (
-    <div className="">
-      <h1 className="text-xl font-bold text-center text-stone-700 sticky top-0 z-10 bg-white py-2">
+    <div className="overflow-x-hidden">
+      <h1 className="text-xl font-bold text-center text-stone-700 dark:text-stone-200 sticky top-0 z-10 py-2">
         Recommended Profiles
       </h1>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap w-full">
         {data.recommendedProfiles.map((profile: any, index: number) => (
           <div
             key={index}
