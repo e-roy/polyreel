@@ -8,6 +8,8 @@ import { CreateProfile } from "@/components/create-profile";
 import { Button, Avatar } from "@/components/elements";
 import { Logout } from "@/components/lens/auth";
 
+import { CURRENT_CHAIN_ID } from "@/lib/constants";
+
 const SelectProfile: NextPage = () => {
   const router = useRouter();
   const { profiles, setCurrentUser } = useContext(UserContext);
@@ -60,12 +62,15 @@ const SelectProfile: NextPage = () => {
                 ))}
               </div>
             </div>
-            <div className="my-6 text-center font-semibold text-lg">or</div>
+            {CURRENT_CHAIN_ID === 80001 && (
+              <div className="my-6 text-center font-semibold text-lg">or</div>
+            )}
           </div>
-
-          <div className={`${baseClass}`}>
-            <CreateProfile />
-          </div>
+          {CURRENT_CHAIN_ID === 80001 && (
+            <div className={`${baseClass}`}>
+              <CreateProfile />
+            </div>
+          )}
         </div>
       </div>
     </div>

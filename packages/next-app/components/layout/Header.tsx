@@ -26,6 +26,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
+import { CURRENT_CHAIN_ID } from "@/lib/constants";
+
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
@@ -235,19 +237,19 @@ export const Header = ({}: HeaderProps) => {
                               </div>
                             )
                           )}
-                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
-                            {/* Switch profiles */}
-                          </div>
-                          <div className={`${baseClass}`}>
-                            <PlusIcon className="ml-1 mr-4 h-8 w-8" />
+                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium"></div>
+                          {CURRENT_CHAIN_ID === 80001 && (
+                            <div className={`${baseClass}`}>
+                              <PlusIcon className="ml-1 mr-4 h-8 w-8" />
 
-                            <div
-                              className="mt-1"
-                              onClick={() => router.push("/select-profile")}
-                            >
-                              create new profile
+                              <div
+                                className="mt-1"
+                                onClick={() => router.push("/select-profile")}
+                              >
+                                create new profile
+                              </div>
                             </div>
-                          </div>
+                          )}
 
                           <Logout className={`${baseClass}`} />
                           <button
