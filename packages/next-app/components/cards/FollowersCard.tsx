@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { Avatar } from "@/components/elements";
+import { addressShorten } from "@/utils/address-shorten";
 
 export const FollowersCard = ({ profile }: any) => {
   const router = useRouter();
@@ -19,10 +19,10 @@ export const FollowersCard = ({ profile }: any) => {
 
               <div className="ml-4 px-2 py-1 my-auto text-stone-800  rounded-xl">
                 <div className="my-auto font-semibold text-sm sm:text-lg">
-                  {profile.address}
+                  {addressShorten(profile.address)}
                 </div>
                 <div className="my-auto font-semibold text-xs">
-                  {profile.address}
+                  {addressShorten(profile.address)}
                 </div>
               </div>
             </div>
