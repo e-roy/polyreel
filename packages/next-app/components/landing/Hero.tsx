@@ -44,7 +44,10 @@ export const Hero = () => {
                 A Social Network built with Lens Protocol
               </p>
               <p className="max-w-md mb-10 text-xl text-stone-200 font-semibold lg:text-2xl dark:text-dark-200">
-                Currently in BETA on the Mumbai Testnet
+                Running on the Polygon Mainnet
+              </p>
+              <p className="max-w-md mb-10 text-sm text-stone-200 font-semibold lg:text-lg dark:text-dark-200 italic">
+                * this app is in beta
               </p>
             </div>
           </div>
