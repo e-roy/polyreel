@@ -99,6 +99,7 @@ export const SetFollowModule = ({
       followModule = {
         revertFollowModule: true, // don't allow anyone to follow
       };
+    else followModule = null;
 
     createSetFollowModuleTypedData({
       variables: {
@@ -118,14 +119,18 @@ export const SetFollowModule = ({
     });
   };
 
-  //   console.log(currentFollowModule);
-
   useEffect(() => {
-    if (currentFollowModule?.type === "FreeFollowModule")
+    if (
+      !currentFollowModule?.__typename ||
+      currentFollowModule?.__typename === "FreeFollowModule"
+    )
       setFollowType("anyone");
-    if (currentFollowModule?.type === "ProfileFollowModule")
+    if (currentFollowModule?.__typename === "ProfileFollowModuleSettings")
       setFollowType("profiles");
-    if (!currentFollowModule?.type) setFollowType("nofollow");
+    if (currentFollowModule?.__typename === "RevertFollowModule")
+      setFollowType("nofollow");
+    if (currentFollowModule?.__typename === "ModuleFeeAmount")
+      setFollowType("fee");
   }, [currentFollowModule]);
 
   return (
@@ -135,7 +140,7 @@ export const SetFollowModule = ({
       </Button>
 
       <Modal isOpen={isOpen} onClose={handleClose}>
-        <div className="bg-white rounded p-2 sm:p-6 h-1/2">
+        <div className="bg-white rounded p-2 sm:p-6">
           <div className="flex justify-between pb-2">
             <div className="pt-2 font-bold text-stone-700 text-lg">
               <div className=" flex h-7 items-center">
@@ -241,6 +246,15 @@ export const SetFollowModule = ({
                   update follow settings
                 </Button>
               </div>
+              {followType === "fee" && (
+                <div className="bg-rose-700 m-4 p-2 font-medium text-stone-200 text-lg text-center rounded-2xl">
+                  <div>
+                    warning: you currently have a fee set to follow you.
+                  </div>
+                  <div>this app can not set this feature</div>
+                  <div>feature coming soon</div>
+                </div>
+              )}
             </div>
           )}
         </div>
