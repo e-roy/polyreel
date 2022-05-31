@@ -161,7 +161,7 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
 
   return (
     <>
-      <Button className="py-2 px-4" onClick={() => handleButton()}>
+      <Button className="p-2" onClick={() => handleButton()}>
         edit profile
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>

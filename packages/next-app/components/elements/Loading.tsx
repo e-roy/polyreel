@@ -1,4 +1,8 @@
-export const Loading = () => {
+interface LoadingProps {
+  type?: string;
+}
+
+export const Loading = ({ type = "Loading" }: LoadingProps) => {
   return (
     <div className="flex text-stone-600 justify-center">
       <svg
@@ -60,7 +64,7 @@ export const Loading = () => {
           />
         </path>
       </svg>
-      <div className="text-3xl pl-4 pt-2 font-semibold">Loading...</div>
+      <div className="text-3xl pl-4 pt-2 font-semibold">{type}...</div>
     </div>
   );
 };

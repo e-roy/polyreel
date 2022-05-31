@@ -9,3 +9,4 @@ export { SetProfileImage } from "./SetProfileImage";
 export { NavSelect } from "./NavSelect";
 export { GetUserNfts } from "./GetUserNfts";
 export { GetPublications } from "./GetPublications";
+export { SetFollowModule } from "./SetFollowModule";

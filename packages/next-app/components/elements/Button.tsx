@@ -19,7 +19,7 @@ export const Button: React.FC<ButtonProps> = ({
       <div
         className={`${btnBase} ${className} w-full border-stone-200/90 shadow-sm hover:shadow-sm text-stone-500/70`}
       >
-        <div className="m-[3px]hover:shadow-xl mx-auto">{children}</div>
+        <div className="m-[3px]hover:shadow-xl m-auto">{children}</div>
       </div>
     );
 
@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
     >
-      <div className="m-[3px]hover:shadow-xl mx-auto">{children}</div>
+      <div className="m-[3px]hover:shadow-xl m-auto">{children}</div>
     </button>
   );
 };
