@@ -3,6 +3,7 @@ import { Avatar } from "@/components/elements";
 
 export const FollowersCard = ({ profile }: any) => {
   const router = useRouter();
+  console.log(profile);
   if (!profile) return null;
   if (!profile.defaultProfile)
     return (
@@ -30,7 +31,7 @@ export const FollowersCard = ({ profile }: any) => {
   return (
     <div
       className="mb-2 p-2 border border-stone-400 shadow rounded w-full text-sm cursor-pointer hover:shadow-xl"
-      onClick={() => router.push(`/profile/${profile.handle}`)}
+      onClick={() => router.push(`/profile/${profile.defaultProfile.handle}`)}
     >
       <div className="flex justify-between mb-2 pr-4">
         <div className="flex">
@@ -38,27 +39,29 @@ export const FollowersCard = ({ profile }: any) => {
 
           <div className="ml-4 px-2 py-1 my-auto text-stone-800  rounded-xl">
             <div className="my-auto font-semibold text-sm sm:text-lg">
-              @{profile.handle}
+              @{profile.defaultProfile.handle}
             </div>
-            <div className="my-auto font-semibold text-xs">{profile.name}</div>
+            <div className="my-auto font-semibold text-xs">
+              {profile.defaultProfile.name}
+            </div>
           </div>
         </div>
       </div>
       <div className="font-semibold text-xs">
-        Bio :<span className="font-normal">{profile.bio}</span>
+        Bio :<span className="font-normal">{profile.defaultProfile.bio}</span>
       </div>
 
       <div className="flex text-xs">
         <div className="font-semibold">
           Following :
           <span className="font-normal pl-1">
-            {profile.stats.totalFollowing}
+            {profile.defaultProfile.stats.totalFollowing}
           </span>
         </div>
         <div className="font-semibold  ml-4">
           Followers :
           <span className="font-normal pl-1">
-            {profile.stats.totalFollowers}
+            {profile.defaultProfile.stats.totalFollowers}
           </span>
         </div>
       </div>
