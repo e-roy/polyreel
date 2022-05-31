@@ -22,13 +22,24 @@ import { ThemeProvider } from "next-themes";
 
 import { AppLayout } from "@/components/layout";
 
+import { ENV_PROD, ENV_DEV } from "@/lib/constants";
+
 // Get environment variables
 // const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
 
+const networks = [];
+if (ENV_PROD) {
+  networks.push(chain.polygon);
+}
+
+if (ENV_DEV) {
+  networks.push(chain.polygonMumbai);
+}
+
 const { chains, provider } = configureChains(
   // [chain.polygon, chain.polygonMumbai],
-  [chain.polygonMumbai],
+  networks,
   [alchemyProvider({ alchemyId }), publicProvider()]
 );
 
