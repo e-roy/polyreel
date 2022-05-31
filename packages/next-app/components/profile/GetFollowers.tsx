@@ -34,7 +34,7 @@ export const GetFollowers = ({ profileId }: GetFollowersProps) => {
     });
   };
 
-  // console.log("followers", followersData);
+  console.log("followers", followersData);
   const pageInfo = followersData?.followers.pageInfo;
 
   const [sentryRef] = useInfiniteScroll({
