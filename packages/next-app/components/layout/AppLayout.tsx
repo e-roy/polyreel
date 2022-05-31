@@ -28,12 +28,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     string | null
   >(null);
 
-  // useEffect(() => {
-  //   setCurrentUserProfileId(
-  //     localStorage.getItem("polyreel_current_user_profile_id")
-  //   );
-  // }, []);
-
   useEffect(() => {
     if (accountData?.address) {
       setCurrentUserProfileId(
@@ -41,7 +35,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       );
     }
     activeConnector?.on("change", () => {
-      console.log('activeConnector.on("change")');
+      // console.log('activeConnector.on("change")');
       removeAuthenticationToken();
       disconnect();
     });

@@ -86,7 +86,7 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className={`p-2 sm:px-8 flex justify-between`}>
+    <header className={`p-2 sm:px-8 flex justify-between z-20`}>
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {accountData?.address && currentUser ? (
