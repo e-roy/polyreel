@@ -127,9 +127,9 @@ export const SetFollowModule = ({
       setFollowType("anyone");
     if (currentFollowModule?.__typename === "ProfileFollowModuleSettings")
       setFollowType("profiles");
-    if (currentFollowModule?.__typename === "RevertFollowModule")
+    if (currentFollowModule?.__typename === "RevertFollowModuleSettings")
       setFollowType("nofollow");
-    if (currentFollowModule?.__typename === "ModuleFeeAmount")
+    if (currentFollowModule?.__typename === "FeeFollowModuleSettings")
       setFollowType("fee");
   }, [currentFollowModule]);
 
@@ -158,7 +158,7 @@ export const SetFollowModule = ({
             <div></div>
           </div>
           {isProcessing ? (
-            <div className="pt-24">
+            <div className="py-32">
               <Loading type={"Processing"} />
             </div>
           ) : (
