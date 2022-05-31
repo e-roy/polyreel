@@ -34,7 +34,7 @@ export const GetFollowing = ({ ownedBy }: GetFollowingProps) => {
     });
   };
 
-  //   console.log("following", followingData);
+  // console.log("following", followingData);
   const pageInfo = followingData?.following.pageInfo;
 
   const [sentryRef] = useInfiniteScroll({
@@ -51,7 +51,7 @@ export const GetFollowing = ({ ownedBy }: GetFollowingProps) => {
     <div className="pb-80 pt-4">
       {followingData &&
         followingData.following.items.map((follower: any, index: number) => (
-          <FollowersCard key={index} profile={follower.wallet} />
+          <FollowersCard key={index} profile={follower} />
         ))}
       {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
     </div>

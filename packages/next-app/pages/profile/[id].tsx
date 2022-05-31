@@ -66,7 +66,7 @@ const ProfilePage: NextPage = () => {
 
   if (!profile) return null;
   // console.log(profile);
-  console.log(profileData);
+  // console.log(profileData);
 
   const handleRefetch = async () => {
     await refetch();
