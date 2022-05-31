@@ -15,6 +15,7 @@ import {
   NavSelect,
   GetUserNfts,
   GetPublications,
+  SetFollowModule,
 } from "@/components/profile";
 
 import { Avatar, Loading } from "@/components/elements";
@@ -65,7 +66,7 @@ const ProfilePage: NextPage = () => {
 
   if (!profile) return null;
   // console.log(profile);
-  // console.log(profileData);
+  console.log(profileData);
 
   const handleRefetch = async () => {
     await refetch();
@@ -131,7 +132,10 @@ const ProfilePage: NextPage = () => {
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
               {currentUser?.handle === id ? (
-                <EditProfileButton refetch={handleRefetch} />
+                <div className="flex">
+                  <SetFollowModule currentFollowModule={profile.followModule} />
+                  <EditProfileButton refetch={handleRefetch} />
+                </div>
               ) : (
                 <DoesFollow profile={profile} profileId={profile.id} />
               )}

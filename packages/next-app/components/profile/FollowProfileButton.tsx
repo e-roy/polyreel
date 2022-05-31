@@ -8,7 +8,6 @@ import { useMutation } from "@apollo/client";
 import { CREATE_FOLLOW_TYPED_DATA } from "@/queries/follow/follow";
 
 import LENS_ABI from "@/abis/Lens-Hub.json";
-
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 type FollowProfileButtonProps = {
