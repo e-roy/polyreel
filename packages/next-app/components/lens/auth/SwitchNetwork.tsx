@@ -4,6 +4,9 @@ import { useNetwork } from "wagmi";
 import { Modal } from "@/components/elements";
 import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
+import Image from "next/image";
+import polygonLogo from "@/images/polygon.png";
+
 export const SwitchNetwork = () => {
   const { switchNetwork } = useNetwork();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,9 +22,9 @@ export const SwitchNetwork = () => {
       </button>
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <div className="bg-white p-4">
+          <div className="bg-white p-4 rounded-3xl">
             <div className="flex justify-between">
-              <div className="text-stone-800 font-bold text-xl">
+              <div className="text-stone-800 font-bold text-xl pl-3">
                 Switch Networks
               </div>
               <button className="bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-full p-1">
@@ -34,9 +37,16 @@ export const SwitchNetwork = () => {
             <div className="my-4">
               <button
                 onClick={() => switchNetwork?.(CURRENT_CHAIN_ID)}
-                className="font-bold text-stone-700 hover:bg-stone-200 w-full p-2 rounded-xl"
+                className="font-bold text-stone-700 hover:bg-stone-200 w-full p-2 rounded-xl flex"
               >
-                {CURRENT_CHAIN_NAME}
+                <Image
+                  src={polygonLogo}
+                  alt="Polygon"
+                  className=""
+                  width={28}
+                  height={28}
+                />
+                <span className="pl-4">{CURRENT_CHAIN_NAME}</span>
               </button>
             </div>
           </div>

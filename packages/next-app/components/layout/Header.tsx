@@ -26,6 +26,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
+import { CURRENT_CHAIN_ID } from "@/lib/constants";
+
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
@@ -86,12 +88,10 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header
-      className={`py-2 px-2 sm:px-8 flex justify-between sticky top-0 z-20`}
-    >
+    <header className={`p-2 sm:px-8 flex justify-between z-20`}>
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
-          {currentUser ? (
+          {accountData?.address && currentUser ? (
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
               <div className="px-4 font-medium">
@@ -99,16 +99,17 @@ export const Header = ({}: HeaderProps) => {
                 <div>{currentUser?.name}</div>
               </div>
             </div>
-          ) : (
+          ) : accountData?.address ? (
             <div className="flex">
               <UserIcon
                 className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
               />
-
               <div className="px-4 py-2 font-medium">
                 <div>Select Profile</div>
               </div>
             </div>
+          ) : (
+            <div></div>
           )}
         </div>
       ) : (
@@ -236,19 +237,19 @@ export const Header = ({}: HeaderProps) => {
                               </div>
                             )
                           )}
-                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
-                            {/* Switch profiles */}
-                          </div>
-                          <div className={`${baseClass}`}>
-                            <PlusIcon className="ml-1 mr-4 h-8 w-8" />
+                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium"></div>
+                          {CURRENT_CHAIN_ID === 80001 && (
+                            <div className={`${baseClass}`}>
+                              <PlusIcon className="ml-1 mr-4 h-8 w-8" />
 
-                            <div
-                              className="mt-1"
-                              onClick={() => router.push("/select-profile")}
-                            >
-                              create new profile
+                              <div
+                                className="mt-1"
+                                onClick={() => router.push("/select-profile")}
+                              >
+                                create new profile
+                              </div>
                             </div>
-                          </div>
+                          )}
 
                           <Logout className={`${baseClass}`} />
                           <button

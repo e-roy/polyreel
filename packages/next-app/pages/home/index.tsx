@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
+import { useAccount } from "wagmi";
 import {
   ExplorePublications,
   CreatePost,
@@ -17,27 +18,32 @@ import {
   GlobeIcon,
 } from "@heroicons/react/outline";
 
-const sidebarNav = [
-  {
-    id: 1,
-    label: "Home",
-    icon: <HomeIcon className="text-3xl h-8 w-8 mx-auto" />,
-  },
-  {
-    id: 2,
-    label: "Explore",
-    icon: <GlobeIcon className="text-3xl h-8 w-8 mx-auto" />,
-  },
-  {
-    id: 3,
-    label: "Notifications",
-    icon: <BellIcon className="text-3xl h-8 w-8 mx-auto" />,
-  },
-];
-
 const Home: NextPage = () => {
+  const { data: accountData } = useAccount();
   const [search, setSearch] = useState("");
   const [sideNav, setSideNav] = useState("Explore");
+
+  const sidebarNav = [
+    {
+      id: 1,
+      label: "Home",
+      icon: <HomeIcon className="text-3xl h-8 w-8 mx-auto" />,
+      active: accountData?.address ? true : false,
+    },
+    {
+      id: 2,
+      label: "Explore",
+      icon: <GlobeIcon className="text-3xl h-8 w-8 mx-auto" />,
+      active: true,
+    },
+    {
+      id: 3,
+      label: "Notifications",
+      icon: <BellIcon className="text-3xl h-8 w-8 mx-auto" />,
+      active: accountData?.address ? true : false,
+    },
+  ];
+
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -56,19 +62,22 @@ const Home: NextPage = () => {
 
                 <ul className="">
                   {sidebarNav.map((item: any, index: number) => (
-                    <li
-                      key={index}
-                      onClick={() => setSideNav(item.label)}
-                      className={`flex hover:bg-stone-500 text-stone-700 hover:text-stone-100 my-1 p-2 rounded cursor-pointer ${
-                        sideNav === item.label
-                          ? "bg-stone-500 text-stone-100"
-                          : ""
-                      }`}
-                    >
-                      <span>{item.icon}</span>
-                      <span className="pl-2 my-auto font-semibold hidden xl:block">
-                        {item.label}
-                      </span>
+                    <li key={index}>
+                      {item.active && (
+                        <div
+                          onClick={() => setSideNav(item.label)}
+                          className={`flex hover:bg-stone-500 text-stone-700 hover:text-stone-100 my-1 p-2 rounded cursor-pointer ${
+                            sideNav === item.label
+                              ? "bg-stone-500 text-stone-100"
+                              : ""
+                          }`}
+                        >
+                          <span>{item.icon}</span>
+                          <span className="pl-2 my-auto font-semibold hidden xl:block">
+                            {item.label}
+                          </span>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

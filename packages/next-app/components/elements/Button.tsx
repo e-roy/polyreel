@@ -12,7 +12,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
 }) => {
   const btnBase =
-    "flex rounded-xl border border-stone-600 rounded-lg shadow-md hover:shadow-xl font-medium text-stone-700 bg-stone-200/80 hover:bg-stone-100/90";
+    "flex rounded-xl border-2 border-stone-800 rounded-lg shadow-md hover:shadow-xl font-bold text-stone-800 bg-stone-200/80 hover:bg-stone-100/90";
 
   if (disabled)
     return (
