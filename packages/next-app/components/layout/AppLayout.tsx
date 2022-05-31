@@ -11,6 +11,8 @@ import { GET_PROFILES } from "@/queries/profile/get-profiles";
 
 import { Loading } from "@/components/elements";
 
+import { ENV_PROD, ENV_DEV } from "@/lib/constants";
+
 type AppLayoutProps = {
   children: React.ReactNode;
 };
@@ -26,14 +28,20 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     string | null
   >(null);
 
-  useEffect(() => {
-    setCurrentUserProfileId(
-      localStorage.getItem("polyreel_current_user_profile_id")
-    );
-  }, []);
+  // useEffect(() => {
+  //   setCurrentUserProfileId(
+  //     localStorage.getItem("polyreel_current_user_profile_id")
+  //   );
+  // }, []);
 
   useEffect(() => {
+    if (accountData?.address) {
+      setCurrentUserProfileId(
+        localStorage.getItem("polyreel_current_user_profile_id")
+      );
+    }
     activeConnector?.on("change", () => {
+      console.log('activeConnector.on("change")');
       removeAuthenticationToken();
       disconnect();
     });
@@ -60,6 +68,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   );
 
   // console.log(userProfilesData);
+  // console.log(currentUserProfileId);
   // console.log(currentProfileData);
 
   const injectContext = {
@@ -80,8 +89,12 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <UserContext.Provider value={injectContext}>
-      {router.pathname !== "/select-profile" && <Header />}
-      <main className="">{children}</main>
+      <div className="flex flex-col h-screen">
+        {router.pathname !== "/select-profile" && <Header />}
+        <main className="flex-grow">{children}</main>
+        {ENV_PROD && <footer className="h-2 bg-sky-200"></footer>}
+        {ENV_DEV && <footer className="h-2 bg-purple-500"></footer>}
+      </div>
     </UserContext.Provider>
   );
 };

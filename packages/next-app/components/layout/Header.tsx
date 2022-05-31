@@ -86,12 +86,10 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header
-      className={`py-2 px-2 sm:px-8 flex justify-between sticky top-0 z-20`}
-    >
+    <header className={`p-2 sm:px-8 flex justify-between`}>
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
-          {currentUser ? (
+          {accountData?.address && currentUser ? (
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
               <div className="px-4 font-medium">
@@ -99,16 +97,17 @@ export const Header = ({}: HeaderProps) => {
                 <div>{currentUser?.name}</div>
               </div>
             </div>
-          ) : (
+          ) : accountData?.address ? (
             <div className="flex">
               <UserIcon
                 className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
               />
-
               <div className="px-4 py-2 font-medium">
                 <div>Select Profile</div>
               </div>
             </div>
+          ) : (
+            <div></div>
           )}
         </div>
       ) : (
