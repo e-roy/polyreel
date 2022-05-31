@@ -41,7 +41,7 @@ export const FollowersCard = ({ profile }: any) => {
     >
       <div className="flex justify-between mb-2 pr-4">
         <div className="flex">
-          <Avatar profile={profile} size={"medium"} />
+          <Avatar profile={profile.defaultProfile} size={"medium"} />
 
           <div className="ml-4 px-2 py-1 my-auto text-stone-800  rounded-xl">
             <div className="my-auto font-semibold text-sm sm:text-lg">
