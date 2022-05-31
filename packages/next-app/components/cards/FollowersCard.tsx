@@ -17,10 +17,10 @@ export const FollowersCard = ({ profile }: any) => {
 
             <div className="ml-4 px-2 py-1 my-auto text-stone-800  rounded-xl">
               <div className="my-auto font-semibold text-sm sm:text-lg">
-                {profile.wallet.address}
+                {profile.address}
               </div>
               <div className="my-auto font-semibold text-xs">
-                {profile.wallet.address}
+                {profile.address}
               </div>
             </div>
           </div>
