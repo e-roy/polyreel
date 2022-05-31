@@ -51,7 +51,7 @@ export const GetFollowing = ({ ownedBy }: GetFollowingProps) => {
     <div className="pb-80 pt-4">
       {followingData &&
         followingData.following.items.map((follower: any, index: number) => (
-          <FollowersCard key={index} profile={follower.profile} />
+          <FollowersCard key={index} profile={follower.wallet} />
         ))}
       {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
     </div>
