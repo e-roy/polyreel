@@ -39,7 +39,7 @@ export const FollowersCard = ({ profile }: any) => {
       className="mb-2 p-2 border border-stone-400 shadow rounded w-full text-sm cursor-pointer hover:shadow-xl"
       onClick={() =>
         router.push(
-          `/profile/${profile.defaultProfile.handle || profile.profile.handle}`
+          `/profile/${profile.defaultProfile?.handle || profile.profile.handle}`
         )
       }
     >
