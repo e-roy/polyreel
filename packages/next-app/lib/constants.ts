@@ -1,10 +1,6 @@
 export const ENV_PROD = process.env.NODE_ENV === "production";
 export const ENV_DEV = process.env.NODE_ENV === "development";
 
-import { chain } from "wagmi";
-
-export const ENV_CHAIN = ENV_PROD ? chain.polygon : chain.polygonMumbai;
-
 export const CURRENT_CHAIN_ID: number = ENV_PROD ? 137 : 80001;
 export const CURRENT_CHAIN_NAME = ENV_PROD ? "Polygon" : "Polygon Mumbai";
 

@@ -27,6 +27,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
 import { CURRENT_CHAIN_ID } from "@/lib/constants";
+import { profile } from "console";
 
 export type HeaderProps = {};
 
@@ -168,9 +169,10 @@ export const Header = ({}: HeaderProps) => {
                   <div className="flex h-full flex-col overflow-y-hidden bg-white pb-6 shadow">
                     <div
                       className="hover:bg-sky-200 cursor-pointer border-b shadow"
-                      onClick={() =>
-                        router.push(`/profile/${currentUser?.handle}`)
-                      }
+                      onClick={() => {
+                        if (currentUser)
+                          router.push(`/profile/${currentUser?.handle}`);
+                      }}
                     >
                       {currentUser?.coverPicture ? (
                         <div className=" h-40 sm:h-56">
@@ -212,9 +214,12 @@ export const Header = ({}: HeaderProps) => {
 
                     <div className="relative mx-2 mt-2 flex-1 px-2 sm:px-4 overflow-y-scroll border rounded-xl shadow-xl">
                       <div className="relative grid gap-4 bg-white px-2 py-2 sm:gap-2 sm:p-2">
-                        <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
-                          Switch profiles
-                        </div>
+                        {profileData?.profiles.items.length > 1 && (
+                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
+                            Switch profiles
+                          </div>
+                        )}
+
                         <div>
                           {profileData?.profiles.items.map(
                             (profile: any, index: number) => (

@@ -79,6 +79,7 @@ export const SetFollowModule = ({
       },
       onError(error) {
         console.log(error);
+        setIsProcessing(false);
       },
     }
   );

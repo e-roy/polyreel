@@ -31,7 +31,7 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
       className="py-2 px-4 rounded-xl text-md font-bold bg-sky-800 text-white"
       onClick={() => handleLogin()}
     >
-      Login
+      Login with Lens
     </button>
   );
 };
