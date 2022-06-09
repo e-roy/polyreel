@@ -49,20 +49,28 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   if (loading) return null;
   // return null if no data
   if (!doesFollowData || !doesFollowData.doesFollow[0]) return null;
-  // return null if follow module is found
-  // console.log(profile.followModule);
-  if (profile.followModule) return null;
+  // console.log(profile);
 
   const handleRefetch = async () => {
     await refetch();
   };
 
-  if (isFollowing)
-    return (
-      <UnFollowProfileButton profileId={profileId} refetch={handleRefetch} />
-    );
-  else
-    return (
-      <FollowProfileButton profileId={profileId} refetch={handleRefetch} />
-    );
+  if (
+    profile.followModule === null ||
+    // @ts-ignore
+    profile.followModule?.__typename === "ProfileFollowModuleSettings"
+  ) {
+    if (isFollowing)
+      return (
+        <UnFollowProfileButton profileId={profileId} refetch={handleRefetch} />
+      );
+    else
+      return (
+        <FollowProfileButton
+          profile={profile}
+          profileId={profileId}
+          refetch={handleRefetch}
+        />
+      );
+  } else return null;
 };

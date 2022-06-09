@@ -27,7 +27,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
 import { CURRENT_CHAIN_ID } from "@/lib/constants";
-import { profile } from "console";
 
 export type HeaderProps = {};
 

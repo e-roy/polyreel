@@ -100,7 +100,7 @@ export const CreatePost = () => {
     }
     const payload = {
       name: "Post from @" + currentUser?.handle,
-      description: "",
+      description: content,
       content,
       media: media,
     };
