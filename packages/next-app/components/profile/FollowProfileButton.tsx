@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button } from "@/components/elements";
 
 import { useSignTypedData, useContractWrite, useAccount } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
+import { UserContext } from "@/components/layout";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_FOLLOW_TYPED_DATA } from "@/queries/follow/follow";
@@ -23,6 +24,7 @@ export const FollowProfileButton = ({
   profileId,
   refetch,
 }: FollowProfileButtonProps) => {
+  const { currentUser } = useContext(UserContext);
   const [isUpdating, setIsUpdating] = useState(false);
   const { data: accountData } = useAccount();
   const { signTypedDataAsync } = useSignTypedData();
@@ -88,7 +90,7 @@ export const FollowProfileButton = ({
               // @ts-ignore
               profile?.followModule?.__typename ===
               "ProfileFollowModuleSettings"
-                ? { profileFollowModule: { profileId: profile.id } }
+                ? { profileFollowModule: { profileId: currentUser?.id } }
                 : null,
           },
         },
