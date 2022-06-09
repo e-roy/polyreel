@@ -49,7 +49,7 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   if (loading) return null;
   // return null if no data
   if (!doesFollowData || !doesFollowData.doesFollow[0]) return null;
-  // console.log(profile);
+  console.log(profile);
 
   const handleRefetch = async () => {
     await refetch();
