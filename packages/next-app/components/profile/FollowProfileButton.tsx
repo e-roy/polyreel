@@ -10,12 +10,16 @@ import { CREATE_FOLLOW_TYPED_DATA } from "@/queries/follow/follow";
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
+import { Profile } from "@/types/lenstypes";
+
 type FollowProfileButtonProps = {
+  profile: Profile;
   profileId: string;
   refetch: () => void;
 };
 
 export const FollowProfileButton = ({
+  profile,
   profileId,
   refetch,
 }: FollowProfileButtonProps) => {
@@ -78,7 +82,15 @@ export const FollowProfileButton = ({
     createFollowTypedData({
       variables: {
         request: {
-          follow: { profile: profileId },
+          follow: {
+            profile: profile.id,
+            followModule:
+              // @ts-ignore
+              profile?.followModule?.__typename ===
+              "ProfileFollowModuleSettings"
+                ? { profileFollowModule: { profileId: profile.id } }
+                : null,
+          },
         },
       },
     });
