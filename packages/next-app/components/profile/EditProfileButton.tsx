@@ -1,162 +1,147 @@
-import { useState, useEffect, useContext } from "react";
-
-import { Button, Modal, TextField, Avatar } from "@/components/elements";
-import { XIcon, PencilIcon } from "@heroicons/react/outline";
-
-import { Loading } from "@/components/elements";
-
-import { UserContext } from "@/components/layout";
-import { useMutation } from "@apollo/client";
-import { UPDATE_PROFILE } from "@/queries/profile/update-profile";
-import { uploadIpfsProfile } from "@/lib/ipfs/ipfsProfile";
-
-import { SetProfileImage } from "@/components/profile";
+import { useState, useContext } from "react";
+import { useMutation, gql } from "@apollo/client";
 
 import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
-import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
-import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
+import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
+import LENS_ABI from "@/abis/Lens-Hub.json";
 
-const filterAttributes = (attributes: any, key: string) => {
-  return attributes?.filter((attribute: any) => attribute.key === key);
-};
+import { Button, Modal, Avatar } from "@/components/elements";
+import { XIcon, CameraIcon } from "@heroicons/react/outline";
+
+import { UserContext } from "@/components/layout";
+
+import {
+  EditProfile,
+  SetProfileImage,
+  SetFollowModule,
+} from "@/components/profile";
+import { Profile } from "@/types/lenstypes";
+
+const CREATE_SET_DEFAULT_PROFILE_TYPED_DATA = gql`
+  mutation ($request: CreateSetDefaultProfileRequest!) {
+    createSetDefaultProfileTypedData(request: $request) {
+      id
+      expiresAt
+      typedData {
+        types {
+          SetDefaultProfileWithSig {
+            name
+            type
+          }
+        }
+        domain {
+          name
+          chainId
+          version
+          verifyingContract
+        }
+        value {
+          nonce
+          deadline
+          wallet
+          profileId
+        }
+      }
+    }
+  }
+`;
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 type EditProfileButtonProps = {
+  profile: Profile;
   refetch: () => void;
 };
 
-export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
+export const EditProfileButton = ({
+  profile,
+  refetch,
+}: EditProfileButtonProps) => {
   const { currentUser, refechProfiles } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
+  const [editProfile, setEditProfile] = useState("profile");
   const handleClose = () => setIsOpen(false);
-  const [updateName, setUpdateName] = useState<string>("");
-  const [updateBio, setUpdateBio] = useState<string>("");
-  const [updateLocation, setUpdateLocation] = useState<string>("");
-  const [updateWebsite, setUpdateWebsite] = useState<string>("");
-  const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string>("");
-  const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
+
+  // console.log(currentUser);
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite(
     {
-      addressOrName: LENS_PERIPHERY_CONTRACT,
-      contractInterface: LENS_PERIPHERY_ABI,
+      addressOrName: LENS_HUB_PROXY_ADDRESS,
+      contractInterface: LENS_ABI,
     },
-    "setProfileMetadataURIWithSig"
+    "setDefaultProfileWithSig"
   );
 
-  const [createSetProfileMetadataTypedData, {}] = useMutation(UPDATE_PROFILE, {
-    onCompleted({ createSetProfileMetadataTypedData }: any) {
-      const { typedData } = createSetProfileMetadataTypedData;
-      if (!createSetProfileMetadataTypedData)
-        console.log("createSetProfileMetadataTypedData is null");
-      const { profileId, metadata } = typedData?.value;
+  const [createSetDefaultProfileTypedData, {}] = useMutation(
+    CREATE_SET_DEFAULT_PROFILE_TYPED_DATA,
+    {
+      onCompleted({ createSetDefaultProfileTypedData }: any) {
+        const { typedData } = createSetDefaultProfileTypedData;
+        if (!createSetDefaultProfileTypedData)
+          console.log("createSetDefaultProfileTypedData is null");
+        const { profileId, wallet } = typedData?.value;
 
-      signTypedDataAsync({
-        domain: omit(typedData?.domain, "__typename"),
-        types: omit(typedData?.types, "__typename"),
-        value: omit(typedData?.value, "__typename"),
-      }).then((res) => {
-        if (res) {
-          const { v, r, s } = splitSignature(res);
-          const postARGS = {
-            user: currentUser?.ownedBy,
-            profileId,
-            metadata,
-            sig: {
-              v,
-              r,
-              s,
-              deadline: typedData.value.deadline,
-            },
-          };
-          writeAsync({ args: postARGS }).then((res) => {
-            res.wait(1).then(() => {
-              refechProfiles();
-              setIsOpen(false);
-              setIsUpdating(false);
+        signTypedDataAsync({
+          domain: omit(typedData?.domain, "__typename"),
+          types: omit(typedData?.types, "__typename"),
+          value: omit(typedData?.value, "__typename"),
+        }).then((res) => {
+          if (res) {
+            const { v, r, s } = splitSignature(res);
+            const postARGS = {
+              profileId,
+              wallet,
+              sig: {
+                v,
+                r,
+                s,
+                deadline: typedData.value.deadline,
+              },
+            };
+            writeAsync({ args: postARGS }).then((res) => {
+              res.wait(1).then(() => {
+                console.log("COMPLETE");
+                // console.log(res);
+                refechProfiles();
+                setIsUpdating(false);
+              });
             });
-          });
-        }
-      });
-    },
-    onError(error) {
-      console.log(error);
-      setIsUpdating(false);
-    },
-  });
-
-  useEffect(() => {
-    if (currentUser) {
-      if (currentUser?.name) setUpdateName(currentUser?.name as string);
-      if (currentUser?.bio) setUpdateBio(currentUser?.bio as string);
-      if (checkLocation()) setUpdateLocation(checkLocation() as string);
-      if (checkWebsite()) setUpdateWebsite(checkWebsite() as string);
-      if (checkTwitter()) setUpdateTwitterUrl(checkTwitter() as string);
-      setUpdateCoverPicture((currentUser?.coverPicture as any) || "");
+          }
+        });
+      },
+      onError(error) {
+        console.log(error);
+        setIsUpdating(false);
+      },
     }
-  }, [currentUser]);
-
-  const checkLocation = () => {
-    const location = filterAttributes(currentUser?.attributes, "location");
-    if (location && location[0]) return location[0].value;
-  };
-
-  const checkWebsite = () => {
-    const website = filterAttributes(currentUser?.attributes, "website");
-    if (website[0]) return website[0].value;
-  };
-
-  const checkTwitter = () => {
-    const twitter = filterAttributes(currentUser?.attributes, "twitter");
-    if (twitter[0]) return twitter[0].value;
-  };
+  );
 
   const handleButton = () => {
     setIsOpen(true);
   };
 
-  const handleSave = async () => {
-    setIsUpdating(true);
-    const payload = {
-      name: updateName,
-      bio: updateBio,
-      cover_picture: updateCoverPicture,
-      attributes: [
-        {
-          traitType: "string",
-          value: updateLocation,
-          key: "location",
-        },
-        {
-          traitType: "string",
-          value: updateWebsite,
-          key: "website",
-        },
-        {
-          traitType: "string",
-          value: updateTwitterUrl,
-          key: "twitter",
-        },
-      ],
-    };
-    const result = await uploadIpfsProfile({ payload });
-
-    createSetProfileMetadataTypedData({
-      variables: {
-        request: {
-          profileId: currentUser?.id,
-          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
-        },
-      },
-    });
-  };
-
   const handleRefetch = async () => {
     await refetch();
     setEditProfileImage(!editProfileImage);
+  };
+
+  const handleSetDefault = () => {
+    setIsUpdating(true);
+
+    createSetDefaultProfileTypedData({
+      variables: {
+        request: {
+          // options: { overrideSigNonce: 1 },
+          profileId: profile.id,
+        },
+      },
+    });
   };
 
   return (
@@ -169,117 +154,102 @@ export const EditProfileButton = ({ refetch }: EditProfileButtonProps) => {
           <div className="flex justify-between pb-2">
             <div className="pt-2 font-bold text-stone-700 text-lg">
               <div className=" flex h-7 items-center">
-                <button
-                  type="button"
-                  className="rounded-full p-2 bg-white hover:bg-stone-200 text-stone-400 hover:text-stone-500 focus:outline-none"
-                  onClick={() => handleClose()}
-                >
-                  <span className="sr-only">Close panel</span>
-                  <XIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
                 <span className="pl-4">Edit Profile</span>
               </div>
             </div>
-            <div>
-              {!isUpdating && (
-                <Button className="py-1 px-2" onClick={() => handleSave()}>
-                  save
-                </Button>
-              )}
-            </div>
+            <button
+              type="button"
+              className="rounded-full p-2 bg-white hover:bg-stone-200 text-stone-400 hover:text-stone-500 focus:outline-none"
+              onClick={() => handleClose()}
+            >
+              <span className="sr-only">Close panel</span>
+              <XIcon className="h-5 w-5" aria-hidden="true" />
+            </button>
           </div>
-          {currentUser?.coverPicture && currentUser?.coverPicture ? (
-            <div className=" h-40 sm:h-56">
-              {currentUser.coverPicture.__typename === "MediaSet" && (
-                <img
-                  className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                  src={currentUser.coverPicture.original.url}
-                  alt=""
-                />
-              )}
-              {currentUser.coverPicture.__typename === "NftImage" && (
-                <img
-                  className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                  src={currentUser.coverPicture.uri}
-                  alt=""
-                />
-              )}
-            </div>
-          ) : (
-            <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64 rounded-t shadow-xl"></div>
-          )}
-
           <div className="flex justify-between">
             <div
-              className="-mt-8 ml-4 z-20 flex cursor-pointer"
-              onClick={() => setEditProfileImage(!editProfileImage)}
+              className="ml-4 z-20 flex cursor-pointer"
+              onClick={() => setEditProfile("avatar")}
             >
-              <Avatar profile={currentUser as any} size={"medium"} />
+              <Avatar profile={profile} size={"medium"} />
               <div className="mt-10 -ml-4 p-1 rounded-full bg-stone-200">
-                <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                <CameraIcon className="h-4 w-4" aria-hidden="true" />
               </div>
             </div>
-            <div></div>
-          </div>
-          {isUpdating ? (
-            <div className="h-1/2 py-8 px-4">
-              <Loading />
-            </div>
-          ) : (
-            <>
-              {editProfileImage ? (
-                <div className="h-1/2 py-8 px-4">
-                  <SetProfileImage
-                    profileId={currentUser?.id as string}
-                    refetch={handleRefetch}
-                  />
-                </div>
+            <div className="m-auto">
+              {isUpdating ? (
+                <button
+                  disabled
+                  className="py-1 px-3 border rounded-xl border-stone-500 font-medium text-stone-700"
+                >
+                  updating...
+                </button>
               ) : (
-                <div className="h-1/2 overflow-y-scroll">
-                  <TextField
-                    className="my-4"
-                    name="name"
-                    label="Update Your Name"
-                    value={updateName}
-                    placeholder="name"
-                    onChange={(e) => setUpdateName(e.target.value)}
-                  />
-                  <TextField
-                    className="my-4"
-                    name="bio"
-                    label="Update Your Bio"
-                    value={updateBio}
-                    placeholder="bio"
-                    onChange={(e) => setUpdateBio(e.target.value)}
-                  />
-                  <TextField
-                    className="my-4"
-                    name="location"
-                    label="Update Your Location"
-                    value={updateLocation}
-                    placeholder="location"
-                    onChange={(e) => setUpdateLocation(e.target.value)}
-                  />
-                  <TextField
-                    className="my-4"
-                    name="website"
-                    label="Update Your Website Url"
-                    value={updateWebsite || ""}
-                    placeholder="website"
-                    onChange={(e) => setUpdateWebsite(e.target.value)}
-                  />
-                  <TextField
-                    className="my-4"
-                    name="twitter"
-                    label="Update Your Twitter Handle"
-                    value={updateTwitterUrl || ""}
-                    placeholder="Twitter Handle"
-                    onChange={(e) => setUpdateTwitterUrl(e.target.value)}
-                  />
-                </div>
+                <>
+                  {currentUser?.id === profile.id ? (
+                    <button
+                      disabled
+                      className="py-1 px-3 border rounded-xl text-sky-600 font-medium border-sky-400"
+                    >
+                      default profile
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleSetDefault()}
+                      className="py-1 px-3 border-2 border-stone-500 hover:border-stone-700 rounded-xl text-stone-700 hover:text-stone-100 hover:bg-stone-700 hover:shadow-lg font-medium"
+                    >
+                      set as default
+                    </button>
+                  )}
+                </>
               )}
-            </>
-          )}
+            </div>
+          </div>
+
+          <div className="flex m-4">
+            <button
+              onClick={() => setEditProfile("profile")}
+              className={classNames(
+                editProfile === "profile"
+                  ? "bg-stone-700 text-stone-100"
+                  : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
+                "text-center  py-2 text-sm font-medium rounded-md w-1/2 border rounded-l-2xl"
+              )}
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => setEditProfile("settings")}
+              className={classNames(
+                editProfile === "settings"
+                  ? "bg-stone-700 text-stone-100"
+                  : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
+                "text-center  py-2 text-sm font-medium rounded-md w-1/2 border rounded-r-2xl"
+              )}
+            >
+              Settings
+            </button>
+          </div>
+          <div className="h-6/10 px-4">
+            {editProfile === "avatar" && (
+              <div className="pt-8">
+                <SetProfileImage
+                  profileId={profile.id}
+                  refetch={handleRefetch}
+                />
+              </div>
+            )}
+            {editProfile === "profile" && (
+              <EditProfile profile={profile} refetch={handleRefetch} />
+            )}
+            {editProfile === "settings" && (
+              <SetFollowModule
+                profile={profile}
+                currentFollowModule={profile.followModule}
+                refetch={handleRefetch}
+              />
+            )}
+          </div>
         </div>
       </Modal>
     </>

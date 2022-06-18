@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import { ProfileFragmentLite } from "./ProfileFragmentLite";
 import { PostPostFragment } from "./PostPostFragment";
 import { MediaFieldsFragment } from "./MediaFieldsFragment";
+import { CollectFragmentLite } from "./CollectFragmentLite";
 
 export const PostMirrorFragment = gql`
   fragment PostMirrorFragment on Mirror {
@@ -47,10 +48,16 @@ export const PostMirrorFragment = gql`
       totalAmountOfMirrors
       totalAmountOfCollects
       totalAmountOfComments
+      totalDownvotes
+      totalUpvotes
+    }
+    collectModule {
+      ...CollectFragmentLite
     }
     createdAt
   }
   ${ProfileFragmentLite}
   ${PostPostFragment}
   ${MediaFieldsFragment}
+  ${CollectFragmentLite}
 `;

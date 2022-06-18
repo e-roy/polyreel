@@ -14,16 +14,17 @@ import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export const Collect = ({ publication }: any) => {
   const { currentUser } = useContext(UserContext);
+  // console.log("currentuser", currentUser);
 
-  const { stats } = publication;
+  const { stats, collectModule } = publication;
 
-  const { signTypedData, signTypedDataAsync } = useSignTypedData();
-  const { write, writeAsync } = useContractWrite(
+  const { signTypedDataAsync } = useSignTypedData();
+  const { writeAsync } = useContractWrite(
     {
       addressOrName: LENS_HUB_PROXY_ADDRESS,
       contractInterface: LENS_ABI,
     },
-    "mirrorWithSig"
+    "collectWithSig"
   );
 
   const [createCollectTypedData, { loading, error }] = useMutation(
@@ -33,17 +34,18 @@ export const Collect = ({ publication }: any) => {
         const { typedData } = createCollectTypedData;
         if (!createCollectTypedData)
           console.log("createCollectTypedData is null");
-        const { collector, profileId, pubId, data } = typedData?.value;
+        const { profileId, pubId, data } = typedData?.value;
 
         signTypedDataAsync({
           domain: omit(typedData?.domain, "__typename"),
           types: omit(typedData?.types, "__typename"),
           value: omit(typedData?.value, "__typename"),
         }).then((res) => {
+          console.log(res);
           if (res) {
             const { v, r, s } = splitSignature(res);
             const postARGS = {
-              collector,
+              collector: currentUser?.ownedBy,
               profileId,
               pubId,
               data,
@@ -54,14 +56,20 @@ export const Collect = ({ publication }: any) => {
                 deadline: typedData.value.deadline,
               },
             };
-            writeAsync({ args: postARGS }).then((res: any) => {
-              if (!res.error) {
-                console.log(res.data);
+            console.log("before write");
+            console.log(postARGS);
+            writeAsync({ args: postARGS }).then((res) => {
+              res.wait(1).then(() => {
+                console.log("res", res);
+                // onClose();
+              });
+              // if (!res.error) {
+              //   console.log(res.data);
 
-                // reset form  and other closing actions
-              } else {
-                console.log(res.error);
-              }
+              //   // reset form  and other closing actions
+              // } else {
+              //   console.log(res.error);
+              // }
             });
           }
           console.log(res);
@@ -84,10 +92,18 @@ export const Collect = ({ publication }: any) => {
     });
   };
 
+  if (collectModule.__typename !== "FreeCollectModuleSettings") return null;
+
   return (
-    <div className="flex ml-4 cursor-pointer" onClick={() => handleCollect()}>
+    <div
+      className="flex ml-4 hover:text-stone-700 cursor-pointer"
+      onClick={() => handleCollect()}
+    >
       {stats.totalAmountOfMirrors}
-      <CollectionIcon className="h-6 w-6 ml-2" aria-hidden="true" />
+      <CollectionIcon
+        className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
+        aria-hidden="true"
+      />
     </div>
   );
 };

@@ -12,12 +12,11 @@ import { CURRENT_CHAIN_ID } from "@/lib/constants";
 
 const SelectProfile: NextPage = () => {
   const router = useRouter();
-  const { profiles, setCurrentUser } = useContext(UserContext);
+  const { profiles } = useContext(UserContext);
   // console.log(profiles);
 
   const handleSelectProfile = (profile: any) => {
-    localStorage.setItem("polyreel_current_user_profile_id", profile.id);
-    setCurrentUser(profile);
+    // localStorage.setItem("polyreel_current_user_profile_id", profile.id);
     router.push(`/profile/${profile.handle}`);
   };
 

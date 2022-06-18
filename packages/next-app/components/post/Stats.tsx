@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import Link from "next/link";
 import { UserContext } from "@/components/layout";
-import { Mirror, Collect } from "@/components/post";
+import { Mirror, Collect, Like } from "@/components/post";
 
 import { ChatAlt2Icon } from "@heroicons/react/outline";
 
@@ -39,18 +39,19 @@ export const Stats = ({ publication }: StatsProps) => {
 
   return (
     <>
-      <div className="flex font-medium text-stone-500 mt-4">
+      <div className="flex text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4">
         <span className="hover:text-stone-700 flex cursor-pointer">
           {stats.totalAmountOfComments}
           <ChatAlt2Icon
             onClick={() => setShowComment(!showComment)}
-            className="h-6 w-6 ml-2 "
+            className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 "
             aria-hidden="true"
           />
         </span>
 
         <Mirror publication={publication} />
-        {/* <Collect publication={publication} /> */}
+        <Like publication={publication} />
+        <Collect publication={publication} />
       </div>
       {showComment && (
         <CommentCard

@@ -1,4 +1,5 @@
 export { EditProfileButton } from "./EditProfileButton";
+export { EditProfile } from "./EditProfile";
 export { FollowersButton } from "./FollowersButton";
 export { GetFollowing } from "./GetFollowing";
 export { GetFollowers } from "./GetFollowers";

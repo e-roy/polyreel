@@ -63,6 +63,7 @@ export const CreatePost = () => {
         types: omit(typedData?.types, "__typename"),
         value: omit(typedData?.value, "__typename"),
       }).then((res: any) => {
+        console.log("res", res);
         const { v, r, s } = splitSignature(res);
         const postARGS = {
           profileId,
@@ -78,7 +79,8 @@ export const CreatePost = () => {
             deadline: typedData.value.deadline,
           },
         };
-        write({ args: postARGS });
+        console.log(postARGS);
+        writeAsync({ args: postARGS });
         setIsModalOpen(false);
       });
     },
@@ -145,14 +147,16 @@ export const CreatePost = () => {
             setIsModalOpen(false);
           }}
         >
-          <div className="bg-white p-4 w-full">
+          <div className="p-4 w-full bg-white">
             <div className="items-start justify-between">
               <Dialog.Title className="text-lg font-bold text-stone-600">
                 Create Post
               </Dialog.Title>
               <div className="max-h-screen overflow-y-scroll">
                 <div className="flex mt-6">
-                  <Avatar profile={currentUser as any} size={"small"} />
+                  <div>
+                    <Avatar profile={currentUser as any} size={"small"} />
+                  </div>
                   <div className="w-full sm:ml-4 p-2">
                     <textarea
                       rows={6}

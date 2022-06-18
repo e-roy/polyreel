@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import type { LinkProps } from "./types";
 
-export const profileRegex = /\B@([\w_]+)/;
+export const profileRegex = /\B@([\w.\w_]+)/; // @aaveprotocol\.test
 
 export const ProfileComponent: React.FC<LinkProps> = ({ match, className }) => {
   return (

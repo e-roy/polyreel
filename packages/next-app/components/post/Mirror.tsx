@@ -9,7 +9,6 @@ import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
 import LENS_ABI from "@/abis/Lens-Hub.json";
-
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
 export const Mirror = ({ publication }: any) => {
@@ -87,7 +86,10 @@ export const Mirror = ({ publication }: any) => {
       onClick={() => handleMirror()}
     >
       {stats.totalAmountOfMirrors}
-      <DocumentDuplicateIcon className="h-6 w-6 ml-2" aria-hidden="true" />
+      <DocumentDuplicateIcon
+        className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
+        aria-hidden="true"
+      />
     </div>
   );
 };

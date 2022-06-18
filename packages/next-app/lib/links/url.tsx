@@ -13,7 +13,7 @@ export const UrlComponent: React.FC<LinkProps> = ({
       className={className}
       href={/^www\./.exec(url) ? `http://${url}` : url}
       target="_blank"
-      rel="noreferrer"
+      rel="noreferrer noopener"
     >
       {url}
     </a>

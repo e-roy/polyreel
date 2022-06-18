@@ -1,13 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
-import { UserContext } from "@/components/layout";
+import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+import { useAccount } from "wagmi";
+
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES } from "@/queries/profile/get-profiles";
 
-import { TwitterIcon, WebIcon } from "@/icons";
+import { TwitterIcon } from "@/icons";
 import {
   EditProfileButton,
   FollowersButton,
@@ -15,18 +16,19 @@ import {
   NavSelect,
   GetUserNfts,
   GetPublications,
-  SetFollowModule,
 } from "@/components/profile";
+import { GlobeAltIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 
-import { Avatar, Loading } from "@/components/elements";
+import { Avatar, Loading, Error } from "@/components/elements";
 
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
 const ProfilePage: NextPage = () => {
-  const { currentUser } = useContext(UserContext);
   const router = useRouter();
   const { id } = router.query;
   const [navSelect, setNavSelect] = useState("POST");
+
+  const { data: accountData } = useAccount();
 
   const {
     data: profileData,
@@ -39,15 +41,12 @@ const ProfilePage: NextPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (profileData?.profiles[0]) {
-    }
-  }, [profileData]);
-
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
+  if (error) return <Error />;
 
   const profile = profileData.profiles.items[0];
+  // console.log(profile);
+  if (!profile) return null;
 
   const checkLocation = () => {
     const location = filterAttributes(profile.attributes, "location");
@@ -64,7 +63,6 @@ const ProfilePage: NextPage = () => {
     if (twitter[0]) return twitter[0].value;
   };
 
-  if (!profile) return null;
   // console.log(profile);
   // console.log(profileData);
 
@@ -97,9 +95,10 @@ const ProfilePage: NextPage = () => {
         </div>
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
           <div className="flex pl-12">
-            <Avatar profile={profile} size={"profile"} />
-            <div className="w-24"></div>
-            <div className="mt-6 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
+            <div>
+              <Avatar profile={profile} size={"profile"} />
+            </div>
+            <div className="mt-6 ml-2 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
               <div className="py-1 my-auto font-semibold text-md sm:text-xl md:text-2xl lg:text-3xl">
                 @{profile.handle}
               </div>
@@ -117,7 +116,7 @@ const ProfilePage: NextPage = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  <WebIcon size={30} />
+                  <GlobeAltIcon className="h-8 w-8 text-stone-500 hover:text-stone-700 cursor-pointer" />
                 </a>
               )}
               {profile.attributes && checkTwitter() && (
@@ -125,16 +124,19 @@ const ProfilePage: NextPage = () => {
                   href={`https://twitter.com/${checkTwitter()}`}
                   target="_blank"
                   rel="noreferrer noopener"
+                  className="text-stone-500 hover:text-stone-700"
                 >
                   <TwitterIcon size={30} />
                 </a>
               )}
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
-              {currentUser?.handle === id ? (
+              {accountData?.address === profile.ownedBy ? (
                 <div className="flex">
-                  <SetFollowModule currentFollowModule={profile.followModule} />
-                  <EditProfileButton refetch={handleRefetch} />
+                  <EditProfileButton
+                    refetch={handleRefetch}
+                    profile={profile}
+                  />
                 </div>
               ) : (
                 <DoesFollow profile={profile} profileId={profile.id} />
@@ -151,8 +153,8 @@ const ProfilePage: NextPage = () => {
             </LinkItUrl>
           </div>
           {checkLocation() && (
-            <div className="font-bold py-2">
-              Location :
+            <div className="flex font-bold py-2">
+              <LocationMarkerIcon className="h-4 w-4 sm:h-5 sm:w-5 text-stone-500 hover:text-stone-700 cursor-pointer" />
               <span className="font-medium pl-1">{checkLocation()}</span>
             </div>
           )}
@@ -165,7 +167,11 @@ const ProfilePage: NextPage = () => {
                 following={profile.stats.totalFollowing}
               />
             </div>
-            <NavSelect select={(res) => setNavSelect(res)} profile={profile} />
+            <NavSelect
+              select={(res) => setNavSelect(res)}
+              profile={profile}
+              navSelect={navSelect}
+            />
             <div className="sm:w-1/6"></div>
           </div>
         </div>

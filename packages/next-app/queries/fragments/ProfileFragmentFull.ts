@@ -8,6 +8,7 @@ export const ProfileFragmentFull = gql`
     handle
     name
     bio
+    isDefault
     ownedBy
     picture {
       ... on MediaSet {

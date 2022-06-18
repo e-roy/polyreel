@@ -73,6 +73,7 @@ export const Header = ({}: HeaderProps) => {
   };
 
   const handleProfileClick = (profile: any) => {
+    console.log("profile select", profile);
     setCurrentUser(profile);
   };
 
@@ -88,7 +89,9 @@ export const Header = ({}: HeaderProps) => {
   }
 
   return (
-    <header className={`p-2 sm:px-8 flex justify-between z-20`}>
+    <header
+      className={`p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
+    >
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {accountData?.address && currentUser ? (

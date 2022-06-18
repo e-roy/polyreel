@@ -1,12 +1,101 @@
 import { useContext } from "react";
 import { UserContext } from "@/components/layout";
 
-import { useQuery } from "@apollo/client";
-import { GET_NOTIFICATIONS } from "@/queries/notifications/users-notifications";
+import { useQuery, gql } from "@apollo/client";
 
-import { Loading } from "@/components/elements";
+import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
+import { PostPostFragment } from "@/queries/fragments/PostPostFragment";
+import { PostMirrorFragment } from "@/queries/fragments/PostMirrorFragment";
+import { PostCommentFragment } from "@/queries/fragments/PostCommentFragment";
+
+import { Loading, Error } from "@/components/elements";
 
 import { NotificationCard } from "./";
+
+const GET_NOTIFICATIONS = gql`
+  query ($request: NotificationRequest!) {
+    notifications(request: $request) {
+      items {
+        ... on NewFollowerNotification {
+          __typename
+          createdAt
+          isFollowedByMe
+          wallet {
+            address
+            defaultProfile {
+              ...ProfileFragmentLite
+            }
+          }
+        }
+        ... on NewCollectNotification {
+          __typename
+          createdAt
+          collectedPublication {
+            ... on Post {
+              ...PostPostFragment
+            }
+            ... on Comment {
+              ...PostCommentFragment
+            }
+            ... on Mirror {
+              ...PostMirrorFragment
+            }
+          }
+          wallet {
+            defaultProfile {
+              ...ProfileFragmentLite
+            }
+            address
+          }
+        }
+        ... on NewCommentNotification {
+          __typename
+          createdAt
+          comment {
+            ...PostCommentFragment
+          }
+          profile {
+            ...ProfileFragmentLite
+          }
+        }
+        ... on NewMirrorNotification {
+          __typename
+          createdAt
+          publication {
+            ... on Post {
+              ...PostPostFragment
+            }
+            ... on Comment {
+              ...PostCommentFragment
+            }
+          }
+          profile {
+            ...ProfileFragmentLite
+          }
+        }
+        ... on NewMentionNotification {
+          __typename
+          createdAt
+          mentionPublication {
+            ... on Post {
+              ...PostPostFragment
+            }
+            ... on Comment {
+              ...PostCommentFragment
+            }
+          }
+        }
+      }
+      pageInfo {
+        next
+      }
+    }
+  }
+  ${ProfileFragmentLite}
+  ${PostPostFragment}
+  ${PostMirrorFragment}
+  ${PostCommentFragment}
+`;
 
 export const Notifications = () => {
   const { currentUser } = useContext(UserContext);
@@ -20,10 +109,10 @@ export const Notifications = () => {
     },
   });
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
-  // console.log(data);
+  if (error) return <Error />;
+  console.log(data);
   return (
-    <div className="p-2">
+    <div className="py-2">
       {data.notifications &&
         data.notifications.items &&
         data.notifications.items.map((item: any, index: number) => (

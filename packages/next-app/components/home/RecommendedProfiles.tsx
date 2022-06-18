@@ -1,7 +1,5 @@
-import React from "react";
 import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
-
 import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
 
 export const RECOMMENDED_PROFILES = gql`
@@ -18,7 +16,7 @@ export const RECOMMENDED_PROFILES = gql`
 `;
 
 import { RecommendCard } from "@/components/cards";
-import { Loading } from "@/components/elements";
+import { Loading, Error } from "@/components/elements";
 
 type RecommendedProfilesProps = {};
 
@@ -28,7 +26,7 @@ export const RecommendedProfiles = ({}: RecommendedProfilesProps) => {
   const { loading, error, data } = useQuery(RECOMMENDED_PROFILES);
 
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
+  if (error) return <Error />;
   // console.log(data);
 
   return (
