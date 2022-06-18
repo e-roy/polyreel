@@ -32,6 +32,9 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
       } else if (size === "medium") {
         setAvatarSize(MediumAvatar);
         setBgSize(MediumBG);
+      } else if (size === "profile") {
+        setAvatarSize(LargeAvatar);
+        setBgSize(LargeBG);
       } else {
         setAvatarSize(LargeAvatar);
         setBgSize(LargeBG);

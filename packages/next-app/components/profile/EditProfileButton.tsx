@@ -60,7 +60,8 @@ export const EditProfileButton = ({
   profile,
   refetch,
 }: EditProfileButtonProps) => {
-  const { currentUser, refechProfiles } = useContext(UserContext);
+  const { currentUser, defaultProfile, refechProfiles } =
+    useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
@@ -68,6 +69,7 @@ export const EditProfileButton = ({
   const handleClose = () => setIsOpen(false);
 
   // console.log(currentUser);
+  // console.log(defaultProfile);
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite(
@@ -186,7 +188,7 @@ export const EditProfileButton = ({
                 </button>
               ) : (
                 <>
-                  {currentUser?.id === profile.id ? (
+                  {currentUser?.id === defaultProfile?.id ? (
                     <button
                       disabled
                       className="py-1 px-3 border rounded-xl text-sky-600 font-medium border-sky-400"
