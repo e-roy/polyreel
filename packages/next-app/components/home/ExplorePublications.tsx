@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { LoadingMore } from "@/components/elements";
 
 import { Post } from "@/components/post";
 
@@ -51,21 +52,28 @@ export const ExplorePublications = () => {
             {item &&
               item.__typename === "Comment" &&
               item.commentOn.id === item.mainPost.id && (
-                <div key={index} className="p-4 border-b-4 border-stone-400/40">
+                <div
+                  key={index}
+                  className="sm:p-4 border-b-4 border-stone-400/40"
+                >
                   <Post publication={item} postType="feed" />
                 </div>
               )}
             {item && item.__typename !== "Comment" && (
               <div
                 key={index}
-                className="p-4 border-b border-b-4 border-stone-400/40"
+                className="sm:p-4 border-b-4 border-stone-400/40"
               >
                 <Post publication={item} postType="feed" />
               </div>
             )}
           </div>
         ))}
-      {pageInfo.next && <div className="h-4" ref={sentryRef}></div>}
+      {pageInfo.next && (
+        <div className="h-4" ref={sentryRef}>
+          <LoadingMore />
+        </div>
+      )}
     </div>
   );
 };

@@ -46,7 +46,7 @@ export const UserTimeline = ({}: UserTimelineProps) => {
   });
 
   if (!data) return null;
-  // console.log(data);
+  console.log(data);
 
   return (
     <div className="">

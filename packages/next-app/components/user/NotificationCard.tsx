@@ -23,7 +23,7 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
 const CommentCard = ({ item }: NotificationCardProps) => {
   // console.log(item);
   return (
-    <div className="border p-2 my-1 rounded-xl">
+    <div className="border p-2 my-1 rounded-xl text-sm">
       <div className="flex justify-between mb-2 pr-4">
         <div className="flex">
           <Link href={`/profile/${item.profile.handle}`}>
@@ -57,11 +57,30 @@ const CommentCard = ({ item }: NotificationCardProps) => {
 const NewFollowerCard = ({ item }: NotificationCardProps) => {
   return (
     <div className="border p-2 my-1 rounded-xl">
-      <div className="flex justify-between font-medium text-stone-700">
+      <div className="flex justify-between font-medium text-stone-700 text-sm">
         <div className="flex">
           <Avatar profile={item.profile} size={"small"} />
           <span className="ml-2 my-auto">
-            {addressShorten(item.wallet.address)} started following you
+            {!item.wallet.defaultProfile && (
+              <span>
+                {addressShorten(item.wallet.address)} started following you
+              </span>
+            )}
+            {item.wallet.defaultProfile && (
+              <div className="flex">
+                <Link href={`/profile/${item.wallet.defaultProfile.handle}`}>
+                  <div className="cursor-pointer">
+                    <Avatar
+                      profile={item.wallet.defaultProfile}
+                      size={"small"}
+                    />
+                  </div>
+                </Link>
+                <div className="">
+                  @{item.wallet.defaultProfile.handle} started following you
+                </div>
+              </div>
+            )}
           </span>
         </div>
 

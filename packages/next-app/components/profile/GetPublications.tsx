@@ -5,7 +5,7 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import { Post } from "@/components/post";
 
-import { Loading } from "@/components/elements";
+import { Loading, Error, LoadingMore } from "@/components/elements";
 
 interface GetPublicationsProps {
   profileId: string;
@@ -52,23 +52,26 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
   });
 
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
+  if (error) return <Error />;
   // console.log(data);
 
   return (
-    <div className="mt-2">
-      <div className="flex flex-wrap">
-        {data.publications.items.map((publication: any, index: number) => (
-          <div key={index} className="w-full sm:w-1/2 lg:w-1/3 space-2">
-            <div className="m-2 p-2 border border-stone-400 shadow-lg rounded">
-              <div className="">
-                <Post publication={publication} postType="profile" />
-              </div>
-            </div>
+    <div className="flex flex-col mt-2">
+      {data.publications.items.map((publication: any, index: number) => (
+        <div
+          key={index}
+          className="w-full md:mx-auto space-2 sm:mx-2 lg:w-2/3 xl:w-1/2"
+        >
+          <div className="my-2 p-2 sm:border border-stone-400 shadow sm:shadow-lg rounded">
+            <Post publication={publication} postType="profile" />
           </div>
-        ))}
-        {pageInfo.next && <div className="h-1" ref={sentryRef}></div>}
-      </div>
+        </div>
+      ))}
+      {pageInfo.next && (
+        <div className="h-1" ref={sentryRef}>
+          <LoadingMore />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,33 @@
 import { useRouter } from "next/router";
+import { useQuery, gql } from "@apollo/client";
+import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
 
-import { useQuery } from "@apollo/client";
-import { SEARCH_PROFILES } from "@/queries/profile/search-profiles";
+export const SEARCH_PROFILES = gql`
+  query ($request: SearchQueryRequest!) {
+    search(request: $request) {
+      ... on ProfileSearchResult {
+        __typename
+        items {
+          ... on Profile {
+            ...ProfileFragmentLite
+            stats {
+              totalFollowers
+              totalFollowing
+            }
+          }
+        }
+        pageInfo {
+          totalCount
+          next
+        }
+      }
+    }
+  }
+  ${ProfileFragmentLite}
+`;
 
 import { RecommendCard } from "@/components/cards";
-import { Loading } from "@/components/elements";
+import { Loading, Error } from "@/components/elements";
 
 export type SearchProfilesProps = {
   search?: string;
@@ -24,7 +47,7 @@ export const SearchProfiles = ({ search }: SearchProfilesProps) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
+  if (error) return <Error />;
   //   console.log(data);
 
   return (
