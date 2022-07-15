@@ -86,7 +86,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
         writeAsync({ args: postARGS }).then((res) => {
           onClose();
           res.wait(1).then(() => {
-            console.log("res", res);
+            // console.log("res", res);
             // onClose();
           });
         });

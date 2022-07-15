@@ -39,7 +39,6 @@ export const Collect = ({ publication }: any) => {
           types: omit(typedData?.types, "__typename"),
           value: omit(typedData?.value, "__typename"),
         }).then((res) => {
-          console.log(res);
           if (res) {
             const { v, r, s } = splitSignature(res);
             const postARGS = {
@@ -54,11 +53,10 @@ export const Collect = ({ publication }: any) => {
                 deadline: typedData.value.deadline,
               },
             };
-            console.log("before write");
-            console.log(postARGS);
+
             writeAsync({ args: postARGS }).then((res) => {
               res.wait(1).then(() => {
-                console.log("res", res);
+                // console.log("res", res);
                 // onClose();
               });
               // if (!res.error) {
@@ -70,7 +68,6 @@ export const Collect = ({ publication }: any) => {
               // }
             });
           }
-          console.log(res);
         });
       },
       onError(error) {
@@ -80,7 +77,6 @@ export const Collect = ({ publication }: any) => {
   );
 
   const handleCollect = () => {
-    console.log("collect");
     createCollectTypedData({
       variables: {
         request: {

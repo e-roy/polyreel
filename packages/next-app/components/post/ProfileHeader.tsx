@@ -10,13 +10,13 @@ interface ProfileHeaderProps {
 export const ProfileHeader = ({ profile, appId }: ProfileHeaderProps) => {
   const [adjustBorder, setAdjustBorder] = useState("hover:shadow-stone-500");
   useEffect(() => {
-    // console.log(publication.appId);
-    if (appId?.includes("Lenster"))
+    // console.log(appId);
+    if (appId?.toLocaleLowerCase().includes("lenster"))
       setAdjustBorder("border-purple-600 hover:shadow-purple-600");
-    if (appId === "Lenstube")
+    if (appId?.toLocaleLowerCase() === "lenstube")
       setAdjustBorder("border-green-500 hover:shadow-green-500");
 
-    if (appId === "polyreel.xyz")
+    if (appId?.toLocaleLowerCase() === "polyreel.xyz")
       setAdjustBorder("border-blue-500 hover:shadow-blue-500");
   }, [appId]);
   if (!profile) return null;
