@@ -36,23 +36,22 @@ export const Header = ({}: HeaderProps) => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
-  const { data: accountData } = useAccount();
+  const { address, connector } = useAccount();
 
   // console.log("currentUser", currentUser);
   const correctNetwork = useCheckNetwork();
 
   useEffect(() => {
-    if (accountData) {
+    if (connector?.ready) {
       setIsWalletConnected(true);
     }
-  }, [accountData]);
-  // console.log(accountData);
+  }, [connector]);
 
   const { data: profileData, loading: profileLoading } = useQuery(
     GET_PROFILES,
     {
       variables: {
-        request: { ownedBy: accountData?.address, limit: 10 },
+        request: { ownedBy: address, limit: 10 },
       },
     }
   );
@@ -77,6 +76,7 @@ export const Header = ({}: HeaderProps) => {
     setCurrentUser(profile);
   };
 
+  // return null;
   // console.log(router.pathname);
 
   const baseClass =
@@ -94,7 +94,7 @@ export const Header = ({}: HeaderProps) => {
     >
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
-          {accountData?.address && currentUser ? (
+          {address && currentUser ? (
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
               <div className="px-4 font-medium">
@@ -102,7 +102,7 @@ export const Header = ({}: HeaderProps) => {
                 <div>{currentUser?.name}</div>
               </div>
             </div>
-          ) : accountData?.address ? (
+          ) : address ? (
             <div className="flex">
               <UserIcon
                 className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}

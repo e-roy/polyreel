@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { removeAuthenticationToken } from "@/lib/auth/state";
 
 import { UserContext, Header } from "@/components/layout";
@@ -28,23 +28,21 @@ type AppLayoutProps = {
 
 export const AppLayout = ({ children }: AppLayoutProps) => {
   const router = useRouter();
-  const { data: accountData } = useAccount();
-  const { activeConnector } = useConnect();
+  const { address, connector, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
 
   useEffect(() => {
-    activeConnector?.on("change", () => {
-      // console.log('activeConnector.on("change")');
+    connector?.on("change", () => {
       removeAuthenticationToken();
       disconnect();
     });
-  }, [accountData?.address]);
+  }, [address, connector, isDisconnected]);
 
   const { data: userProfilesData, loading: userProfilesLoading } = useQuery(
     GET_PROFILES,
     {
       variables: {
-        request: { ownedBy: accountData?.address },
+        request: { ownedBy: address },
       },
     }
   );
@@ -56,7 +54,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   } = useQuery(GET_DEFAULT_PROFILE, {
     variables: {
       request: {
-        ethereumAddress: accountData?.address,
+        ethereumAddress: address,
       },
     },
   });

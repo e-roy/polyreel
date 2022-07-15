@@ -27,13 +27,11 @@ export const SetProfileImage = ({
   const maxNumber = 1;
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "setProfileImageURIWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "setProfileImageURIWithSig",
+  });
 
   const [createSetProfileImageURITypedData, { error }] = useMutation(
     CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA,

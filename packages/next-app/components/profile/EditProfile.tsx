@@ -34,13 +34,11 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
   const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_PERIPHERY_CONTRACT,
-      contractInterface: LENS_PERIPHERY_ABI,
-    },
-    "setProfileMetadataURIWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_PERIPHERY_CONTRACT,
+    contractInterface: LENS_PERIPHERY_ABI,
+    functionName: "setProfileMetadataURIWithSig",
+  });
 
   const [createSetProfileMetadataTypedData, {}] = useMutation(UPDATE_PROFILE, {
     onCompleted({ createSetProfileMetadataTypedData }: any) {

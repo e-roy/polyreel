@@ -17,13 +17,11 @@ export const Mirror = ({ publication }: any) => {
   const { stats } = publication;
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { write } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "mirrorWithSig"
-  );
+  const { write } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "mirrorWithSig",
+  });
 
   const [createMirrorTypedData, {}] = useMutation(CREATE_MIRROR_TYPED_DATA, {
     onCompleted({ createMirrorTypedData }: any) {

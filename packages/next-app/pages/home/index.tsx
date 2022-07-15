@@ -13,7 +13,7 @@ import { Notifications } from "@/components/user";
 import { HomeIcon, BellIcon, GlobeIcon } from "@heroicons/react/outline";
 
 const Home: NextPage = () => {
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
   const [sideNav, setSideNav] = useState("Explore");
 
   const sidebarNav = [
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       id: 1,
       label: "Home",
       icon: <HomeIcon className="text-3xl h-8 w-8 mx-auto" />,
-      active: accountData?.address ? true : false,
+      active: address ? true : false,
     },
     {
       id: 2,
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       id: 3,
       label: "Notifications",
       icon: <BellIcon className="text-3xl h-8 w-8 mx-auto" />,
-      active: accountData?.address ? true : false,
+      active: address ? true : false,
     },
   ];
 

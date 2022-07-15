@@ -28,7 +28,7 @@ const ProfilePage: NextPage = () => {
   const { id } = router.query;
   const [navSelect, setNavSelect] = useState("POST");
 
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
 
   const {
     data: profileData,
@@ -131,7 +131,7 @@ const ProfilePage: NextPage = () => {
               )}
             </div>
             <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
-              {accountData?.address === profile.ownedBy ? (
+              {address === profile.ownedBy ? (
                 <div className="flex">
                   <EditProfileButton
                     refetch={handleRefetch}
