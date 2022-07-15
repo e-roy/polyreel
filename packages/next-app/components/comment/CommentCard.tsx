@@ -37,13 +37,11 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
 
   const { signTypedDataAsync } = useSignTypedData();
 
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "commentWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "commentWithSig",
+  });
 
   const [createCommentTypedData, {}] = useMutation(CREATE_COMMENT_TYPED_DATA, {
     onCompleted({ createCommentTypedData }: any) {

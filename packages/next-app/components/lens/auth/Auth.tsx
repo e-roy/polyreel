@@ -8,17 +8,17 @@ type AuthProps = {
 };
 
 export const Auth = ({ userLoggedIn }: AuthProps) => {
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
   const handleLogin = async () => {
-    const challenge = await generateChallenge(accountData?.address as string);
+    const challenge = await generateChallenge(address as string);
     if (!challenge) return;
     const signature = await signMessageAsync({
       message: challenge.data.challenge.text,
     });
     const accessTokens = await authenticate(
-      accountData?.address as string,
+      address as string,
       signature as string
     );
 

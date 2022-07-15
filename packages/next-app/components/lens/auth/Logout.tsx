@@ -10,11 +10,11 @@ type LogoutProps = {
 export const Logout = ({ className }: LogoutProps) => {
   const router = useRouter();
 
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
   const { disconnect } = useDisconnect();
 
   const handleLogout = async () => {
-    if (accountData?.address) {
+    if (address) {
       disconnect();
       await removeAuthenticationToken();
       router.push("/");

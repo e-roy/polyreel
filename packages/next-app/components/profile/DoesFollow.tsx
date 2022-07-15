@@ -17,7 +17,7 @@ type DoesFollowProps = {
 
 export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   const { currentUser } = useContext(UserContext);
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
 
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
@@ -30,7 +30,7 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
       request: {
         followInfos: [
           {
-            followerAddress: accountData?.address,
+            followerAddress: address,
             profileId,
           },
         ],

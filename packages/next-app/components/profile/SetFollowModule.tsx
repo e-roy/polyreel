@@ -27,13 +27,11 @@ export const SetFollowModule = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "setFollowModuleWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "setFollowModuleWithSig",
+  });
   const [createSetFollowModuleTypedData, {}] = useMutation(
     CREATE_SET_FOLLOW_MODULE_TYPED_DATA,
     {

@@ -72,13 +72,11 @@ export const EditProfileButton = ({
   // console.log(defaultProfile);
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "setDefaultProfileWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "setDefaultProfileWithSig",
+  });
 
   const [createSetDefaultProfileTypedData, {}] = useMutation(
     CREATE_SET_DEFAULT_PROFILE_TYPED_DATA,

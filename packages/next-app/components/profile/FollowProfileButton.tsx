@@ -26,15 +26,13 @@ export const FollowProfileButton = ({
 }: FollowProfileButtonProps) => {
   const { currentUser } = useContext(UserContext);
   const [isUpdating, setIsUpdating] = useState(false);
-  const { data: accountData } = useAccount();
+  const { address } = useAccount();
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "followWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "followWithSig",
+  });
   const [createFollowTypedData, {}] = useMutation(CREATE_FOLLOW_TYPED_DATA, {
     onCompleted({ createFollowTypedData }: any) {
       if (!createFollowTypedData) console.log("createFollow is null");
@@ -49,7 +47,7 @@ export const FollowProfileButton = ({
       }).then((res) => {
         const { v, r, s } = splitSignature(res);
         const postARGS = {
-          follower: accountData?.address,
+          follower: address,
           profileIds,
           datas,
           sig: {

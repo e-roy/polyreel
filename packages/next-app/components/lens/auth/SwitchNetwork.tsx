@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CURRENT_CHAIN_ID, CURRENT_CHAIN_NAME } from "@/lib/constants";
-import { useNetwork } from "wagmi";
+import { useSwitchNetwork } from "wagmi";
 import { Modal } from "@/components/elements";
 import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
@@ -8,7 +8,7 @@ import Image from "next/image";
 import polygonLogo from "@/images/polygon.png";
 
 export const SwitchNetwork = () => {
-  const { switchNetwork } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

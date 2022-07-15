@@ -19,13 +19,11 @@ export const Collect = ({ publication }: any) => {
   const { stats, collectModule } = publication;
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite(
-    {
-      addressOrName: LENS_HUB_PROXY_ADDRESS,
-      contractInterface: LENS_ABI,
-    },
-    "collectWithSig"
-  );
+  const { writeAsync } = useContractWrite({
+    addressOrName: LENS_HUB_PROXY_ADDRESS,
+    contractInterface: LENS_ABI,
+    functionName: "collectWithSig",
+  });
 
   const [createCollectTypedData, { loading, error }] = useMutation(
     CREATE_COLLECT_TYPED_DATA,
