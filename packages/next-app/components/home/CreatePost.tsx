@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { Dialog } from "@headlessui/react";
 
 import { useMutation } from "@apollo/client";

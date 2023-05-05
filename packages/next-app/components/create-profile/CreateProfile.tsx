@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { useForm, SubmitHandler } from "react-hook-form";

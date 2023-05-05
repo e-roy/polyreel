@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import Link from "next/link";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { Mirror, Collect, Like } from "@/components/post";
 
 import { ChatAlt2Icon } from "@heroicons/react/outline";

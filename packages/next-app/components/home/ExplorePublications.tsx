@@ -9,6 +9,8 @@ import { Post } from "@/components/post";
 
 import { Publication } from "@/types/graphql/generated";
 
+import { logger } from "@/utils/logger";
+
 export const ExplorePublications = () => {
   const { loading, error, data, fetchMore } = useQuery(EXPLORE_PUBLICATIONS, {
     variables: {
@@ -45,7 +47,7 @@ export const ExplorePublications = () => {
   if (!data) return null;
 
   const { items } = data?.explorePublications;
-  console.log(items);
+  logger("ExplorePublications.tsx", items);
 
   return (
     <div className="p-2">

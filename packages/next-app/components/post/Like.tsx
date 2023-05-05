@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useMutation, gql } from "@apollo/client";
 import { HeartIcon } from "@heroicons/react/solid";
 

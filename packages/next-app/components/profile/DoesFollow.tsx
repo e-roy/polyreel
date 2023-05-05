@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { DOES_FOLLOW } from "@/queries/follow/does-follow";

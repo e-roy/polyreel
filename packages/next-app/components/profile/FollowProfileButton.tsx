@@ -3,7 +3,7 @@ import { Button } from "@/components/elements";
 
 import { useSignTypedData, useContractWrite, useAccount } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_FOLLOW_TYPED_DATA } from "@/queries/follow/follow";

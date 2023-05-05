@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { DocumentDuplicateIcon } from "@heroicons/react/outline";
 
 import { useMutation } from "@apollo/client";

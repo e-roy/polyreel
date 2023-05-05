@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";

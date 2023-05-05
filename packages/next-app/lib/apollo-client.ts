@@ -3,7 +3,10 @@ import {
   InMemoryCache,
   HttpLink,
   ApolloLink,
+  from,
+  Observable,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 
 import {
   getAuthenticationToken,
@@ -15,47 +18,81 @@ import jwt_decode from "jwt-decode";
 import { refreshAuth } from "@/queries/auth/refresh";
 import { LENS_API_URL } from "@/lib/constants";
 
-type decodedType = {
+type DecodedType = {
   exp: number;
   iat: number;
   id: string;
   role: string;
 };
-let decoded: decodedType;
 
 const httpLink = new HttpLink({ uri: LENS_API_URL });
 
+const tokenRefreshLink = new ApolloLink((operation, forward) => {
+  return new Observable((observer) => {
+    (async () => {
+      const token = getAuthenticationToken() as string;
+      const refreshToken = getRefreshToken() as string;
+      const decoded: DecodedType | null = token
+        ? (jwt_decode(token) as DecodedType)
+        : null;
+
+      if (decoded && decoded.exp < Date.now() / 1000) {
+        try {
+          const res = await refreshAuth(refreshToken);
+          const newToken = res?.data?.refresh?.accessToken;
+
+          if (newToken) {
+            setAuthenticationToken({ token: res.data.refresh });
+            operation.setContext(({ headers = {} }) => ({
+              headers: {
+                ...headers,
+                "x-access-token": `Bearer ${newToken}`,
+              },
+            }));
+          }
+        } catch (error) {
+          console.error("%c Error refreshing token:", `color: red;`, error);
+        }
+      }
+
+      forward(operation).subscribe({
+        next: observer.next.bind(observer),
+        error: observer.error.bind(observer),
+        complete: observer.complete.bind(observer),
+      });
+    })();
+  });
+});
+
 const authLink = new ApolloLink((operation, forward) => {
   const token = getAuthenticationToken() as string;
-  const refreshToken = getRefreshToken() as string;
-  if (token) decoded = jwt_decode(token as string);
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      "x-access-token": token ? `Bearer ${token}` : "",
-    },
-  });
 
-  if (token && decoded.exp < Date.now() / 1000) {
-    refreshAuth(refreshToken).then((res) => {
-      operation.setContext({
-        headers: {
-          "x-access-token": token
-            ? `Bearer ${res?.data?.refresh?.accessToken}`
-            : "",
-        },
-      });
-      setAuthenticationToken({ token: res.data.refresh });
-    });
+  if (token) {
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        "x-access-token": `Bearer ${token}`,
+      },
+    }));
   }
 
-  // Call the next link in the middleware chain.
   return forward(operation);
+});
+
+const errorLink = onError(({ graphQLErrors }) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, path }) =>
+      console.log(
+        `%c[GraphQL ERROR]: Message: ${message}. Path: ${path}. `,
+        `color: red; background: yellow;`
+      )
+    );
+  }
 });
 
 export const apolloClient = () => {
   const apolloClient = new ApolloClient({
-    link: authLink.concat(httpLink),
+    link: from([errorLink, tokenRefreshLink, authLink.concat(httpLink)]),
     uri: LENS_API_URL,
     cache: new InMemoryCache({
       typePolicies: {

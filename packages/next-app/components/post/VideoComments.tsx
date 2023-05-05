@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useQuery, gql } from "@apollo/client";
 import { useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 
 import { PostPostFragment } from "@/queries/fragments/PostPostFragment";
 import { PostCommentFragment } from "@/queries/fragments/PostCommentFragment";

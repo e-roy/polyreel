@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useMutation } from "@apollo/client";
 import { CREATE_COMMENT_TYPED_DATA } from "@/queries/publications/comment";
 

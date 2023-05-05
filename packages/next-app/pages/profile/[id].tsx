@@ -25,6 +25,8 @@ import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
 import { Profile } from "@/types/graphql/generated";
 
+import { logger } from "@/utils/logger";
+
 const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -47,8 +49,9 @@ const ProfilePage: NextPage = () => {
   if (error) return <Error />;
 
   const { profile } = profileData;
-  console.log(profile);
   if (!profile) return null;
+
+  logger("profile/[id].tsx", profile);
 
   const checkLocation = () => {
     const location = filterAttributes(profile.attributes, "location");

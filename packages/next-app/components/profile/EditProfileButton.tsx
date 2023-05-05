@@ -9,7 +9,7 @@ import LENS_ABI from "@/abis/Lens-Hub.json";
 import { Button, Modal, Avatar } from "@/components/elements";
 import { XIcon, CameraIcon } from "@heroicons/react/outline";
 
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 
 import {
   EditProfile,

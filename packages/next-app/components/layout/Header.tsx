@@ -6,18 +6,13 @@ import React, {
   useContext,
 } from "react";
 import Link from "next/link";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
 import { ChevronLeftIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
-import { getAuthenticationToken } from "@/lib/auth/state";
 
 import { useAccount } from "wagmi";
-import { useQuery } from "@apollo/client";
-
-import { GET_PROFILES } from "@/queries/profile/get-profiles";
-import { VERIFY } from "@/queries/auth/verify";
 
 import { Avatar } from "@/components/elements";
 import { UserIcon } from "@heroicons/react/outline";
@@ -28,17 +23,19 @@ import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
 import { CURRENT_CHAIN_ID } from "@/lib/constants";
 
+import { Profile } from "@/types/graphql/generated";
+
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser, profiles, verified, loading } =
+    useContext(UserContext);
   const router = useRouter();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
   const { address, connector } = useAccount();
 
-  // console.log("currentUser", currentUser);
   const correctNetwork = useCheckNetwork();
 
   useEffect(() => {
@@ -47,42 +44,19 @@ export const Header = ({}: HeaderProps) => {
     }
   }, [connector]);
 
-  const { data: profileData, loading: profileLoading } = useQuery(
-    GET_PROFILES,
-    {
-      variables: {
-        request: { ownedBy: address, limit: 10 },
-      },
-    }
-  );
-  // console.log(profileData);
-
-  const { data: verifyData, loading: verifyLoading } = useQuery(VERIFY, {
-    variables: {
-      request: { accessToken: getAuthenticationToken() },
-    },
-  });
-  // console.log(verifyData);
-  let isVerified = false;
-  // console.log(verifyData);
-  if (verifyData?.verify) isVerified = true;
-
   const handleUserLoggedIn = () => {
     router.push("/home");
   };
 
-  const handleProfileClick = (profile: any) => {
+  const handleProfileClick = (profile: Profile) => {
     console.log("profile select", profile);
     setCurrentUser(profile);
   };
 
-  // return null;
-  // console.log(router.pathname);
-
   const baseClass =
     "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
 
-  if (profileLoading || verifyLoading) {
+  if (loading) {
     return (
       <header className="py-2 px-4 mx-4 bg-white h-16 flex justify-between sticky"></header>
     );
@@ -201,10 +175,7 @@ export const Header = ({}: HeaderProps) => {
                       {currentUser && (
                         <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                           <div className="sm:flex-1 flex">
-                            <Avatar
-                              profile={currentUser as any}
-                              size={"small"}
-                            />
+                            <Avatar profile={currentUser} size={"small"} />
                             <div className="px-4 font-medium">
                               <div>@{currentUser?.handle}</div>
                               <div>{currentUser?.name}</div>
@@ -216,34 +187,32 @@ export const Header = ({}: HeaderProps) => {
 
                     <div className="relative mx-2 mt-2 flex-1 px-2 sm:px-4 overflow-y-scroll border rounded-xl shadow-xl">
                       <div className="relative grid gap-4 bg-white px-2 py-2 sm:gap-2 sm:p-2">
-                        {profileData?.profiles.items.length > 1 && (
+                        {profiles && profiles?.length > 1 && (
                           <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
                             Switch profiles
                           </div>
                         )}
 
                         <div>
-                          {profileData?.profiles.items.map(
-                            (profile: any, index: number) => (
-                              <div key={index}>
-                                {profile.id !== currentUser?.id ? (
-                                  <div
-                                    className={`${baseClass}`}
-                                    onClick={() => {
-                                      handleProfileClick(profile);
-                                      !open;
-                                    }}
-                                  >
-                                    <Avatar profile={profile} size={"small"} />
-                                    <div className="px-4 font-medium">
-                                      <div>@{profile.handle}</div>
-                                      <div>{profile.name}</div>
-                                    </div>
+                          {profiles?.map((profile: Profile, index: number) => (
+                            <div key={index}>
+                              {profile.id !== currentUser?.id ? (
+                                <div
+                                  className={`${baseClass}`}
+                                  onClick={() => {
+                                    handleProfileClick(profile);
+                                    !open;
+                                  }}
+                                >
+                                  <Avatar profile={profile} size={"small"} />
+                                  <div className="px-4 font-medium">
+                                    <div>@{profile.handle}</div>
+                                    <div>{profile.name}</div>
                                   </div>
-                                ) : null}
-                              </div>
-                            )
-                          )}
+                                </div>
+                              ) : null}
+                            </div>
+                          ))}
                           <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium"></div>
                           {CURRENT_CHAIN_ID === 80001 && (
                             <div className={`${baseClass}`}>
@@ -280,7 +249,7 @@ export const Header = ({}: HeaderProps) => {
         <>
           {correctNetwork ? (
             <>
-              {!isVerified ? (
+              {!verified ? (
                 <Auth userLoggedIn={handleUserLoggedIn} />
               ) : (
                 <>

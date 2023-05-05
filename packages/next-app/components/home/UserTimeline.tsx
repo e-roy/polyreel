@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "@/components/layout";
+import { UserContext } from "@/context";
 import { useQuery } from "@apollo/client";
 import { GET_TIMELINE } from "@/queries/timeline/user-timeline";
 import useInfiniteScroll from "react-infinite-scroll-hook";
