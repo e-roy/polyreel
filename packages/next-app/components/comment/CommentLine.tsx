@@ -36,9 +36,10 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
   const { signTypedDataAsync } = useSignTypedData();
 
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "commentWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createCommentTypedData, {}] = useMutation(CREATE_COMMENT_TYPED_DATA, {
@@ -81,7 +82,7 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
             deadline: typedData.value.deadline,
           },
         };
-        writeAsync({ args: postARGS }).then((res) => {
+        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then((res) => {
           res.wait(1).then(() => {
             setIsSubmitting(false);
             setContent("");
@@ -111,23 +112,25 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
       attributes: [],
       media: media,
     };
-    const result = await uploadIpfs({ payload });
+    console.log("payload", payload);
+    // TODO: current method obsolete, need to update
+    // const result = await uploadIpfs({ payload });
 
-    createCommentTypedData({
-      variables: {
-        request: {
-          profileId: currentUser?.id,
-          publicationId: publicationId,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
-          collectModule: {
-            revertCollectModule: true,
-          },
-          referenceModule: {
-            followerOnlyReferenceModule: false,
-          },
-        },
-      },
-    });
+    // createCommentTypedData({
+    //   variables: {
+    //     request: {
+    //       profileId: currentUser?.id,
+    //       publicationId: publicationId,
+    //       contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+    //       collectModule: {
+    //         revertCollectModule: true,
+    //       },
+    //       referenceModule: {
+    //         followerOnlyReferenceModule: false,
+    //       },
+    //     },
+    //   },
+    // });
   };
 
   return (

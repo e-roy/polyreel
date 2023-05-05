@@ -28,9 +28,10 @@ export const SetFollowModule = ({
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "setFollowModuleWithSig",
+    mode: "recklesslyUnprepared",
   });
   const [createSetFollowModuleTypedData, {}] = useMutation(
     CREATE_SET_FOLLOW_MODULE_TYPED_DATA,
@@ -61,7 +62,7 @@ export const SetFollowModule = ({
             },
           };
 
-          writeAsync({ args: postARGS })
+          writeAsync({ recklesslySetUnpreparedArgs: [postARGS] })
             .then((res) => {
               res.wait(1).then(() => {
                 refetch();

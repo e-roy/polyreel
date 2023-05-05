@@ -44,9 +44,10 @@ export const CreatePost = () => {
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "postWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createPostTypedData, {}] = useMutation(CREATE_POST_TYPED_DATA, {
@@ -84,7 +85,7 @@ export const CreatePost = () => {
           },
         };
         console.log(postARGS);
-        writeAsync({ args: postARGS });
+        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] });
         setIsModalOpen(false);
       });
     },
@@ -113,25 +114,27 @@ export const CreatePost = () => {
       attributes: [],
       media: media,
     };
-    const result = await uploadIpfs({ payload });
+    console.log("payload", payload);
+    // TODO: current method obsolete, need to update
+    // const result = await uploadIpfs({ payload });
 
-    setContent("");
-    setSelectedPicture(null);
+    // setContent("");
+    // setSelectedPicture(null);
 
-    createPostTypedData({
-      variables: {
-        request: {
-          profileId: currentUser?.id,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
-          collectModule: {
-            revertCollectModule: true,
-          },
-          referenceModule: {
-            followerOnlyReferenceModule: false,
-          },
-        },
-      },
-    });
+    // createPostTypedData({
+    //   variables: {
+    //     request: {
+    //       profileId: currentUser?.id,
+    //       contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+    //       collectModule: {
+    //         revertCollectModule: true,
+    //       },
+    //       referenceModule: {
+    //         followerOnlyReferenceModule: false,
+    //       },
+    //     },
+    //   },
+    // });
   };
 
   if (!currentUser) return null;

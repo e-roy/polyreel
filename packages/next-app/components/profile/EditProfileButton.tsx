@@ -73,9 +73,10 @@ export const EditProfileButton = ({
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "setDefaultProfileWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createSetDefaultProfileTypedData, {}] = useMutation(
@@ -104,14 +105,16 @@ export const EditProfileButton = ({
                 deadline: typedData.value.deadline,
               },
             };
-            writeAsync({ args: postARGS }).then((res) => {
-              res.wait(1).then(() => {
-                console.log("COMPLETE");
-                // console.log(res);
-                refechProfiles();
-                setIsUpdating(false);
-              });
-            });
+            writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then(
+              (res) => {
+                res.wait(1).then(() => {
+                  console.log("COMPLETE");
+                  // console.log(res);
+                  refechProfiles();
+                  setIsUpdating(false);
+                });
+              }
+            );
           }
         });
       },

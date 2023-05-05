@@ -35,9 +35,10 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_PERIPHERY_CONTRACT,
-    contractInterface: LENS_PERIPHERY_ABI,
+    address: LENS_PERIPHERY_CONTRACT,
+    abi: LENS_PERIPHERY_ABI,
     functionName: "setProfileMetadataURIWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createSetProfileMetadataTypedData, {}] = useMutation(UPDATE_PROFILE, {
@@ -65,12 +66,14 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
               deadline: typedData.value.deadline,
             },
           };
-          writeAsync({ args: postARGS }).then((res) => {
-            res.wait(1).then(() => {
-              refetch();
-              setIsUpdating(false);
-            });
-          });
+          writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then(
+            (res) => {
+              res.wait(1).then(() => {
+                refetch();
+                setIsUpdating(false);
+              });
+            }
+          );
         }
       });
     },
@@ -130,16 +133,18 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
         },
       ],
     };
-    const result = await uploadIpfsProfile({ payload });
+    console.log("payload", payload);
+    // TODO: current method obsolete, need to update
+    // const result = await uploadIpfsProfile({ payload });
 
-    createSetProfileMetadataTypedData({
-      variables: {
-        request: {
-          profileId: profile.id,
-          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
-        },
-      },
-    });
+    // createSetProfileMetadataTypedData({
+    //   variables: {
+    //     request: {
+    //       profileId: profile.id,
+    //       metadata: "https://ipfs.infura.io/ipfs/" + result.path,
+    //     },
+    //   },
+    // });
   };
 
   const handleRefetch = async () => {

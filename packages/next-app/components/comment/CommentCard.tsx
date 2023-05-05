@@ -43,10 +43,13 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
 
   const { signTypedDataAsync } = useSignTypedData();
 
+  console.log("comment card here");
+
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "commentWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createCommentTypedData, {}] = useMutation(CREATE_COMMENT_TYPED_DATA, {
@@ -89,7 +92,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
             deadline: typedData.value.deadline,
           },
         };
-        writeAsync({ args: postARGS }).then((res) => {
+        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then((res) => {
           onClose();
           res.wait(1).then(() => {
             // console.log("res", res);
@@ -124,23 +127,25 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
       attributes: [],
       media: media,
     };
-    const result = await uploadIpfs({ payload });
+    console.log("payload", payload);
+    // TODO: current method obsolete, need to update
+    // const result = await uploadIpfs({ payload });
 
-    createCommentTypedData({
-      variables: {
-        request: {
-          profileId: currentUser?.id,
-          publicationId: publicationId,
-          contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
-          collectModule: {
-            revertCollectModule: true,
-          },
-          referenceModule: {
-            followerOnlyReferenceModule: false,
-          },
-        },
-      },
-    });
+    // createCommentTypedData({
+    //   variables: {
+    //     request: {
+    //       profileId: currentUser?.id,
+    //       publicationId: publicationId,
+    //       contentURI: "https://ipfs.infura.io/ipfs/" + result.path,
+    //       collectModule: {
+    //         revertCollectModule: true,
+    //       },
+    //       referenceModule: {
+    //         followerOnlyReferenceModule: false,
+    //       },
+    //     },
+    //   },
+    // });
   };
 
   return (
@@ -215,6 +220,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
             disabled={selectedPicture || content.length !== 0 ? false : true}
             onClick={() => handleComment()}
             className="px-2 py-1"
+            type={`button`}
           >
             comment
           </Button>

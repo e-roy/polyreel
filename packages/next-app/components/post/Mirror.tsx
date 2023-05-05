@@ -18,9 +18,10 @@ export const Mirror = ({ publication }: any) => {
 
   const { signTypedDataAsync } = useSignTypedData();
   const { write } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "mirrorWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createMirrorTypedData, {}] = useMutation(CREATE_MIRROR_TYPED_DATA, {
@@ -56,7 +57,7 @@ export const Mirror = ({ publication }: any) => {
             deadline: typedData.value.deadline,
           },
         };
-        write({ args: postARGS });
+        write({ recklesslySetUnpreparedArgs: [postARGS] });
       });
     },
     onError(error) {

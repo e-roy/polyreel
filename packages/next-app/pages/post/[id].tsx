@@ -56,21 +56,24 @@ const PostPage: NextPage = () => {
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  console.log(data);
+  // console.log(data);
+  const { publication } = data;
+  logger("post/[id].tsx", publication);
+
   // console.log(data.publication.metadata.media[0].original.mimeType);
   // console.log(comment);
-  if (data.publication.__typename === "Comment") {
+  if (publication.__typename === "Comment") {
     // router.push(
     //   `/post/${data.publication.mainPost.id}?comment=${data.publication.id}`
     // );
-    router.push(`/post/${data.publication.mainPost.id}`);
+    router.push(`/post/${publication.mainPost.id}`);
   }
 
   if (
-    data.publication.metadata.media[0] &&
-    data.publication.metadata.media[0].original.mimeType === "video/mp4"
+    publication.metadata.media[0] &&
+    publication.metadata.media[0].original.mimeType === "video/mp4"
   )
-    return <VideoPost publication={data} />;
+    return <VideoPost publication={publication} />;
 
   return (
     <div className="h-9/10">
@@ -103,8 +106,11 @@ import { cardFormatDate } from "@/utils/formatDate";
 import { VideoComments } from "@/components/post";
 import { Mirror, Collect, Like } from "@/components/post";
 import { CommentLine } from "@/components/comment";
+import { logger } from "@/utils/logger";
 
-const VideoPost = ({ publication }: any) => {
+import { Post as PostType } from "@/types/graphql/generated";
+
+const VideoPost = ({ publication }: { publication: PostType }) => {
   // console.log(publication);
   if (!publication) return null;
   return (
@@ -113,28 +119,28 @@ const VideoPost = ({ publication }: any) => {
         <div className="md:mx-20 lg:mx-0">
           <VideoPlayer
             source={
-              publication.publication.metadata.media[0]?.original.url ||
-              publication.publication.metadata.media[1]?.original.url
+              publication.metadata.media[0]?.original.url ||
+              publication.metadata.media[1]?.original.url
             }
           />
         </div>
         <div className="p-4">
           <div className="flex justify-between">
             <ProfileHeader
-              profile={publication.publication.profile}
-              appId={publication.publication.appId}
+              profile={publication.profile}
+              appId={publication.appId}
             />
-            <Like publication={publication.publication} />
+            <Like publication={publication} />
 
             <div className="text-xs font-medium text-stone-800">
-              {cardFormatDate(publication.publication.createdAt)}
+              {cardFormatDate(publication.createdAt)}
             </div>
           </div>
           <div className="mt-4 text-stone-700 text-xs sm:text-sm md:text-base font-medium overflow-y-scroll h-32">
             <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
               <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
                 <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">
-                  {publication.publication.metadata.content}
+                  {publication.metadata.content}
                 </LinkItHashtag>
               </LinkItProfile>
             </LinkItUrl>
@@ -143,9 +149,9 @@ const VideoPost = ({ publication }: any) => {
       </div>
       <div className="border lg:w-1/3 ">
         <div className=" overflow-y-scroll h-80 sm:h-60 lg:h-8/10 w-full">
-          <VideoComments postId={publication.publication.id as string} />
+          <VideoComments postId={publication.id as string} />
         </div>
-        <CommentLine publicationId={publication.publication.id} />
+        <CommentLine publicationId={publication.id} />
       </div>
     </div>
   );

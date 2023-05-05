@@ -28,9 +28,10 @@ export const SetProfileImage = ({
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "setProfileImageURIWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createSetProfileImageURITypedData, { error }] = useMutation(
@@ -57,7 +58,7 @@ export const SetProfileImage = ({
               deadline: typedData.value.deadline,
             },
           };
-          writeAsync({ args: postARGS })
+          writeAsync({ recklesslySetUnpreparedArgs: [postARGS] })
             .then((res) => {
               res.wait(1).then(() => {
                 setUpdating(false);
@@ -82,14 +83,16 @@ export const SetProfileImage = ({
   const onImageUpdate = async (image: any) => {
     const ipfsImage = await uploadImageIpfs(image);
     console.log("ipfsImage", ipfsImage);
-    createSetProfileImageURITypedData({
-      variables: {
-        request: {
-          profileId,
-          url: ipfsImage.item,
-        },
-      },
-    });
+    // TODO: current method obsolete, need to update
+
+    // createSetProfileImageURITypedData({
+    //   variables: {
+    //     request: {
+    //       profileId,
+    //       url: ipfsImage.item,
+    //     },
+    //   },
+    // });
   };
 
   const onChange = (imageList: any) => {

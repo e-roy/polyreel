@@ -29,9 +29,10 @@ export const FollowProfileButton = ({
   const { address } = useAccount();
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
     functionName: "followWithSig",
+    mode: "recklesslyUnprepared",
   });
   const [createFollowTypedData, {}] = useMutation(CREATE_FOLLOW_TYPED_DATA, {
     onCompleted({ createFollowTypedData }: any) {
@@ -58,7 +59,7 @@ export const FollowProfileButton = ({
           },
         };
 
-        writeAsync({ args: postARGS })
+        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] })
           .then((res) => {
             res.wait(1).then(() => {
               refetch();

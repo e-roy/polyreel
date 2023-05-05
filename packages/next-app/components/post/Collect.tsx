@@ -20,9 +20,10 @@ export const Collect = ({ publication }: any) => {
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
-    addressOrName: LENS_HUB_PROXY_ADDRESS,
-    contractInterface: LENS_ABI,
-    functionName: "collectWithSig",
+    address: LENS_HUB_PROXY_ADDRESS,
+    abi: LENS_ABI,
+    functionName: "commentWithSig",
+    mode: "recklesslyUnprepared",
   });
 
   const [createCollectTypedData, { loading, error }] = useMutation(
@@ -54,19 +55,21 @@ export const Collect = ({ publication }: any) => {
               },
             };
 
-            writeAsync({ args: postARGS }).then((res) => {
-              res.wait(1).then(() => {
-                // console.log("res", res);
-                // onClose();
-              });
-              // if (!res.error) {
-              //   console.log(res.data);
+            writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then(
+              (res) => {
+                res.wait(1).then(() => {
+                  // console.log("res", res);
+                  // onClose();
+                });
+                // if (!res.error) {
+                //   console.log(res.data);
 
-              //   // reset form  and other closing actions
-              // } else {
-              //   console.log(res.error);
-              // }
-            });
+                //   // reset form  and other closing actions
+                // } else {
+                //   console.log(res.error);
+                // }
+              }
+            );
           }
         });
       },
