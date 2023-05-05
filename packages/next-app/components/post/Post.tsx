@@ -2,9 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PostBody, Stats } from "@/components/post";
+import { Publication } from "@/types/graphql/generated";
 
 type PostProps = {
-  publication: any;
+  publication: Publication;
   postType?: string;
 };
 

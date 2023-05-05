@@ -17,6 +17,11 @@ export const PostPostFragment = gql`
       description
       content
       image
+      attributes {
+        displayType
+        traitType
+        value
+      }
       media {
         original {
           ...MediaFieldsFragment
@@ -34,7 +39,7 @@ export const PostPostFragment = gql`
     collectModule {
       ...CollectFragmentLite
     }
-
+    hasCollectedByMe
     createdAt
     hidden
     appId

@@ -24,6 +24,11 @@ import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
+interface selectedPictureType {
+  data_url: string;
+  file: File;
+}
+
 export const CreatePost = () => {
   const { currentUser } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,12 +37,13 @@ export const CreatePost = () => {
   const [isGifOpen, setIsGifOpen] = useState(false);
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
 
-  const [selectedPicture, setSelectedPicture] = useState(null);
+  const [selectedPicture, setSelectedPicture] =
+    useState<selectedPictureType | null>(null);
 
   const [content, setContent] = useState("");
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { write, writeAsync } = useContractWrite({
+  const { writeAsync } = useContractWrite({
     addressOrName: LENS_HUB_PROXY_ADDRESS,
     contractInterface: LENS_ABI,
     functionName: "postWithSig",
@@ -102,6 +108,9 @@ export const CreatePost = () => {
       name: "Post from @" + currentUser?.handle,
       description: content,
       content,
+      image: selectedPicture?.data_url || null,
+      imageMimeType: selectedPicture?.file?.type || null,
+      attributes: [],
       media: media,
     };
     const result = await uploadIpfs({ payload });
@@ -169,7 +178,7 @@ export const CreatePost = () => {
                       {selectedPicture && (
                         <div className="flex">
                           <img
-                            src={selectedPicture}
+                            src={selectedPicture?.data_url}
                             className="w-auto max-h-60 mx-auto"
                             alt="selected gif"
                           />
@@ -240,7 +249,7 @@ export const CreatePost = () => {
                     <AddGif onSelect={(gif) => setSelectedPicture(gif)} />
                   )}
                   {isPhotoOpen && (
-                    <AddPhoto onSelect={(photo) => console.log(photo)} />
+                    <AddPhoto onSelect={(photo) => setSelectedPicture(photo)} />
                   )}
                 </div>
               </div>

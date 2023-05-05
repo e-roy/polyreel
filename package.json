@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "yarn workspace @polyreel/next dev",
     "build": "yarn workspace @polyreel/next build",
+    "codegen": "yarn workspace @polyreel/next codegen",
     "export": "yarn workspace @polyreel/next export",
     "test": "yarn workspace @polyreel/next start"
   },
@@ -16,8 +17,6 @@
       "packages/*"
     ],
     "nohoist": [
-      "**/@graphprotocol/graph-ts",
-      "**/@graphprotocol/graph-ts/**",
       "**/hardhat",
       "**/hardhat/**",
       "**/hardhat-ts",

@@ -17,6 +17,11 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+interface selectedPictureType {
+  data_url: string;
+  file: File;
+}
+
 type CommentLineProps = {
   publicationId: string;
 };
@@ -25,6 +30,8 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
   const { currentUser } = useContext(UserContext);
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedPicture, setSelectedPicture] =
+    useState<selectedPictureType | null>(null);
 
   const { signTypedDataAsync } = useSignTypedData();
 
@@ -89,8 +96,8 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
   });
 
   const handleComment = async () => {
-    console.log("handleComment");
-    console.log(publicationId);
+    // console.log("handleComment");
+    // console.log(publicationId);
     if (!publicationId) return;
     setIsSubmitting(true);
     let media = [] as any[];
@@ -99,6 +106,9 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
       name: "Comment from @" + currentUser?.handle,
       description: "",
       content,
+      image: selectedPicture?.data_url || null,
+      imageMimeType: selectedPicture?.file?.type || null,
+      attributes: [],
       media: media,
     };
     const result = await uploadIpfs({ payload });

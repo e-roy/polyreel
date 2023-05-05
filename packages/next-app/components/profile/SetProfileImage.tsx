@@ -81,6 +81,7 @@ export const SetProfileImage = ({
 
   const onImageUpdate = async (image: any) => {
     const ipfsImage = await uploadImageIpfs(image);
+    console.log("ipfsImage", ipfsImage);
     createSetProfileImageURITypedData({
       variables: {
         request: {

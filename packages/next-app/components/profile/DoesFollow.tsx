@@ -3,7 +3,7 @@ import { UserContext } from "@/components/layout";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { DOES_FOLLOW } from "@/queries/follow/does-follow";
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 import {
   FollowProfileButton,

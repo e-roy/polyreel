@@ -1,5 +1,5 @@
 import { createContext, Dispatch } from "react";
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 type userProfile = Profile;
 

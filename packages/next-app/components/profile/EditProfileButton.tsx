@@ -16,7 +16,7 @@ import {
   SetProfileImage,
   SetFollowModule,
 } from "@/components/profile";
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 const CREATE_SET_DEFAULT_PROFILE_TYPED_DATA = gql`
   mutation ($request: CreateSetDefaultProfileRequest!) {

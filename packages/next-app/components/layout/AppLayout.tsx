@@ -11,7 +11,7 @@ import { ProfileFragmentFull } from "@/queries/fragments/ProfileFragmentFull";
 
 import { Loading } from "@/components/elements";
 
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 export const GET_DEFAULT_PROFILE = gql`
   query ($request: DefaultProfileRequest!) {

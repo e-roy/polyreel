@@ -10,7 +10,7 @@ import { CREATE_SET_FOLLOW_MODULE_TYPED_DATA } from "@/queries/follow/set-follow
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 interface SetFollowModuleProps {
   profile: Profile;

@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useAccount } from "wagmi";
 
 import { useQuery } from "@apollo/client";
-import { GET_PROFILES } from "@/queries/profile/get-profiles";
+import { GET_PROFILE } from "@/queries/profile/get-profile";
 
 import { TwitterIcon } from "@/icons";
 import {
@@ -23,6 +23,8 @@ import { Avatar, Loading, Error } from "@/components/elements";
 
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
+import { Profile } from "@/types/graphql/generated";
+
 const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -35,17 +37,17 @@ const ProfilePage: NextPage = () => {
     loading,
     error,
     refetch,
-  } = useQuery(GET_PROFILES, {
+  } = useQuery(GET_PROFILE, {
     variables: {
-      request: { handles: [id] },
+      request: { handle: id },
     },
   });
 
   if (loading) return <Loading />;
   if (error) return <Error />;
 
-  const profile = profileData.profiles.items[0];
-  // console.log(profile);
+  const { profile } = profileData;
+  console.log(profile);
   if (!profile) return null;
 
   const checkLocation = () => {
@@ -73,7 +75,7 @@ const ProfilePage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>polyreel</title>
+        <title>polyreel - {profile.name}</title>
         <meta name="description" content="polyreel" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -81,14 +83,22 @@ const ProfilePage: NextPage = () => {
       <div>
         <div className="-mt-14">
           {profile.coverPicture ? (
-            <div className="flex justify-center h-64 max-h-64 w-full shadow-xl -z-10 bg-stone-900/50">
-              <img
-                src={profile.coverPicture.original.url}
-                alt=""
-                className="h-64"
-                object-fit=""
-              />
-            </div>
+            <div
+              className="h-52 sm:h-80"
+              style={{
+                backgroundImage: profile.coverPicture.original.url
+                  ? `url(${profile.coverPicture.original.url})`
+                  : "none",
+                backgroundColor: "#94a3b8",
+                backgroundSize: profile.coverPicture.original.url
+                  ? "cover"
+                  : "30%",
+                backgroundPosition: "center center",
+                backgroundRepeat: profile.coverPicture.original.url
+                  ? "no-repeat"
+                  : "repeat",
+              }}
+            />
           ) : (
             <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
           )}

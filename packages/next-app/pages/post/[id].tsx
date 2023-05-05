@@ -56,7 +56,7 @@ const PostPage: NextPage = () => {
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  // console.log(data);
+  console.log(data);
   // console.log(data.publication.metadata.media[0].original.mimeType);
   // console.log(comment);
   if (data.publication.__typename === "Comment") {

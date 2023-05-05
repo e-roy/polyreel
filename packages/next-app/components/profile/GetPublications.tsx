@@ -53,7 +53,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  // console.log(data);
+  console.log(data);
 
   return (
     <div className="flex flex-col mt-2">

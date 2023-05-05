@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserIcon } from "@heroicons/react/outline";
-import { Profile } from "@/types/lenstypes";
+
+import { Profile } from "@/types/graphql/generated";
 
 type AvatarProps = {
   profile?: Profile;
@@ -70,6 +71,6 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
 const checkIpfs = (url: string) => {
   if (url.startsWith("ipfs://")) {
     const ipfs = url.replace("ipfs://", "");
-    return `https://ipfs.infura.io/ipfs/${ipfs}`;
+    return `https://gateway.ipfscdn.io/ipfs/${ipfs}`;
   } else return url;
 };

@@ -55,6 +55,7 @@ export const PostMirrorFragment = gql`
       ...CollectFragmentLite
     }
     createdAt
+    appId
   }
   ${ProfileFragmentLite}
   ${PostPostFragment}

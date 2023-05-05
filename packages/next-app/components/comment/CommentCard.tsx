@@ -22,6 +22,11 @@ import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
+interface selectedPictureType {
+  data_url: string;
+  file: File;
+}
+
 type CommentCardProps = {
   publicationId: string;
   onClose: () => void;
@@ -33,7 +38,8 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
   const [isGifOpen, setIsGifOpen] = useState(false);
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   const [content, setContent] = useState("");
-  const [selectedPicture, setSelectedPicture] = useState(null);
+  const [selectedPicture, setSelectedPicture] =
+    useState<selectedPictureType | null>(null);
 
   const { signTypedDataAsync } = useSignTypedData();
 
@@ -113,6 +119,9 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
       name: "Post from @" + currentUser?.handle,
       description: "",
       content,
+      image: selectedPicture?.data_url || null,
+      imageMimeType: selectedPicture?.file?.type || null,
+      attributes: [],
       media: media,
     };
     const result = await uploadIpfs({ payload });
@@ -155,7 +164,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
             {selectedPicture && (
               <div className="flex">
                 <img
-                  src={selectedPicture}
+                  src={selectedPicture?.data_url}
                   className="w-auto max-h-60 mx-auto"
                   alt="selected gif"
                 />
@@ -221,7 +230,9 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
           />
         ) : null}
         {isGifOpen && <AddGif onSelect={(gif) => setSelectedPicture(gif)} />}
-        {isPhotoOpen && <AddPhoto onSelect={(photo) => console.log(photo)} />}
+        {isPhotoOpen && (
+          <AddPhoto onSelect={(photo) => setSelectedPicture(photo)} />
+        )}
       </div>
     </div>
   );

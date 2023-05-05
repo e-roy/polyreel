@@ -12,6 +12,8 @@ import { Loading, Error } from "@/components/elements";
 
 import { NotificationCard } from "./";
 
+import { logger } from "@/utils/logger";
+
 const GET_NOTIFICATIONS = gql`
   query ($request: NotificationRequest!) {
     notifications(request: $request) {
@@ -110,7 +112,9 @@ export const Notifications = () => {
   });
   if (loading) return <Loading />;
   if (error) return <Error />;
-  console.log(data);
+
+  logger("Notifications.tsx", data);
+
   return (
     <div className="py-2">
       {data.notifications &&

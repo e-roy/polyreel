@@ -1,0 +1,9 @@
+schema: "https://api-mumbai.lens.dev/"
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+generates:
+  types/graphql/generated.ts:
+    plugins:
+      - "typescript"
+      - "fragment-matcher"

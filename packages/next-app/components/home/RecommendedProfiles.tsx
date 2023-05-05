@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
 import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
 
+import { logger } from "@/utils/logger";
+
 export const RECOMMENDED_PROFILES = gql`
   query {
     recommendedProfiles {
@@ -27,7 +29,8 @@ export const RecommendedProfiles = ({}: RecommendedProfilesProps) => {
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  // console.log(data);
+
+  logger("RecommendedProfiles.tsx", data);
 
   return (
     <div className="overflow-x-hidden">

@@ -4,6 +4,8 @@ import { useQuery } from "@apollo/client";
 import { GET_TIMELINE } from "@/queries/timeline/user-timeline";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
+import { logger } from "@/utils/logger";
+
 // import { FeedCard } from "@/components/cards"; old card
 
 export type UserTimelineProps = {};
@@ -46,7 +48,8 @@ export const UserTimeline = ({}: UserTimelineProps) => {
   });
 
   if (!data) return null;
-  console.log(data);
+
+  logger("UserTimeline.tsx", data);
 
   return (
     <div className="">

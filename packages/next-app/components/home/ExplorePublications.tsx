@@ -7,6 +7,8 @@ import { LoadingMore } from "@/components/elements";
 
 import { Post } from "@/components/post";
 
+import { Publication } from "@/types/graphql/generated";
+
 export const ExplorePublications = () => {
   const { loading, error, data, fetchMore } = useQuery(EXPLORE_PUBLICATIONS, {
     variables: {
@@ -41,17 +43,19 @@ export const ExplorePublications = () => {
     rootMargin: "0px 0px 400px 0px",
   });
   if (!data) return null;
-  // console.log(data);
+
+  const { items } = data?.explorePublications;
+  console.log(items);
+
   return (
     <div className="p-2">
-      {data.explorePublications &&
-        data.explorePublications.items &&
-        data.explorePublications.items.map((item: any, index: number) => (
+      {items &&
+        items.map((item: Publication, index: number) => (
           <div key={index}>
             {/* <div className="h-60 bg-red-500">empty box</div> */}
             {item &&
               item.__typename === "Comment" &&
-              item.commentOn.id === item.mainPost.id && (
+              item?.commentOn?.id === item.mainPost.id && (
                 <div
                   key={index}
                   className="sm:p-4 border-b-4 border-stone-400/40"

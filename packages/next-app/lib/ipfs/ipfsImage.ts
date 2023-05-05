@@ -7,6 +7,8 @@ export const uploadImageIpfs = async (payload: any) => {
     body: formData,
   });
   const { Hash }: { Hash: string } = await upload.json();
+  console.log(Hash);
+  // return;
   return {
     item: `https://ipfs.infura.io/ipfs/${Hash}`,
     type: payload.file.type,

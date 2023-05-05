@@ -93,7 +93,7 @@ export const Collect = ({ publication }: any) => {
       className="flex ml-4 hover:text-stone-700 cursor-pointer"
       onClick={() => handleCollect()}
     >
-      {stats.totalAmountOfMirrors}
+      {stats.totalAmountOfCollects}
       <CollectionIcon
         className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
         aria-hidden="true"

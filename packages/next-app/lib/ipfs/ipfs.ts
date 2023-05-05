@@ -12,7 +12,11 @@ type uploadIpfsProps = {
     name: string;
     description: string;
     content: string;
+    image: string | null;
+    imageMimeType: any | null;
+    attributes: any[];
     media: any[];
+    appId?: string;
   };
 };
 
@@ -25,12 +29,12 @@ export const uploadIpfs = async ({ payload }: uploadIpfsProps) => {
       description: payload.description,
       content: payload.content,
       external_url: null,
-      image: payload.media.length > 0 ? payload.media[0]?.item : null,
-      imageMimeType: payload.media.length > 0 ? payload.media[0]?.type : null,
+      image: payload.image || null,
+      imageMimeType: payload.imageMimeType || null,
       name: payload.name,
-      attributes: [],
+      attributes: payload.attributes || [],
       media: payload.media || [],
-      appId: "polyreel.xyz",
+      appId: payload.appId || "polyreel.xyz",
     })
   );
 

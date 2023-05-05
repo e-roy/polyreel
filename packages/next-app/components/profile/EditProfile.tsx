@@ -12,7 +12,7 @@ import { omit, splitSignature } from "@/lib/helpers";
 import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
 import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
 
-import { Profile } from "@/types/lenstypes";
+import { Profile } from "@/types/graphql/generated";
 
 const filterAttributes = (attributes: any, key: string) => {
   return attributes?.filter((attribute: any) => attribute.key === key);
