@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ProfileHeader } from "@/components/post";
 
 import { cardFormatDate } from "@/utils/formatDate";
-import { Image, VideoPlayerFeed } from "@/components/media";
+import { Image, LivepeerPlayer } from "@/components/media";
 
 import {
   LinkItUrl,
@@ -56,11 +56,9 @@ const MediaDisplay = ({ publication }: any) => {
 
   if (publication.metadata.media[0]?.original.mimeType === "video/mp4")
     return (
-      <VideoPlayerFeed
-        source={
-          publication.metadata.media[0]?.original.url ||
-          publication.metadata.media[1]?.original.url
-        }
+      <LivepeerPlayer
+        publication={publication}
+        playbackId={publication.metadata.media[0]?.original.url}
       />
     );
 

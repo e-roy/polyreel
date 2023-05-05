@@ -22,6 +22,12 @@ import { apolloClient } from "@/lib";
 
 import { ThemeProvider } from "next-themes";
 
+import {
+  createReactClient,
+  LivepeerConfig,
+  studioProvider,
+} from "@livepeer/react";
+
 import { AppLayout } from "@/components/layout";
 
 import { ENV_PROD, ENV_DEV } from "@/lib/constants";
@@ -30,7 +36,9 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 
 // Get environment variables
 // const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
-const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
+// const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
+
+const liverpeerKey = process.env.NEXT_PUBLIC_LIVEPEER_API as string;
 
 const networks = [];
 if (ENV_PROD) {
@@ -64,6 +72,12 @@ const customTheme: Theme = merge(lightTheme(), {
   },
 });
 
+const livepeerClient = createReactClient({
+  provider: studioProvider({
+    apiKey: liverpeerKey,
+  }),
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   const isMounted = useIsMounted();
 
@@ -71,15 +85,17 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={customTheme}>
-        <ApolloProvider client={apolloClient()}>
-          <UserProvider>
-            {/* <ThemeProvider defaultTheme="light" attribute="class"> */}
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-            {/* </ThemeProvider> */}
-          </UserProvider>
-        </ApolloProvider>
+        <LivepeerConfig client={livepeerClient}>
+          <ApolloProvider client={apolloClient()}>
+            <UserProvider>
+              {/* <ThemeProvider defaultTheme="light" attribute="class"> */}
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
+              {/* </ThemeProvider> */}
+            </UserProvider>
+          </ApolloProvider>
+        </LivepeerConfig>
       </RainbowKitProvider>
     </WagmiConfig>
   );

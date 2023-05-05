@@ -99,7 +99,7 @@ const PostPage: NextPage = () => {
 
 export default PostPage;
 
-import { VideoPlayer } from "@/components/media";
+import { LivepeerPlayer } from "@/components/media";
 import { ProfileHeader } from "@/components/post";
 import { LinkItUrl, LinkItProfile, LinkItHashtag } from "@/lib/links";
 import { cardFormatDate } from "@/utils/formatDate";
@@ -117,11 +117,9 @@ const VideoPost = ({ publication }: { publication: PostType }) => {
     <div className="lg:flex xl:px-8 2xl:px-32 h-9/10 overflow-y-hidden">
       <div className="border lg:w-2/3">
         <div className="md:mx-20 lg:mx-0">
-          <VideoPlayer
-            source={
-              publication.metadata.media[0]?.original.url ||
-              publication.metadata.media[1]?.original.url
-            }
+          <LivepeerPlayer
+            publication={publication}
+            playbackId={publication.metadata.media[0]?.original.url}
           />
         </div>
         <div className="p-4">
