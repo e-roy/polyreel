@@ -2,8 +2,8 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
 // Imports
-import { chain, createClient, configureChains, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
+import { createClient, configureChains, WagmiConfig } from "wagmi";
+import { mainnet, polygon, polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
 
@@ -15,6 +15,8 @@ import {
 } from "@rainbow-me/rainbowkit";
 import merge from "lodash.merge";
 
+import { UserProvider } from "@/context";
+
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "@/lib";
 
@@ -24,23 +26,25 @@ import { AppLayout } from "@/components/layout";
 
 import { ENV_PROD, ENV_DEV } from "@/lib/constants";
 
+import { useIsMounted } from "@/hooks/useIsMounted";
+
 // Get environment variables
 // const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
 
 const networks = [];
 if (ENV_PROD) {
-  networks.push(chain.polygon);
+  networks.push(polygon);
 }
 
 if (ENV_DEV) {
-  networks.push(chain.polygonMumbai);
+  networks.push(polygonMumbai);
 }
 
 const { chains, provider } = configureChains(
   // [chain.polygon, chain.polygonMumbai],
   networks,
-  [alchemyProvider({ alchemyId }), publicProvider()]
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -61,15 +65,20 @@ const customTheme: Theme = merge(lightTheme(), {
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const isMounted = useIsMounted();
+
+  if (!isMounted) return null;
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={customTheme}>
         <ApolloProvider client={apolloClient()}>
-          {/* <ThemeProvider defaultTheme="light" attribute="class"> */}
-          <AppLayout>
-            <Component {...pageProps} />
-          </AppLayout>
-          {/* </ThemeProvider> */}
+          <UserProvider>
+            {/* <ThemeProvider defaultTheme="light" attribute="class"> */}
+            <AppLayout>
+              <Component {...pageProps} />
+            </AppLayout>
+            {/* </ThemeProvider> */}
+          </UserProvider>
         </ApolloProvider>
       </RainbowKitProvider>
     </WagmiConfig>

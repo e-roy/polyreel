@@ -7,6 +7,8 @@ import { Post } from "@/components/post";
 
 import { Loading, Error, LoadingMore } from "@/components/elements";
 
+import { logger } from "@/utils/logger";
+
 interface GetPublicationsProps {
   profileId: string;
   filter: "POST" | "COMMENT" | "MIRROR";
@@ -53,7 +55,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  console.log(data);
+  logger("GetPublications.tsx", data);
 
   return (
     <div className="flex flex-col mt-2">

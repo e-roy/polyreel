@@ -23,7 +23,7 @@ import { Avatar, Loading, Error } from "@/components/elements";
 
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
-import { Profile } from "@/types/graphql/generated";
+// import { Profile } from "@/types/graphql/generated";
 
 import { logger } from "@/utils/logger";
 
