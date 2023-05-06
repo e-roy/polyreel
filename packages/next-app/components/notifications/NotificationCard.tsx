@@ -23,7 +23,7 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
 const CommentCard = ({ item }: NotificationCardProps) => {
   // console.log(item);
   return (
-    <div className="border p-2 my-1 rounded-xl text-sm">
+    <div className="p-2 my-1 rounded-xl text-sm">
       <div className="flex justify-between mb-2 pr-4">
         <div className="flex">
           <Link href={`/profile/${item.profile.handle}`}>
@@ -56,7 +56,7 @@ const CommentCard = ({ item }: NotificationCardProps) => {
 
 const NewFollowerCard = ({ item }: NotificationCardProps) => {
   return (
-    <div className="border p-2 my-1 rounded-xl">
+    <div className="p-2 my-1 rounded-xl">
       <div className="flex justify-between font-medium text-stone-700 text-sm">
         <div className="flex">
           <Avatar profile={item.profile} size={"small"} />

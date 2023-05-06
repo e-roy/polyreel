@@ -16,7 +16,7 @@ const Connect: NextPage = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="overflow-y-scroll h-3/4 px-1  border-stone-300 rounded-xl mt-4 mx-4 ">
+      <div className="px-1  border-stone-300 rounded-xl mt-4 mx-4 ">
         {search ? <SearchProfilesList search={search} /> : <SuggestedList />}
       </div>
     </>

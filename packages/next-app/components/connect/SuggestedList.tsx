@@ -38,7 +38,7 @@ export const SuggestedList = () => {
 
   return (
     <div className={``}>
-      <div className={`text-xl font-bold text-stone-800 px-4 py-3`}>
+      <div className={`text-xl font-bold text-stone-800 py-3`}>
         Suggested for you
       </div>
       <div className={``}>

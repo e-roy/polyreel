@@ -50,7 +50,7 @@ export const ExplorePublications = () => {
   logger("ExplorePublications.tsx", items);
 
   return (
-    <div className="p-2">
+    <div className={`px-2`}>
       {items &&
         items.map((item: Publication, index: number) => (
           <div key={index}>

@@ -99,7 +99,7 @@ const GET_NOTIFICATIONS = gql`
   ${PostCommentFragment}
 `;
 
-export const Notifications = () => {
+export const NotificationsList = () => {
   const { currentUser } = useContext(UserContext);
   if (!currentUser) return <Loading />;
   const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
@@ -113,14 +113,14 @@ export const Notifications = () => {
   if (loading) return <Loading />;
   if (error) return <Error />;
 
-  logger("Notifications.tsx", data);
+  logger("NotificationsList.tsx", data);
 
   return (
-    <div className="py-2">
+    <div className={`px-2`}>
       {data.notifications &&
         data.notifications.items &&
         data.notifications.items.map((item: any, index: number) => (
-          <div key={index}>
+          <div key={index} className={`border-b px-4`}>
             <NotificationCard item={item} />
           </div>
         ))}

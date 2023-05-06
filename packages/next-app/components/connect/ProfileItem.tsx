@@ -10,11 +10,14 @@ export const ProfileItem = ({ profile }: IProfileItemProps) => {
   return (
     <Link
       href={`/profile/${profile.handle}`}
-      className={`flex items-center justify-between px-4 py-3 hover:bg-stone-100`}
+      className={`flex items-center justify-between py-3 hover:bg-stone-100`}
     >
       <div className={`flex justify-between w-full`}>
         <div className={`flex`}>
-          <Avatar profile={profile} size={`small`} />
+          <div>
+            <Avatar profile={profile} size={`small`} />
+          </div>
+
           <div className={`ml-4`}>
             <div className={`font-bold text-stone-800`}>{profile.name}</div>
             <div className={`text-stone-400`}>@{profile.handle}</div>
