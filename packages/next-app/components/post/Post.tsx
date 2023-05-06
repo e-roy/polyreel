@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PostBody, Stats } from "@/components/post";
+import { Post as PostType } from "@/types/graphql/generated";
 import { Publication } from "@/types/graphql/generated";
 
 type PostProps = {
@@ -11,7 +12,7 @@ type PostProps = {
 
 export const Post = ({ publication, postType }: PostProps) => {
   const router = useRouter();
-  // console.log("publication", publication);
+  console.log("publication", publication);
   // console.log("publication type", publication.__typename);
 
   // console.log("postType", postType);
@@ -53,7 +54,7 @@ export const Post = ({ publication, postType }: PostProps) => {
             </>
           )}
           <PostBody publication={publication} />
-          <Stats publication={publication} />
+          <Stats publication={publication as unknown as PostType} />
         </>
       )}
 
@@ -80,14 +81,14 @@ export const Post = ({ publication, postType }: PostProps) => {
             {publication.mainPost && (
               <>
                 <PostBody publication={publication.mainPost} />
-                <Stats publication={publication.mainPost} />
+                <Stats publication={publication as unknown as PostType} />
               </>
             )}
           </div>
           <div className="ml-8 w-0.5 h-8 bg-gray-400" />
           <div className="p-2 sm:p-4 border rounded-lg shadow-md">
             <PostBody publication={publication} />
-            <Stats publication={publication} />
+            <Stats publication={publication as unknown as PostType} />
           </div>
         </>
       )}
@@ -95,7 +96,7 @@ export const Post = ({ publication, postType }: PostProps) => {
       {publication.__typename === "Comment" && postType === "commment" && (
         <div className="p-2 sm:p-4 border rounded-lg shadow-md">
           <PostBody publication={publication} />
-          <Stats publication={publication} />
+          <Stats publication={publication as unknown as PostType} />
         </div>
       )}
 
@@ -104,12 +105,12 @@ export const Post = ({ publication, postType }: PostProps) => {
           <div className="">
             <div className="mb-4">
               <PostBody publication={publication.mainPost} />
-              <Stats publication={publication.mainPost} />
+              <Stats publication={publication as unknown as PostType} />
             </div>
             <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
             <div className="p-2 sm:p-4 border rounded-lg shadow-lg">
               <PostBody publication={publication} />
-              <Stats publication={publication} />
+              <Stats publication={publication as unknown as PostType} />
             </div>
           </div>
         </div>

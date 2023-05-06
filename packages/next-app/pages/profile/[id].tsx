@@ -8,7 +8,8 @@ import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/queries/profile/get-profile";
 
-import { TwitterIcon } from "@/icons";
+import { FaTwitter, FaGlobeAmericas } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
 import {
   EditProfileButton,
   FollowersButton,
@@ -17,7 +18,6 @@ import {
   GetUserNfts,
   GetPublications,
 } from "@/components/profile";
-import { GlobeAltIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 
 import { Avatar, Loading, Error } from "@/components/elements";
 
@@ -129,7 +129,7 @@ const ProfilePage: NextPage = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  <GlobeAltIcon className="h-8 w-8 text-stone-500 hover:text-stone-700 cursor-pointer" />
+                  <FaGlobeAmericas className="h-8 w-8 text-stone-500 hover:text-stone-700" />
                 </a>
               )}
               {profile.attributes && checkTwitter() && (
@@ -139,7 +139,7 @@ const ProfilePage: NextPage = () => {
                   rel="noreferrer noopener"
                   className="text-stone-500 hover:text-stone-700"
                 >
-                  <TwitterIcon size={30} />
+                  <FaTwitter className="h-8 w-8 text-stone-500 hover:text-stone-700" />
                 </a>
               )}
             </div>
@@ -167,7 +167,7 @@ const ProfilePage: NextPage = () => {
           </div>
           {checkLocation() && (
             <div className="flex font-bold py-2">
-              <LocationMarkerIcon className="h-4 w-4 sm:h-5 sm:w-5 text-stone-500 hover:text-stone-700 cursor-pointer" />
+              <MdLocationOn className="h-4 w-4 sm:h-5 sm:w-5 text-stone-500 hover:text-stone-700 cursor-pointer" />
               <span className="font-medium pl-1">{checkLocation()}</span>
             </div>
           )}
