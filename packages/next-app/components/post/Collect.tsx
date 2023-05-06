@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { UserContext } from "@/context";
-import { CollectionIcon } from "@heroicons/react/outline";
+import { HiOutlineCollection } from "react-icons/hi";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_COLLECT_TYPED_DATA } from "@/queries/publications/collect";
@@ -12,7 +12,13 @@ import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
-export const Collect = ({ publication }: any) => {
+import { Post } from "@/types/graphql/generated";
+
+interface ICollectProps {
+  publication: Post;
+}
+
+export const Collect = ({ publication }: ICollectProps) => {
   const { currentUser } = useContext(UserContext);
   // console.log("currentuser", currentUser);
 
@@ -26,6 +32,7 @@ export const Collect = ({ publication }: any) => {
     mode: "recklesslyUnprepared",
   });
 
+  // TODO: error on collecting, need to fix
   const [createCollectTypedData, { loading, error }] = useMutation(
     CREATE_COLLECT_TYPED_DATA,
     {
@@ -79,7 +86,7 @@ export const Collect = ({ publication }: any) => {
     }
   );
 
-  const handleCollect = () => {
+  const handleCollect = useCallback(() => {
     createCollectTypedData({
       variables: {
         request: {
@@ -87,20 +94,21 @@ export const Collect = ({ publication }: any) => {
         },
       },
     });
-  };
+  }, [currentUser]);
 
-  if (collectModule.__typename !== "FreeCollectModuleSettings") return null;
+  if (collectModule?.__typename !== "FreeCollectModuleSettings") return null;
 
   return (
-    <div
-      className="flex ml-4 hover:text-stone-700 cursor-pointer"
-      onClick={() => handleCollect()}
+    <button
+      className="flex ml-4 hover:text-stone-700"
+      type={`button`}
+      onClick={handleCollect}
     >
-      {stats.totalAmountOfCollects}
-      <CollectionIcon
+      {stats?.totalAmountOfCollects}
+      <HiOutlineCollection
         className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
         aria-hidden="true"
       />
-    </div>
+    </button>
   );
 };

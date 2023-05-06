@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { UserContext } from "@/context";
 import { useMutation, gql } from "@apollo/client";
-import { HeartIcon } from "@heroicons/react/solid";
+import { FaHeart } from "react-icons/fa";
+import { Post } from "@/types/graphql/generated";
 
 export const ADD_LIKE = gql`
   mutation ($request: ReactionRequest!) {
@@ -15,10 +16,14 @@ export const REMOVE_LIKE = gql`
   }
 `;
 
-export const Like = ({ publication }: any) => {
+interface ILikeProps {
+  publication: Post;
+}
+
+export const Like = ({ publication }: ILikeProps) => {
   const { currentUser } = useContext(UserContext);
   const { id, stats, reaction } = publication;
-  const [numOfLikes, setNumofLikes] = useState(stats.totalUpvotes);
+  const [numOfLikes, setNumofLikes] = useState(stats?.totalUpvotes || 0);
   const [userLiked, setUserLiked] = useState(reaction === "UPVOTE");
 
   const [addReaction, {}] = useMutation(ADD_LIKE, {
@@ -45,25 +50,31 @@ export const Like = ({ publication }: any) => {
     },
   };
 
+  const handleAddLike = useCallback(() => {
+    if (currentUser) addReaction(likeRequest);
+  }, [currentUser]);
+
+  const handleRemoveLike = useCallback(() => {
+    if (currentUser) removeReaction(likeRequest);
+  }, [currentUser]);
+
   return (
     <div className="flex ml-4 font-medium text-stone-600 hover:text-stone-700 cursor-pointer">
       {numOfLikes}
       {userLiked ? (
-        <HeartIcon
-          className="h-5 w-5 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 text-red-600"
-          aria-hidden="true"
-          onClick={() => {
-            if (currentUser) removeReaction(likeRequest);
-          }}
-        />
+        <button onClick={handleRemoveLike}>
+          <FaHeart
+            className="h-5 w-5 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 text-red-600"
+            aria-hidden="true"
+          />
+        </button>
       ) : (
-        <HeartIcon
-          className="h-5 w-5 sm:h-5 sm:w-5 md:h-5 md:w-5 ml-2"
-          aria-hidden="true"
-          onClick={() => {
-            if (currentUser) addReaction(likeRequest);
-          }}
-        />
+        <button onClick={handleAddLike}>
+          <FaHeart
+            className="h-5 w-5 sm:h-5 sm:w-5 md:h-5 md:w-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
       )}
     </div>
   );

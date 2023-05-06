@@ -3,14 +3,14 @@ import Link from "next/link";
 import { UserContext } from "@/context";
 import { Mirror, Collect, Like } from "@/components/post";
 
-import { ChatAlt2Icon } from "@heroicons/react/outline";
+import { BiChat } from "react-icons/bi";
 
 import { CommentCard } from "@/components/comment";
 
-import { Publication, PublicationStats } from "@/types/graphql/generated";
+import { Post, PublicationStats } from "@/types/graphql/generated";
 
 type StatsProps = {
-  publication: Publication;
+  publication: Post;
   stats?: PublicationStats;
 };
 
@@ -32,7 +32,7 @@ export const Stats = ({ publication }: StatsProps) => {
         <Link href={`/post/${publication?.id}`}>
           <span className="hover:text-stone-700 flex cursor-pointer">
             {stats?.totalAmountOfComments}
-            <ChatAlt2Icon className="h-6 w-6 ml-2 " aria-hidden="true" />
+            <BiChat className="h-6 w-6 ml-2 " aria-hidden="true" />
           </span>
         </Link>
       </div>
@@ -44,7 +44,7 @@ export const Stats = ({ publication }: StatsProps) => {
         <div className={`flex`}>
           <span className="hover:text-stone-700 flex cursor-pointer">
             {stats?.totalAmountOfComments}
-            <ChatAlt2Icon
+            <BiChat
               onClick={() => setShowComment(!showComment)}
               className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 "
               aria-hidden="true"

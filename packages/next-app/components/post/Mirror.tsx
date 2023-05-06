@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { UserContext } from "@/context";
-import { DocumentDuplicateIcon } from "@heroicons/react/outline";
+import { FaRegCopy } from "react-icons/fa";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_MIRROR_TYPED_DATA } from "@/queries/publications/mirror";
@@ -11,7 +11,13 @@ import { omit, splitSignature } from "@/lib/helpers";
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
-export const Mirror = ({ publication }: any) => {
+import { Post } from "@/types/graphql/generated";
+
+interface IMirrorProps {
+  publication: Post;
+}
+
+export const Mirror = ({ publication }: IMirrorProps) => {
   const { currentUser } = useContext(UserContext);
 
   const { stats } = publication;
@@ -65,7 +71,7 @@ export const Mirror = ({ publication }: any) => {
     },
   });
 
-  const handleMirror = () => {
+  const handleMirror = useCallback(() => {
     createMirrorTypedData({
       variables: {
         request: {
@@ -77,18 +83,19 @@ export const Mirror = ({ publication }: any) => {
         },
       },
     });
-  };
+  }, [createMirrorTypedData, currentUser, publication]);
 
   return (
-    <div
-      className="flex ml-4 hover:text-stone-700 cursor-pointer"
-      onClick={() => handleMirror()}
+    <button
+      className="flex ml-4 hover:text-stone-700"
+      type={`button`}
+      onClick={handleMirror}
     >
-      {stats.totalAmountOfMirrors}
-      <DocumentDuplicateIcon
+      {stats?.totalAmountOfMirrors}
+      <FaRegCopy
         className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
         aria-hidden="true"
       />
-    </div>
+    </button>
   );
 };
