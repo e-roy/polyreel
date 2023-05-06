@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { UserIcon } from "@heroicons/react/outline";
+import { FaUserAlt } from "react-icons/fa";
 
 import { Profile } from "@/types/graphql/generated";
 
@@ -64,7 +64,7 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
       </div>
     );
   } else {
-    return <UserIcon className={avatarSize} />;
+    return <FaUserAlt className={avatarSize} />;
   }
 };
 

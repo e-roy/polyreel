@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ImageUploading from "react-images-uploading";
-import { PhotographIcon } from "@heroicons/react/outline";
+import { FaPhotoVideo } from "react-icons/fa";
 import { Button } from "@/components/elements";
 import { uploadImageIpfs } from "@/lib/ipfs/ipfsImage";
 
@@ -103,7 +103,7 @@ AddPhotoProps) => {
                   {title || "Add Photo"}
                 </span>
                 <span className="mt-2 block text-sm font-medium text-gray-600">
-                  {description || <PhotographIcon className="h-8 w-8 m-auto" />}
+                  {description || <FaPhotoVideo className="h-8 w-8 m-auto" />}
                 </span>
               </button>
             )}

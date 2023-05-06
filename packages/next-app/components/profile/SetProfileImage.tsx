@@ -4,7 +4,7 @@ import { useSignTypedData, useContractWrite } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 import ImageUploading from "react-images-uploading";
 import { uploadImageIpfs } from "@/lib/ipfs/ipfsImage";
-import { UserAddIcon } from "@heroicons/react/outline";
+import { FaUserPlus } from "react-icons/fa";
 
 import { CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA } from "@/queries/profile/set-profile-image";
 import { Button, Loading } from "@/components/elements";
@@ -149,7 +149,7 @@ export const SetProfileImage = ({
                 }}
                 {...dragProps}
               >
-                <UserAddIcon
+                <FaUserPlus
                   className="h-12 w-12 flex mx-auto text-stone-500"
                   aria-hidden="true"
                 />

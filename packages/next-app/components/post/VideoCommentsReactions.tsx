@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChatAlt2Icon } from "@heroicons/react/outline";
+import { BiChat } from "react-icons/bi";
+
 import { Mirror, Collect, Like } from "@/components/post";
 import { CommentCard } from "@/components/comment";
 
@@ -19,7 +20,7 @@ export const VideoCommentsReactions = ({
     <>
       <div className="flex mt-1 text-stone-500 w-full">
         {stats.totalAmountOfComments}
-        <ChatAlt2Icon
+        <BiChat
           onClick={() => setShowComment(!showComment)}
           className="h-5 w-5 ml-2 hover:text-stone-700 cursor-pointer"
           aria-hidden="true"

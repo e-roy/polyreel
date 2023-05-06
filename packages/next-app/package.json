@@ -44,7 +44,6 @@
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",
     "@headlessui/react": "^1.6.4",
-    "@heroicons/react": "^1.0.6",
     "@types/lodash.merge": "^4.6.7",
     "@types/node": "^20.1.0",
     "@types/react": "^18.2.5",

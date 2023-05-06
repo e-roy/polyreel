@@ -10,7 +10,8 @@ import {
 } from "@/components/home";
 import { Notifications } from "@/components/user";
 
-import { HomeIcon, BellIcon, GlobeIcon } from "@heroicons/react/outline";
+import { FaHome, FaBell } from "react-icons/fa";
+import { BsGlobeAmericas } from "react-icons/bs";
 
 const Home: NextPage = () => {
   const { address } = useAccount();
@@ -20,19 +21,19 @@ const Home: NextPage = () => {
     {
       id: 1,
       label: "Home",
-      icon: <HomeIcon className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FaHome className="text-3xl h-8 w-8 mx-auto" />,
       active: address ? true : false,
     },
     {
       id: 2,
       label: "Explore",
-      icon: <GlobeIcon className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <BsGlobeAmericas className="text-3xl h-8 w-8 mx-auto" />,
       active: true,
     },
     {
       id: 3,
       label: "Notifications",
-      icon: <BellIcon className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FaBell className="text-3xl h-8 w-8 mx-auto" />,
       active: address ? true : false,
     },
   ];

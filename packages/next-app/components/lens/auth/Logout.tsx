@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
-import { LogoutIcon } from "@heroicons/react/outline";
+import { FiLogOut } from "react-icons/fi";
 import { useAccount, useDisconnect } from "wagmi";
 import { removeAuthenticationToken } from "@/lib/auth/state";
+import { useCallback } from "react";
 
 type LogoutProps = {
   className?: string;
@@ -13,7 +14,7 @@ export const Logout = ({ className }: LogoutProps) => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     if (address) {
       disconnect();
       await removeAuthenticationToken();
@@ -22,11 +23,16 @@ export const Logout = ({ className }: LogoutProps) => {
       await removeAuthenticationToken();
       router.push("/");
     }
-  };
+  }, [address, disconnect, router]);
+
   return (
-    <div className={`flex ${className}`} onClick={() => handleLogout()}>
-      <LogoutIcon className="mr-4 ml-2 h-8 w-8" />
+    <button
+      type={`button`}
+      className={`flex ${className}`}
+      onClick={handleLogout}
+    >
+      <FiLogOut className="mr-4 ml-2 h-8 w-8" />
       <div className="mt-1">logout</div>
-    </div>
+    </button>
   );
 };

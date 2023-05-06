@@ -2,7 +2,8 @@ import { useState } from "react";
 import { CURRENT_CHAIN_ID, CURRENT_CHAIN_NAME } from "@/lib/constants";
 import { useSwitchNetwork } from "wagmi";
 import { Modal } from "@/components/elements";
-import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
+import { FiChevronDown } from "react-icons/fi";
+import { IoClose } from "react-icons/io5";
 
 import Image from "next/image";
 import polygonLogo from "@/images/polygon.png";
@@ -18,7 +19,7 @@ export const SwitchNetwork = () => {
         className="flex my-auto py-2 px-4 rounded-xl text-md font-bold bg-red-500 text-white"
       >
         Wrong Network{" "}
-        <ChevronDownIcon className="h-5 w-5 my-auto ml-2 font-extrabold" />
+        <FiChevronDown className="h-5 w-5 my-auto ml-2 font-extrabold" />
       </button>
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -28,7 +29,7 @@ export const SwitchNetwork = () => {
                 Switch Networks
               </div>
               <button className="bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-full p-1">
-                <XIcon
+                <IoClose
                   onClick={() => setIsModalOpen(false)}
                   className="h-5 w-5 my-auto"
                 />

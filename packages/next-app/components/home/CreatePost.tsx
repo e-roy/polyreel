@@ -19,7 +19,8 @@ import {
 } from "@/components/elements";
 
 import { EmojiIcon, GifIcon } from "@/icons";
-import { PhotographIcon, XCircleIcon } from "@heroicons/react/outline";
+import { FaPhotoVideo } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
@@ -185,7 +186,7 @@ export const CreatePost = () => {
                             className="w-auto max-h-60 mx-auto"
                             alt="selected gif"
                           />
-                          <XCircleIcon
+                          <IoClose
                             onClick={() => setSelectedPicture(null)}
                             className="h-6 w-6 text-stone-500 hover:text-stone-700 cursor-pointer"
                           />
@@ -224,7 +225,7 @@ export const CreatePost = () => {
                       }}
                       className="p-1 mx-1 text-stone-500 hover:text-stone-800 hover:bg-stone-200 hover:shadow-xl cursor-pointer my-auto rounded-2xl"
                     >
-                      <PhotographIcon className="text-3xl h-5 w-5 mx-auto " />
+                      <FaPhotoVideo className="text-3xl h-5 w-5 mx-auto " />
                     </div>
                   </div>
                   <div className="mx-4">

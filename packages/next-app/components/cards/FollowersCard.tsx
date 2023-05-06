@@ -1,13 +1,18 @@
 import { useRouter } from "next/router";
 import { Avatar } from "@/components/elements";
 import { addressHalf } from "@/utils/address-shorten";
-import { ExternalLinkIcon } from "@heroicons/react/outline";
+import { FiExternalLink } from "react-icons/fi";
+import { Profile } from "@/types/graphql/generated";
+
+interface IFollowersCardProps {
+  profile: Profile;
+}
 
 export const FollowersCard = ({ profile }: any) => {
   const router = useRouter();
   // console.log(profile);
   if (!profile) return null;
-  if (!profile.defaultProfile && !profile.profile)
+  if (!profile?.defaultProfile && !profile.profile)
     return (
       <a
         href={`https://polygonscan.com/address/${profile.address}`}
@@ -22,7 +27,7 @@ export const FollowersCard = ({ profile }: any) => {
               <div className="ml-4 px-2 py-1 my-auto text-stone-800  rounded-xl">
                 <div className="flex my-auto font-semibold text-sm sm:text-lg">
                   {addressHalf(profile.address || profile.profile.ownedBy)}
-                  <ExternalLinkIcon className="h-5 w-5 ml-4 mt-0.5 hover:text-sky-600" />
+                  <FiExternalLink className="h-5 w-5 ml-4 mt-0.5 hover:text-sky-600" />
                 </div>
                 <div className="my-auto font-semibold text-xs">
                   {addressHalf(profile.address || profile.profile.ownedBy)}

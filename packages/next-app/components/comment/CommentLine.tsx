@@ -8,7 +8,7 @@ import { omit, splitSignature } from "@/lib/helpers";
 import { uploadIpfs } from "@/lib/ipfs/ipfs";
 
 import { Avatar } from "@/components/elements";
-import { ReplyIcon } from "@heroicons/react/solid";
+import { BsFillSendFill } from "react-icons/bs";
 
 import LENS_ABI from "@/abis/Lens-Hub.json";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
@@ -158,6 +158,7 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
             </div>
             <button
               disabled={content.length !== 0 ? false : true}
+              type={`button`}
               onClick={() => handleComment()}
               className={classNames(
                 content.length !== 0
@@ -166,7 +167,7 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
                 "border m-auto p-1 rounded-full bg-stone-400 text-stone-500 cursor-pointer"
               )}
             >
-              <ReplyIcon className="w-6 h-6" />
+              <BsFillSendFill className="w-6 h-6" />
             </button>
           </>
         )}

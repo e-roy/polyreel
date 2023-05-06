@@ -7,7 +7,8 @@ import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 import LENS_ABI from "@/abis/Lens-Hub.json";
 
 import { Button, Modal, Avatar } from "@/components/elements";
-import { XIcon, CameraIcon } from "@heroicons/react/outline";
+import { BsCamera } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
 
 import { UserContext } from "@/context";
 
@@ -166,7 +167,7 @@ export const EditProfileButton = ({
               onClick={() => handleClose()}
             >
               <span className="sr-only">Close panel</span>
-              <XIcon className="h-5 w-5" aria-hidden="true" />
+              <IoClose className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
           <div className="flex justify-between">
@@ -176,7 +177,7 @@ export const EditProfileButton = ({
             >
               <Avatar profile={profile} size={"medium"} />
               <div className="mt-10 -ml-4 p-1 rounded-full bg-stone-200">
-                <CameraIcon className="h-4 w-4" aria-hidden="true" />
+                <BsCamera className="h-4 w-4" aria-hidden="true" />
               </div>
             </div>
             <div className="m-auto">

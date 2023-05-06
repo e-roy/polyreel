@@ -1,10 +1,7 @@
-import {
-  MailOpenIcon,
-  ChatAlt2Icon,
-  DocumentDuplicateIcon,
-  CollectionIcon,
-  PhotographIcon,
-} from "@heroicons/react/outline";
+import { BiPhotoAlbum, BiChat } from "react-icons/bi";
+import { FaRegCopy } from "react-icons/fa";
+import { MdDynamicFeed } from "react-icons/md";
+import { Profile } from "@/types/graphql/generated";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -12,7 +9,7 @@ function classNames(...classes: string[]) {
 
 type NavSelectProps = {
   select: (select: string) => void;
-  profile: any;
+  profile: Profile;
   navSelect: string;
 };
 
@@ -29,7 +26,7 @@ export const NavSelect = ({ select, profile, navSelect }: NavSelectProps) => {
           "flex justify-center py-2 pl-6 pr-4 text-sm font-medium rounded-sm w-1/2 border rounded-l-2xl border-stone-400 shadow-lg"
         )}
       >
-        <MailOpenIcon className="h-5 w-5" aria-hidden="true" />
+        <MdDynamicFeed className="h-5 w-5" aria-hidden="true" />
         <span className="pl-1 font-semibold">{profile.stats.totalPosts}</span>
       </div>
       <div
@@ -41,7 +38,7 @@ export const NavSelect = ({ select, profile, navSelect }: NavSelectProps) => {
           "flex justify-center py-2 px-4 text-sm font-medium rounded-sm w-1/2 border border-stone-400 shadow-lg"
         )}
       >
-        <ChatAlt2Icon className="h-5 w-5" aria-hidden="true" />
+        <BiChat className="h-5 w-5" aria-hidden="true" />
         <span className="pl-1 font-semibold">
           {profile.stats.totalComments}
         </span>
@@ -64,7 +61,7 @@ export const NavSelect = ({ select, profile, navSelect }: NavSelectProps) => {
           "flex justify-center py-2 px-4 text-sm font-medium rounded-sm w-1/2 border border-stone-400 shadow-lg"
         )}
       >
-        <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
+        <FaRegCopy className="h-5 w-5" aria-hidden="true" />
         <span className="pl-1 font-semibold">{profile.stats.totalMirrors}</span>
       </div>
       <div
@@ -76,7 +73,7 @@ export const NavSelect = ({ select, profile, navSelect }: NavSelectProps) => {
           "flex justify-center py-2 pl-4 pr-6 text-sm font-medium rounded-sm w-1/2 border rounded-r-full border-stone-400 shadow-lg"
         )}
       >
-        <PhotographIcon className="h-5 w-5" aria-hidden="true" />
+        <BiPhotoAlbum className="h-5 w-5" aria-hidden="true" />
         <span className="pl-1 font-semibold">
           {/* {profile.stats.totalMirrors} */}
         </span>

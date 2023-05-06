@@ -9,13 +9,13 @@ import Link from "next/link";
 import { UserContext } from "@/context";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
-import { ChevronLeftIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
+import { FiChevronLeft } from "react-icons/fi";
+import { FaHome, FaPlus, FaUserAlt } from "react-icons/fa";
 import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
 
 import { useAccount } from "wagmi";
 
 import { Avatar } from "@/components/elements";
-import { UserIcon } from "@heroicons/react/outline";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -78,7 +78,7 @@ export const Header = ({}: HeaderProps) => {
             </div>
           ) : address ? (
             <div className="flex">
-              <UserIcon
+              <FaUserAlt
                 className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
               />
               <div className="px-4 py-2 font-medium">
@@ -97,11 +97,11 @@ export const Header = ({}: HeaderProps) => {
                 className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
                 onClick={() => router.back()}
               >
-                <ChevronLeftIcon className="h-8 w-8 text-stone-100" />
+                <FiChevronLeft className="h-8 w-8 text-stone-100" />
               </div>
               <Link href={"/home"}>
                 <div className="cursor-pointer mt-2 relative grid content-center justify-center bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full">
-                  <HomeIcon className="h-6 w-6 text-stone-100" />
+                  <FaHome className="h-6 w-6 text-stone-100" />
                 </div>
               </Link>
             </>
@@ -216,7 +216,7 @@ export const Header = ({}: HeaderProps) => {
                           <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium"></div>
                           {CURRENT_CHAIN_ID === 80001 && (
                             <div className={`${baseClass}`}>
-                              <PlusIcon className="ml-1 mr-4 h-8 w-8" />
+                              <FaPlus className="ml-1 mr-4 h-8 w-8" />
 
                               <div
                                 className="mt-1"

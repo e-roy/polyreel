@@ -9,7 +9,7 @@ import { Button, Modal } from "@/components/elements";
 
 import { uploadImageIpfs } from "@/lib/ipfs/ipfsImage";
 import ImageUploading from "react-images-uploading";
-import { UserAddIcon } from "@heroicons/react/outline";
+import { FaUserPlus } from "react-icons/fa";
 
 interface IFormInputs {
   handle: string;
@@ -134,7 +134,7 @@ export const CreateProfile = () => {
                     onClick={onImageUpload}
                     {...dragProps}
                   >
-                    <UserAddIcon
+                    <FaUserPlus
                       className="h-12 w-12 flex mx-auto text-stone-500"
                       aria-hidden="true"
                     />
