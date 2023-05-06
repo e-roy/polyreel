@@ -5,7 +5,7 @@ import { Profile } from "@/types/graphql/generated";
 
 type AvatarProps = {
   profile?: Profile;
-  size: string;
+  size: "xs" | "small" | "medium" | "profile";
 };
 
 const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl object-cover`;

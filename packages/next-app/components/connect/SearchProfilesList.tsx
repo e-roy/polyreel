@@ -1,8 +1,11 @@
-import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
 import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
+import { Profile } from "@/types/graphql/generated";
+import { ProfileItem } from "@/components/connect";
 
-export const SEARCH_PROFILES = gql`
+import { logger } from "@/utils/logger";
+
+const SEARCH_PROFILES = gql`
   query ($request: SearchQueryRequest!) {
     search(request: $request) {
       ... on ProfileSearchResult {
@@ -26,16 +29,13 @@ export const SEARCH_PROFILES = gql`
   ${ProfileFragmentLite}
 `;
 
-import { RecommendCard } from "@/components/cards";
 import { Loading, Error } from "@/components/elements";
 
-export type SearchProfilesProps = {
+interface ISearchProfilesListProps {
   search?: string;
-};
+}
 
-export const SearchProfiles = ({ search }: SearchProfilesProps) => {
-  const router = useRouter();
-
+export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
   const { loading, error, data } = useQuery(SEARCH_PROFILES, {
     variables: {
       request: {
@@ -48,22 +48,17 @@ export const SearchProfiles = ({ search }: SearchProfilesProps) => {
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-  //   console.log(data);
+
+  logger("SearchProfilesList.tsx", data.search);
 
   return (
-    <div className="">
-      <h1 className="text-xl font-bold text-center text-stone-700 sticky top-0 z-10 bg-white py-2">
+    <div className={``}>
+      <div className={`text-xl font-bold text-stone-800 px-4 py-3`}>
         Search Profiles
-      </h1>
-      <div className="flex flex-wrap">
-        {data.search.items.map((profile: any, index: number) => (
-          <div
-            key={index}
-            className="w-full"
-            onClick={() => router.push(`/profile/${profile.handle}`)}
-          >
-            <RecommendCard profile={profile} />
-          </div>
+      </div>
+      <div className={``}>
+        {data.search.items.map((profile: Profile, index: number) => (
+          <ProfileItem profile={profile} key={index} />
         ))}
       </div>
     </div>

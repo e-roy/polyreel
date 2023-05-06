@@ -6,7 +6,7 @@ import {
   ExplorePublications,
   CreatePost,
   UserTimeline,
-  ProfilesSidebar,
+  WhoToFollow,
 } from "@/components/home";
 import { Notifications } from "@/components/user";
 
@@ -86,7 +86,7 @@ const Home: NextPage = () => {
 
           {/* Right Column */}
           <div className="hidden md:block md:w-1/3 xl:w-1/4 ">
-            <ProfilesSidebar />
+            <WhoToFollow />
           </div>
         </div>
 
