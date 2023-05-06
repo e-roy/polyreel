@@ -10,7 +10,10 @@ import { UserContext } from "@/context";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
 import { FiChevronLeft } from "react-icons/fi";
-import { FaHome, FaPlus, FaUserAlt } from "react-icons/fa";
+import { FaHome, FaBell, FaUserAlt } from "react-icons/fa";
+import { FiSettings } from "react-icons/fi";
+import { GoGlobe } from "react-icons/go";
+
 import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
 
 import { useAccount } from "wagmi";
@@ -24,6 +27,8 @@ import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 import { CURRENT_CHAIN_ID } from "@/lib/constants";
 
 import { Profile } from "@/types/graphql/generated";
+
+import { LeftNavigation } from "./LeftNavigation";
 
 export type HeaderProps = {};
 
@@ -44,14 +49,53 @@ export const Header = ({}: HeaderProps) => {
     }
   }, [connector]);
 
+  const sidebarNav = [
+    {
+      id: 1,
+      label: "Home",
+      icon: <FaHome className="text-3xl h-8 w-8 mx-auto" />,
+      active: router.pathname === "/home" ? true : false,
+      href: "/home",
+    },
+    {
+      id: 2,
+      label: "Explore",
+      icon: <GoGlobe className="text-3xl h-8 w-8 mx-auto" />,
+      active: router.pathname === "/explore" ? true : false,
+      href: "/explore",
+    },
+    {
+      id: 3,
+      label: "Notifications",
+      icon: <FaBell className="text-3xl h-8 w-8 mx-auto" />,
+      active: router.pathname === "/notifications" ? true : false,
+      href: "/notifications",
+    },
+    {
+      id: 4,
+      label: "Profile",
+      icon: <FaUserAlt className="text-3xl h-8 w-8 mx-auto" />,
+      active:
+        router.asPath === `/profile/${currentUser?.handle}` ? true : false,
+      href: `/profile/${currentUser?.handle}`,
+    },
+    {
+      id: 5,
+      label: "Settings",
+      icon: <FiSettings className="text-3xl h-8 w-8 mx-auto" />,
+      active: router.pathname === "/settings" ? true : false,
+      href: "/settings",
+    },
+  ];
+
   const handleUserLoggedIn = () => {
     router.push("/home");
   };
 
-  const handleProfileClick = (profile: Profile) => {
-    console.log("profile select", profile);
-    setCurrentUser(profile);
-  };
+  // const handleProfileClick = (profile: Profile) => {
+  //   console.log("profile select", profile);
+  //   setCurrentUser(profile);
+  // };
 
   const baseClass =
     "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
@@ -64,17 +108,17 @@ export const Header = ({}: HeaderProps) => {
 
   return (
     <header
-      className={`p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
+      className={`md:hidden  p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
       {router.pathname === "/home" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {address && currentUser ? (
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
-              <div className="px-4 font-medium">
+              {/* <div className="px-4 font-medium">
                 <div>@{currentUser?.handle}</div>
                 <div>{currentUser?.name}</div>
-              </div>
+              </div> */}
             </div>
           ) : address ? (
             <div className="flex">
@@ -184,56 +228,9 @@ export const Header = ({}: HeaderProps) => {
                         </div>
                       )}
                     </div>
-
-                    <div className="relative mx-2 mt-2 flex-1 px-2 sm:px-4 overflow-y-scroll border rounded-xl shadow-xl">
-                      <div className="relative grid gap-4 bg-white px-2 py-2 sm:gap-2 sm:p-2">
-                        {profiles && profiles?.length > 1 && (
-                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium">
-                            Switch profiles
-                          </div>
-                        )}
-
-                        <div>
-                          {profiles?.map((profile: Profile, index: number) => (
-                            <div key={index}>
-                              {profile.id !== currentUser?.id ? (
-                                <div
-                                  className={`${baseClass}`}
-                                  onClick={() => {
-                                    handleProfileClick(profile);
-                                    !open;
-                                  }}
-                                >
-                                  <Avatar profile={profile} size={"small"} />
-                                  <div className="px-4 font-medium">
-                                    <div>@{profile.handle}</div>
-                                    <div>{profile.name}</div>
-                                  </div>
-                                </div>
-                              ) : null}
-                            </div>
-                          ))}
-                          <div className="border-b border-stone-300 py-2 text-stone-700 text-sm font-medium"></div>
-                          {CURRENT_CHAIN_ID === 80001 && (
-                            <div className={`${baseClass}`}>
-                              <FaPlus className="ml-1 mr-4 h-8 w-8" />
-
-                              <div
-                                className="mt-1"
-                                onClick={() => router.push("/select-profile")}
-                              >
-                                create new profile
-                              </div>
-                            </div>
-                          )}
-
-                          <Logout className={`${baseClass}`} />
-                          <button
-                            className="hidden"
-                            ref={completeButtonRef}
-                          ></button>
-                        </div>
-                      </div>
+                    <div className={`w-72 m-4`}>
+                      <LeftNavigation />
+                      <Logout className={``} />
                     </div>
                   </div>
                 </div>

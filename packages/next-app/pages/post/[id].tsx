@@ -76,19 +76,19 @@ const PostPage: NextPage = () => {
     return <VideoPost publication={publication} />;
 
   return (
-    <div className="h-9/10">
+    <div className="">
       <Head>
         <title>polyreel</title>
         <meta name="description" content="polyreel" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-1 justify-center w-full h-9/10 overflow-y-hidden">
-        <div className="w-full sm:w-3/4 xl:w-1/2">
+      <div className="flex flex-1 justify-center w-full">
+        <div className="w-full p-6">
           <div className="mb-4 h-2/10">
             <Post publication={data.publication} postType="page" />
           </div>
-          <div className="overflow-y-scroll h-7/10 pb-12">
+          <div className="pb-12">
             <PostComments postId={id as string} />
           </div>
         </div>
@@ -114,7 +114,7 @@ const VideoPost = ({ publication }: { publication: PostType }) => {
   // console.log(publication);
   if (!publication) return null;
   return (
-    <div className="lg:flex xl:px-8 2xl:px-32 h-9/10 overflow-y-hidden">
+    <div className="lg:flex">
       <div className="border lg:w-2/3">
         <div className="md:mx-20 lg:mx-0">
           <LivepeerPlayer

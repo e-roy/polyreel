@@ -1,19 +1,17 @@
 import { FaHome, FaBell, FaUserAlt } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
-import { BsGlobeAmericas } from "react-icons/bs";
 import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "@/context";
 
 export const LeftNavigation = () => {
   const { currentUser } = useContext(UserContext);
   const router = useRouter();
-  console.log(router);
-  const [sideNav, setSideNav] = useState("Explore");
+  // console.log(router);
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   const sidebarNav = [
     {
@@ -55,17 +53,19 @@ export const LeftNavigation = () => {
   ];
   return (
     <>
-      <ul className="mt-16">
+      <ul className={``}>
         {sidebarNav.map((item: any, index: number) => (
           <li key={index}>
             <Link
               href={item.href}
-              className={`flex hover:bg-stone-100 rounded-full text-stone-500 hover:text-stone-800 font-medium my-2 p-2 cursor-pointer ${
+              className={`flex hover:bg-stone-100 rounded-full text-stone-500 hover:text-stone-800 my-2 p-2 cursor-pointer ${
                 item.active ? "text-stone-900 font-bold" : ""
               }`}
             >
               <span>{item.icon}</span>
-              <span className="pl-2 my-auto hidden xl:block">{item.label}</span>
+              <span className="pl-2 my-auto block md:hidden xl:block">
+                {item.label}
+              </span>
             </Link>
           </li>
         ))}

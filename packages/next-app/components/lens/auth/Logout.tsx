@@ -28,11 +28,11 @@ export const Logout = ({ className }: LogoutProps) => {
   return (
     <button
       type={`button`}
-      className={`flex ${className}`}
+      className={`flex hover:bg-stone-100 rounded-full text-stone-500 hover:text-stone-800 my-2 p-2 pr-48`}
       onClick={handleLogout}
     >
-      <FiLogOut className="mr-4 ml-2 h-8 w-8" />
-      <div className="mt-1">logout</div>
+      <FiLogOut className="text-3xl h-8 w-8 mx-auto" />
+      <div className="pl-2 my-auto block md:hidden xl:block">Logout</div>
     </button>
   );
 };
