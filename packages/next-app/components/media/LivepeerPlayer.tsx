@@ -16,6 +16,7 @@ const PosterImage = ({ blenderPoster }: { blenderPoster: string }) => {
       objectFit="cover"
       priority
       placeholder="blur"
+      alt=""
     />
   );
 };
