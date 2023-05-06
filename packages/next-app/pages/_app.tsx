@@ -33,6 +33,7 @@ import { AppLayout } from "@/components/layout";
 import { ENV_PROD, ENV_DEV } from "@/lib/constants";
 
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { useMemo } from "react";
 
 // Get environment variables
 // const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
@@ -72,20 +73,35 @@ const customTheme: Theme = merge(lightTheme(), {
   },
 });
 
-const livepeerClient = createReactClient({
-  provider: studioProvider({
-    apiKey: liverpeerKey,
-  }),
-});
+// const livepeerClient = createReactClient({
+//   provider: studioProvider({
+//     apiKey: liverpeerKey,
+//   }),
+// });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({
+  Component,
+  pageProps,
+}: AppProps<{ dehydratedState: string }>) {
   const isMounted = useIsMounted();
+  const livepeerClient = useMemo(
+    () =>
+      createReactClient({
+        provider: studioProvider({
+          apiKey: liverpeerKey,
+        }),
+      }),
+    []
+  );
 
   if (!isMounted) return null;
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={customTheme}>
-        <LivepeerConfig client={livepeerClient}>
+        <LivepeerConfig
+          dehydratedState={pageProps?.dehydratedState}
+          client={livepeerClient}
+        >
           <ApolloProvider client={apolloClient()}>
             <UserProvider>
               {/* <ThemeProvider defaultTheme="light" attribute="class"> */}

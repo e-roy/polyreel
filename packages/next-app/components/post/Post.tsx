@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { PostBody, Stats } from "@/components/post";
 import { Post as PostType } from "@/types/graphql/generated";
 import { Publication } from "@/types/graphql/generated";
+import { logger } from "@/utils/logger";
 
 type PostProps = {
   publication: Publication;
@@ -11,11 +11,11 @@ type PostProps = {
 };
 
 export const Post = ({ publication, postType }: PostProps) => {
-  const router = useRouter();
-  console.log("publication", publication);
   // console.log("publication type", publication.__typename);
 
   // console.log("postType", postType);
+
+  logger("Post.tsx", publication);
 
   return (
     <div className="my-2">

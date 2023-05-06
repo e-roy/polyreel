@@ -1,4 +1,4 @@
-import { Player } from "@livepeer/react";
+import { Player, usePlaybackInfo } from "@livepeer/react";
 
 import Image from "next/image";
 
@@ -30,10 +30,19 @@ export const LivepeerPlayer = ({
   publication,
   playbackId,
 }: ILivepeerPlayerProps) => {
+  // remove ipfs:// from playbackId
+  const Id = playbackId.replace("ipfs://", "");
+
+  const { data: playbackInfo, error } = usePlaybackInfo(Id);
+
+  // console.log("playbackInfo", playbackInfo);
+  // console.log("error", error);
+
+  if (!playbackInfo) return null;
   return (
     <Player
       title="Waterfalls"
-      playbackId={playbackId}
+      playbackId={Id}
       showPipButton
       showTitle={false}
       aspectRatio="16to9"
