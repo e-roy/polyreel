@@ -5,13 +5,16 @@ import { cardFormatDate } from "@/utils/formatDate";
 import { addressShorten } from "@/utils/address-shorten";
 import {
   Notification,
-  NewMentionNotification,
   NewCollectNotification,
   NewMirrorNotification,
-  NewReactionNotification,
 } from "@/types/graphql/generated";
 
-import { CommentCard, NewFollowerCard } from "./";
+import {
+  CommentCard,
+  NewFollowerCard,
+  NewMentionCard,
+  NewReactionCard,
+} from "./";
 
 type NotificationCardProps = {
   item: Notification;
@@ -45,15 +48,6 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
   } else return <div className="w-16 text-purple-400"></div>;
 };
 
-interface INewMentionCardProps {
-  item: NewMentionNotification;
-}
-
-const NewMentionCard = ({ item }: INewMentionCardProps) => {
-  console.log("new mention  ====>", item);
-  return <div className="p-2 my-1"></div>;
-};
-
 // NewCollectNotification
 
 interface INewCollectCardCardProps {
@@ -77,12 +71,3 @@ const NewMirrorCard = ({ item }: INewMirrorCardCardProps) => {
 };
 
 // NewReactionNotification
-
-interface INewReactionCardProps {
-  item: NewReactionNotification;
-}
-
-const NewReactionCard = ({ item }: INewReactionCardProps) => {
-  console.log("new reaction  ====>", item);
-  return <div className="p-2 my-1"></div>;
-};

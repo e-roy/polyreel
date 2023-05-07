@@ -1,21 +1,24 @@
-import { NewCommentNotification } from "@/types/graphql/generated";
 import Link from "next/link";
-import { Avatar } from "../elements";
+import { Avatar } from "@/components/elements";
 import { cardFormatDate } from "@/utils/formatDate";
+import { NewMentionNotification } from "@/types/graphql/generated";
 
-interface ICommentCardProps {
-  item: NewCommentNotification;
+interface INewMentionCardProps {
+  item: NewMentionNotification;
 }
 
-export const CommentCard = ({ item }: ICommentCardProps) => {
-  // console.log(item);
+export const NewMentionCard = ({ item }: INewMentionCardProps) => {
+  //   console.log("new mention  ====>", item);
   return (
-    <div className="p-2">
+    <div className="p-2 my-1">
       <div className="flex justify-between mb-2">
         <div className="flex w-full">
-          <Link href={`/profile/${item.profile.handle}`}>
+          <Link href={`/profile/${item.mentionPublication.profile.handle}`}>
             <div className="cursor-pointer">
-              <Avatar profile={item.profile} size={"small"} />
+              <Avatar
+                profile={item.mentionPublication.profile}
+                size={"small"}
+              />
             </div>
           </Link>
           <div className={`flex justify-between w-full`}>
@@ -23,15 +26,13 @@ export const CommentCard = ({ item }: ICommentCardProps) => {
               <div className="my-auto font-semibold text-md flex flex-col">
                 <Link
                   className={`hover:underline flex flex-col`}
-                  href={`/profile/${item.profile.handle}`}
+                  href={`/profile/${item.mentionPublication.profile.handle}`}
                 >
-                  <span>{item.profile.name} </span>
+                  <span>{item.mentionPublication.profile.name} </span>
                   <span className={`text-stone-600 text-xs`}>
-                    @{item.profile.handle}{" "}
+                    @{item.mentionPublication.profile.handle}{" "}
                   </span>
                 </Link>
-
-                <span>commented on your post</span>
               </div>
             </div>
 
@@ -41,13 +42,11 @@ export const CommentCard = ({ item }: ICommentCardProps) => {
           </div>
         </div>
       </div>
-
-      <Link href={`/post/${item?.comment?.commentOn?.id}`}>
-        <div className="cursor-pointer font-medium text-stone-700">
-          {item.comment.metadata.content}
-        </div>
+      <Link href={`/post/${item?.mentionPublication?.id}`}>
+        <span className={`text-stone-600 font-medium`}>
+          {item.mentionPublication.metadata.content}
+        </span>
       </Link>
-      {/* <Stats publication={item?.comment} /> */}
     </div>
   );
 };
