@@ -4,7 +4,7 @@ import { generateChallenge, authenticate } from "@/lib/auth/login";
 import { setAuthenticationToken } from "@/lib/auth/state";
 
 type AuthProps = {
-  userLoggedIn: () => void;
+  userLoggedIn?: () => void;
 };
 
 export const Auth = ({ userLoggedIn }: AuthProps) => {
@@ -23,13 +23,14 @@ export const Auth = ({ userLoggedIn }: AuthProps) => {
     );
 
     setAuthenticationToken({ token: accessTokens.data.authenticate });
-    userLoggedIn();
+    userLoggedIn && userLoggedIn();
   };
 
   return (
     <button
       className="py-2 px-4 rounded-xl text-md font-bold bg-sky-800 text-white"
       onClick={() => handleLogin()}
+      type={`button`}
     >
       Login with Lens
     </button>

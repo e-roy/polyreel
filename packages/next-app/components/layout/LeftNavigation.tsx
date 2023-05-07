@@ -13,32 +13,32 @@ export const LeftNavigation = () => {
 
   // console.log(currentUser);
 
-  const sidebarNav = [
+  const userNav = [
     {
       id: 1,
       label: "Home",
-      icon: <FaHome className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FaHome className="text-3xl h-7 w-7 mx-auto" />,
       active: router.pathname === "/home" ? true : false,
       href: "/home",
     },
     {
       id: 2,
       label: "Explore",
-      icon: <GoGlobe className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
       active: router.pathname === "/explore" ? true : false,
       href: "/explore",
     },
     {
       id: 3,
       label: "Notifications",
-      icon: <FaBell className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FaBell className="text-3xl h-7 w-7 mx-auto" />,
       active: router.pathname === "/notifications" ? true : false,
       href: "/notifications",
     },
     {
       id: 4,
       label: "Profile",
-      icon: <FaUserAlt className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FaUserAlt className="text-3xl h-7 w-7 mx-auto" />,
       active:
         router.asPath === `/profile/${currentUser?.handle}` ? true : false,
       href: `/profile/${currentUser?.handle}`,
@@ -46,11 +46,30 @@ export const LeftNavigation = () => {
     {
       id: 5,
       label: "Settings",
-      icon: <FiSettings className="text-3xl h-8 w-8 mx-auto" />,
+      icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
       active: router.pathname === "/settings" ? true : false,
       href: "/settings",
     },
   ];
+
+  const guestNav = [
+    {
+      id: 2,
+      label: "Explore",
+      icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
+      active: router.pathname === "/explore" ? true : false,
+      href: "/explore",
+    },
+    {
+      id: 5,
+      label: "Settings",
+      icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
+      active: router.pathname === "/settings" ? true : false,
+      href: "/settings",
+    },
+  ];
+
+  const sidebarNav = currentUser ? userNav : guestNav;
   return (
     <>
       <ul className={``}>
@@ -58,8 +77,8 @@ export const LeftNavigation = () => {
           <li key={index}>
             <Link
               href={item.href}
-              className={`flex hover:bg-stone-100 rounded-full text-stone-500 hover:text-stone-800 my-2 p-2 cursor-pointer ${
-                item.active ? "text-stone-900 font-bold" : ""
+              className={`flex hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full text-stone-500 dark:text-stone-300 hover:text-stone-800 my-2 p-2  ${
+                item.active ? "text-stone-900 dark:text-white font-bold" : ""
               }`}
             >
               <span>{item.icon}</span>

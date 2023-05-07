@@ -1,20 +1,18 @@
 import React, { ButtonHTMLAttributes } from "react";
 
-export type ButtonProps = {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 export const Button: React.FC<ButtonProps> = ({
   className = "",
-  type,
-  disabled,
-  onClick,
   children,
+  ...props
 }) => {
   const btnBase =
     "flex rounded-xl border-2 border-stone-800 rounded-lg shadow-md hover:shadow-xl font-bold text-stone-800 bg-stone-200/80 hover:bg-stone-100/90";
 
-  if (disabled)
+  if (props.disabled)
     return (
       <div
         className={`${btnBase} ${className} w-full border-stone-200/90 shadow-sm hover:shadow-sm text-stone-500/70`}
@@ -24,11 +22,7 @@ export const Button: React.FC<ButtonProps> = ({
     );
 
   return (
-    <button
-      className={`${className} ${btnBase} w-full `}
-      type={type}
-      onClick={onClick}
-    >
+    <button className={`${className} ${btnBase} w-full `} {...props}>
       <div className="m-[3px]hover:shadow-xl m-auto">{children}</div>
     </button>
   );

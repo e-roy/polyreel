@@ -226,7 +226,11 @@ export const SetFollowModule = ({
             )}
           </div>
           <div className="mt-6">
-            <Button className="p-2" onClick={() => handleSetFollowModule()}>
+            <Button
+              className="p-2"
+              onClick={() => handleSetFollowModule()}
+              type={`button`}
+            >
               update follow settings
             </Button>
           </div>

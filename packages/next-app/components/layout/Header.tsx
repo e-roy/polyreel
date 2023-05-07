@@ -57,17 +57,13 @@ export const Header = ({}: HeaderProps) => {
 
   return (
     <header
-      className={`md:hidden  p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
+      className={`md:hidden p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
       {router.pathname === "/home" || router.pathname === "/" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {address && currentUser ? (
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
-              {/* <div className="px-4 font-medium">
-                <div>@{currentUser?.handle}</div>
-                <div>{currentUser?.name}</div>
-              </div> */}
             </div>
           ) : address ? (
             <div className="flex">

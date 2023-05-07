@@ -150,7 +150,7 @@ export const EditProfileButton = ({
 
   return (
     <>
-      <Button className="p-2" onClick={() => handleButton()}>
+      <Button className="p-2" type={`button`} onClick={() => handleButton()}>
         edit profile
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>

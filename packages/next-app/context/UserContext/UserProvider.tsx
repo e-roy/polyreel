@@ -74,12 +74,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   );
 
-  // if (userProfilesData)
-  //   logger("UserProvider.tsx ---- userProfilesData", userProfilesData, "green");
-
   const {
-    data: currentProfileData,
-    loading: currentProfileLoading,
+    data: defaultProfileData,
+    loading: defaultProfileLoading,
     refetch,
   } = useQuery(GET_DEFAULT_PROFILE, {
     variables: {
@@ -90,30 +87,20 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     skip: !address,
   });
 
-  // if (currentProfileData)
-  //   logger(
-  //     "UserProvider.tsx ---- currentProfileData",
-  //     currentProfileData,
-  //     "green"
-  //   );
-
   const { data: verifyData, loading: verifyLoading } = useQuery(VERIFY, {
     variables: {
       request: { accessToken: getAuthenticationToken() },
     },
   });
 
-  // if (verifyData)
-  //   logger("UserProvider.tsx ---- verifyData", verifyData, "green");
-
   // let verifyData = { verify: true };
   // let verifyLoading = false;
 
   const [currentUserProfile, setCurrentUserProfile] = useState(
-    currentProfileData?.defaultProfile
+    defaultProfileData?.defaultProfile
   );
 
-  if (!userProfilesLoading && !currentProfileLoading && !verifyLoading) {
+  if (!userProfilesLoading && !defaultProfileLoading && !verifyLoading) {
     if (userProfilesData)
       logger(
         "UserProvider.tsx ---- userProfilesData",
@@ -121,10 +108,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         "green"
       );
 
-    if (currentProfileData)
+    if (defaultProfileData)
       logger(
-        "UserProvider.tsx ---- currentProfileData",
-        currentProfileData,
+        "UserProvider.tsx ---- defaultProfileData",
+        defaultProfileData,
         "green"
       );
 
@@ -143,8 +130,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         );
         if (profile) {
           setCurrentUserProfile(profile);
-        } else if (currentProfileData?.defaultProfile) {
-          setCurrentUserProfile(currentProfileData?.defaultProfile);
+        } else if (defaultProfileData?.defaultProfile) {
+          setCurrentUserProfile(defaultProfileData?.defaultProfile);
         } else {
           setCurrentUserProfile(userProfilesData.profiles.items[0]);
         }
@@ -152,11 +139,30 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, [userProfilesData?.profiles]);
 
+  // useEffect(() => {
+  //   const body = document.querySelector("body");
+  //   // console.log(`body`, body);
+  //   // if (body) {
+  //   //   body.classList.add(theme);
+  //   //   return () => body.classList.remove(theme);
+  //   // }
+  //   if (
+  //     localStorage.theme === "dark" ||
+  //     (!("theme" in localStorage) &&
+  //       window.matchMedia("(prefers-color-scheme: dark)").matches)
+  //   ) {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  // }, []);
+
   const injectContext = useMemo(
     () => ({
       profiles: userProfilesData?.profiles?.items,
-      defaultProfile: currentProfileData?.defaultProfile,
-      currentUser: currentUserProfile,
+      defaultProfile: defaultProfileData?.defaultProfile,
+      currentUser: defaultProfileData?.defaultProfile,
+      // currentUser: currentUserProfile,
       setCurrentUser: (profile: Profile) => {
         console.log(profile);
         setCurrentUserProfile(profile);
@@ -168,14 +174,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }),
     [
       userProfilesData,
-      currentProfileData,
+      defaultProfileData,
       currentUserProfile,
       verifyData,
       verifyLoading,
     ]
   );
 
-  if (userProfilesLoading || currentProfileLoading) return <Loading />;
+  if (userProfilesLoading || defaultProfileLoading) return <Loading />;
 
   return (
     <UserContext.Provider value={injectContext}>
