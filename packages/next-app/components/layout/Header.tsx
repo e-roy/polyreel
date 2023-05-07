@@ -59,7 +59,9 @@ export const Header = ({}: HeaderProps) => {
     <header
       className={`md:hidden p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
-      {router.pathname === "/home" || router.pathname === "/" ? (
+      {router.pathname === "/home" ||
+      router.pathname === "/" ||
+      router.pathname === "/explore" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {address && currentUser ? (
             <div className="flex">
@@ -84,7 +86,7 @@ export const Header = ({}: HeaderProps) => {
         </div>
       ) : (
         <>
-          {router.pathname !== "/" ? (
+          {router.pathname !== "/" && router.pathname !== "/explore" ? (
             <>
               <div
                 className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
@@ -194,24 +196,7 @@ export const Header = ({}: HeaderProps) => {
       ) : (
         <>
           {correctNetwork ? (
-            <>
-              {!verified ? (
-                <Auth userLoggedIn={handleUserLoggedIn} />
-              ) : (
-                <>
-                  {router.pathname === "/" ? (
-                    <div className="flex justify-end">
-                      <button
-                        className="py-2 px-4 rounded-lg text-md font-bold bg-sky-800 text-white"
-                        onClick={() => router.push("./home")}
-                      >
-                        Home
-                      </button>
-                    </div>
-                  ) : null}
-                </>
-              )}
-            </>
+            <>{!verified && <Auth userLoggedIn={handleUserLoggedIn} />}</>
           ) : (
             <SwitchNetwork />
           )}

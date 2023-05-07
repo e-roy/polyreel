@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 
-import { ExplorePublications } from "@/components/home";
+import { UserTimeline } from "@/components/home";
 
 const Home: NextPage = () => {
-  return <ExplorePublications />;
+  return <UserTimeline />;
 };
 
 export default Home;

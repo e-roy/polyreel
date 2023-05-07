@@ -117,6 +117,13 @@ export const NotificationsList = () => {
 
   return (
     <div className={`px-2`}>
+      <div className={`py-6 px-4`}>
+        <h1
+          className={`text-2xl font-semibold text-stone-700 dark:text-stone-100`}
+        >
+          Notifications
+        </h1>
+      </div>
       {data.notifications &&
         data.notifications.items &&
         data.notifications.items.map((item: any, index: number) => (

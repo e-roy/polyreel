@@ -87,10 +87,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     skip: !address,
   });
 
+  const token = useMemo(() => getAuthenticationToken(), []);
+
   const { data: verifyData, loading: verifyLoading } = useQuery(VERIFY, {
     variables: {
-      request: { accessToken: getAuthenticationToken() },
+      request: { accessToken: token },
     },
+    skip: !token,
   });
 
   // let verifyData = { verify: true };

@@ -4,6 +4,8 @@ import { ProfileHeader } from "@/components/post";
 import { cardFormatDate } from "@/utils/formatDate";
 import { Image, LivepeerPlayer } from "@/components/media";
 
+import { Post as PostType } from "@/types/graphql/generated";
+
 import {
   LinkItUrl,
   LinkItProfile,
@@ -11,7 +13,11 @@ import {
   LinkItHashtag,
 } from "@/lib/links";
 
-export const PostBody = ({ publication }: any) => {
+interface IPostBodyProps {
+  publication: PostType;
+}
+
+export const PostBody = ({ publication }: IPostBodyProps) => {
   return (
     <div className="text-stone-700 font-medium">
       <div className="flex justify-between">

@@ -55,6 +55,13 @@ export const ExplorePublications = () => {
 
   return (
     <div className={`px-2`}>
+      <div className={`py-6 px-4`}>
+        <h1
+          className={`text-2xl font-semibold text-stone-700 dark:text-stone-100`}
+        >
+          Explore
+        </h1>
+      </div>
       {items &&
         items.map((item: Publication, index: number) => (
           <div key={index}>

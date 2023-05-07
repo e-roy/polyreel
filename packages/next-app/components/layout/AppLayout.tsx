@@ -123,30 +123,13 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
 
               {/* Right Column */}
               <div className="pt-4 hidden lg:block lg:col-span-3">
-                <div className={`h-12`}>
+                <div className={`h-12 flex justify-end`}>
                   {!isWalletConnected ? (
                     <ConnectButton />
                   ) : (
                     <>
                       {correctNetwork ? (
-                        <>
-                          {!verified ? (
-                            <Auth />
-                          ) : (
-                            <>
-                              {router.pathname === "/" ? (
-                                <div className="flex justify-end">
-                                  <button
-                                    className="py-2 px-4 rounded-lg text-md font-bold bg-sky-800 text-white"
-                                    onClick={() => router.push("./home")}
-                                  >
-                                    Home
-                                  </button>
-                                </div>
-                              ) : null}
-                            </>
-                          )}
-                        </>
+                        <>{!verified && <Auth />}</>
                       ) : (
                         <SwitchNetwork />
                       )}

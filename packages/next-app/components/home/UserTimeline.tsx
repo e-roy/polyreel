@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
 import { UserContext } from "@/context";
 import { useQuery } from "@apollo/client";
-import { GET_TIMELINE } from "@/queries/timeline/user-timeline";
+import { GET_USER_FEED } from "@/queries/feed/user-feed";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import { logger } from "@/utils/logger";
+import { FeedItem } from "@/types/graphql/generated";
+
+import { FeedItemCard } from "@/components/home";
 
 // import { FeedCard } from "@/components/cards"; old card
 
@@ -14,13 +17,14 @@ export const UserTimeline = ({}: UserTimelineProps) => {
   const { currentUser } = useContext(UserContext);
   // console.log(currentUser);
 
-  const { loading, error, data, fetchMore } = useQuery(GET_TIMELINE, {
+  const { loading, error, data, fetchMore } = useQuery(GET_USER_FEED, {
     variables: {
       request: {
         profileId: currentUser?.id,
-        publicationTypes: ["POST", "COMMENT", "MIRROR"],
+        // publicationTypes: ["POST", "COMMENT", "MIRROR"],
         limit: 10,
       },
+      skip: !currentUser,
     },
   });
 
@@ -29,15 +33,16 @@ export const UserTimeline = ({}: UserTimelineProps) => {
       variables: {
         request: {
           profileId: currentUser?.id,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          // publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: pageInfo?.next,
         },
+        skip: !pageInfo?.next || !currentUser,
       },
     });
   };
 
-  const pageInfo = data?.explorePublications.pageInfo;
+  const pageInfo = data?.feed?.pageInfo;
 
   const [sentryRef] = useInfiniteScroll({
     loading,
@@ -52,19 +57,25 @@ export const UserTimeline = ({}: UserTimelineProps) => {
   logger("UserTimeline.tsx", data);
 
   return (
-    <div className="">
-      <div className="p-2">
-        {data.explorePublications &&
-          data.explorePublications.items &&
-          data.explorePublications.items.map((item: any, index: number) => (
+    <div className={`px-2`}>
+      <div className={`py-6 px-4`}>
+        <h1
+          className={`text-2xl font-semibold text-stone-700 dark:text-stone-100`}
+        >
+          Home
+        </h1>
+      </div>
+      <div className={``}>
+        {data.feed &&
+          data.feed.items &&
+          data.feed.items.map((item: FeedItem, index: number) => (
             <div key={index} className="rounded">
-              feed card here
-              {/* <FeedCard publication={item} /> */}
+              <FeedItemCard feedItem={item} />
             </div>
           ))}
-        {pageInfo.next && (
+        {/* {pageInfo?.next && (
           <div className="h-4 bg-slate-600" ref={sentryRef}></div>
-        )}
+        )} */}
       </div>
     </div>
   );

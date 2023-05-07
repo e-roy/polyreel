@@ -53,7 +53,7 @@ export const Post = ({ publication, postType }: PostProps) => {
               )}
             </>
           )}
-          <PostBody publication={publication} />
+          <PostBody publication={publication as unknown as PostType} />
           <Stats publication={publication as unknown as PostType} />
         </>
       )}
@@ -80,14 +80,16 @@ export const Post = ({ publication, postType }: PostProps) => {
             )}
             {publication.mainPost && (
               <>
-                <PostBody publication={publication.mainPost} />
+                <PostBody
+                  publication={publication.mainPost as unknown as PostType}
+                />
                 <Stats publication={publication as unknown as PostType} />
               </>
             )}
           </div>
           <div className="ml-8 w-0.5 h-8 bg-gray-400" />
           <div className="p-2 sm:p-4 border rounded-lg shadow-md">
-            <PostBody publication={publication} />
+            <PostBody publication={publication as unknown as PostType} />
             <Stats publication={publication as unknown as PostType} />
           </div>
         </>
@@ -95,7 +97,7 @@ export const Post = ({ publication, postType }: PostProps) => {
 
       {publication.__typename === "Comment" && postType === "commment" && (
         <div className="p-2 sm:p-4 border rounded-lg shadow-md">
-          <PostBody publication={publication} />
+          <PostBody publication={publication as unknown as PostType} />
           <Stats publication={publication as unknown as PostType} />
         </div>
       )}
@@ -104,12 +106,14 @@ export const Post = ({ publication, postType }: PostProps) => {
         <div className="p-2 sm:p-4">
           <div className="">
             <div className="mb-4">
-              <PostBody publication={publication.mainPost} />
+              <PostBody
+                publication={publication.mainPost as unknown as PostType}
+              />
               <Stats publication={publication as unknown as PostType} />
             </div>
             <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
             <div className="p-2 sm:p-4 border rounded-lg shadow-lg">
-              <PostBody publication={publication} />
+              <PostBody publication={publication as unknown as PostType} />
               <Stats publication={publication as unknown as PostType} />
             </div>
           </div>
