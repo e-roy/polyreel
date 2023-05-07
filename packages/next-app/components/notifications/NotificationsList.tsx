@@ -89,6 +89,22 @@ const GET_NOTIFICATIONS = gql`
             }
           }
         }
+        ... on NewReactionNotification {
+          notificationId
+          createdAt
+          profile {
+            ...ProfileFragmentLite
+          }
+          reaction
+          publication {
+            ... on Post {
+              ...PostPostFragment
+            }
+            ... on Comment {
+              ...PostCommentFragment
+            }
+          }
+        }
       }
       pageInfo {
         next

@@ -1,16 +1,16 @@
-import { NewCommentNotification } from "@/types/graphql/generated";
 import Link from "next/link";
-import { Avatar } from "../elements";
+import { Avatar } from "@/components/elements";
 import { cardFormatDate } from "@/utils/formatDate";
+import { NewReactionNotification } from "@/types/graphql/generated";
 
-interface ICommentCardProps {
-  item: NewCommentNotification;
+interface INewReactionCardProps {
+  item: NewReactionNotification;
 }
 
-export const CommentCard = ({ item }: ICommentCardProps) => {
-  // console.log(item);
+export const NewReactionCard = ({ item }: INewReactionCardProps) => {
+  // console.log("new reaction  ====>", item);
   return (
-    <div className="p-2">
+    <div className="p-2 my-1">
       <div className="flex justify-between mb-2">
         <div className="flex w-full">
           <Link href={`/profile/${item.profile.handle}`}>
@@ -30,8 +30,6 @@ export const CommentCard = ({ item }: ICommentCardProps) => {
                     @{item.profile.handle}{" "}
                   </span>
                 </Link>
-
-                <span>commented on your post</span>
               </div>
             </div>
 
@@ -41,13 +39,12 @@ export const CommentCard = ({ item }: ICommentCardProps) => {
           </div>
         </div>
       </div>
-
-      <Link href={`/post/${item?.comment?.commentOn?.id}`}>
-        <div className="cursor-pointer font-medium text-stone-700">
-          {item.comment.metadata.content}
+      <Link href={`/post/${item?.publication?.id}`}>
+        <div className={`text-stone-600 font-medium`}>
+          <div>{item.reaction}</div>
+          <div>{item.publication.metadata.content}</div>
         </div>
       </Link>
-      {/* <Stats publication={item?.comment} /> */}
     </div>
   );
 };

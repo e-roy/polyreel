@@ -30,7 +30,7 @@ import {
 
 import { AppLayout } from "@/components/layout";
 
-import { ENV_PROD, ENV_DEV } from "@/lib/constants";
+import { ENV_PROD, ENV_DEV, LOCAL_MAINNET_TESTING } from "@/lib/constants";
 
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useMemo } from "react";
@@ -46,8 +46,10 @@ if (ENV_PROD) {
   networks.push(polygon);
 }
 
-if (ENV_DEV) {
+if (ENV_DEV && !LOCAL_MAINNET_TESTING) {
   networks.push(polygonMumbai);
+} else if (ENV_DEV && LOCAL_MAINNET_TESTING) {
+  networks.push(mainnet);
 }
 
 const { chains, provider } = configureChains(
