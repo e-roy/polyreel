@@ -1,5 +1,6 @@
 import { FeedItem } from "@/types/graphql/generated";
 import { Avatar } from "../elements";
+import Link from "next/link";
 
 import {
   LinkItUrl,
@@ -23,17 +24,27 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
   return (
     <div className={`border-b my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
-        <div className={`col-span-1`}>
-          <Avatar profile={feedItem.root.profile} size={`small`} />
-        </div>
+        <Link href={`/profile/${feedItem.root.profile.handle}`} passHref>
+          <div className={`col-span-1`}>
+            <Avatar profile={feedItem.root.profile} size={`small`} />
+          </div>
+        </Link>
         <div className={`flex flex-col col-span-7 md:col-span-11`}>
           <div className={`flex`}>
-            <span className={`text-stone-700 font-medium`}>
-              {feedItem.root.profile.name}
-            </span>
-            <span className={`text-stone-500 font-medium text-xs pl-2 my-auto`}>
-              @{feedItem.root.profile.handle}
-            </span>
+            <Link
+              className={`hover:underline`}
+              href={`/profile/${feedItem.root.profile.handle}`}
+              passHref
+            >
+              <span className={`text-stone-700 font-medium`}>
+                {feedItem.root.profile.name}
+              </span>
+              <span
+                className={`text-stone-500 font-medium text-xs pl-2 my-auto`}
+              >
+                @{feedItem.root.profile.handle}
+              </span>
+            </Link>
             <span
               className={`text-right w-full text-stone-500 text-xs sm:text-sm my-auto`}
             >

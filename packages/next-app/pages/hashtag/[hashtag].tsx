@@ -27,8 +27,8 @@ const HashtagPage: NextPage = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full mx-2 lg:w-2/3 xl:w-1/2  min-h-9/10">
-        <div className="px-4 lg:px-8 h-9/10 overflow-y-scroll border border-stone-300 rounded-xl shadow-lg">
+      <div className="w-full mx-2">
+        <div className="sm:px-2 lg:px-8">
           <div className="pb-4 text-center text-stone-700 text-2xl font-bold sticky top-0 bg-white z-10">
             #{hashtag}
           </div>

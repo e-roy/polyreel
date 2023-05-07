@@ -38,7 +38,7 @@ export const GET_PUBLICATION = gql`
 
 import { Post, PostComments } from "@/components/post";
 
-import { Loading, Error } from "@/components/elements";
+import { Loading, Error, Avatar } from "@/components/elements";
 
 const PostPage: NextPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -100,7 +100,6 @@ const PostPage: NextPage = () => {
 export default PostPage;
 
 import { LivepeerPlayer } from "@/components/media";
-import { ProfileHeader } from "@/components/post";
 import { LinkItUrl, LinkItProfile, LinkItHashtag } from "@/lib/links";
 import { cardFormatDate } from "@/utils/formatDate";
 import { VideoComments } from "@/components/post";
@@ -109,6 +108,7 @@ import { CommentLine } from "@/components/comment";
 import { logger } from "@/utils/logger";
 
 import { Post as PostType } from "@/types/graphql/generated";
+import Link from "next/link";
 
 const VideoPost = ({ publication }: { publication: PostType }) => {
   // console.log(publication);
@@ -124,13 +124,33 @@ const VideoPost = ({ publication }: { publication: PostType }) => {
         </div>
         <div className="p-4">
           <div className="flex justify-between">
-            <ProfileHeader
-              profile={publication.profile}
-              appId={publication.appId}
-            />
+            <div className={`flex`}>
+              <Link href={`/profile/${publication.profile.handle}`} passHref>
+                <div className={`col-span-1`}>
+                  <Avatar profile={publication.profile} size={`small`} />
+                </div>
+              </Link>
+              <div className={`flex pl-4 my-auto`}>
+                <Link
+                  className={`hover:underline`}
+                  href={`/profile/${publication.profile.handle}`}
+                  passHref
+                >
+                  <span className={`text-stone-700 font-medium`}>
+                    {publication.profile.name}
+                  </span>
+                  <span
+                    className={`text-stone-500 font-medium text-xs pl-2 my-auto`}
+                  >
+                    @{publication.profile.handle}
+                  </span>
+                </Link>
+              </div>
+            </div>
+
             <Like publication={publication} />
 
-            <div className="text-xs font-medium text-stone-800">
+            <div className="text-xs my-auto font-medium text-stone-800">
               {cardFormatDate(publication.createdAt)}
             </div>
           </div>
