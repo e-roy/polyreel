@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ProfileHeader } from "@/components/post";
 
 import { cardFormatDate } from "@/utils/formatDate";
 import { Image, LivepeerPlayer } from "@/components/media";
@@ -12,6 +11,7 @@ import {
   LinkItComment,
   LinkItHashtag,
 } from "@/lib/links";
+import { Avatar } from "../elements";
 
 interface IPostBodyProps {
   publication: PostType;
@@ -19,40 +19,61 @@ interface IPostBodyProps {
 
 export const PostBody = ({ publication }: IPostBodyProps) => {
   return (
-    <div className="text-stone-700 font-medium">
-      <div className="flex justify-between">
-        <ProfileHeader
-          profile={publication.profile}
-          appId={publication.appId}
-        />
-
-        <div className="text-stone-700 text-xs sm:text-sm font-medium">
-          {cardFormatDate(publication.createdAt)}
+    <div className={`border-b my-2 py-4 sm:p-4`}>
+      <div className={`grid grid-cols-8 md:grid-cols-12`}>
+        <Link href={`/profile/${publication.profile.handle}`} passHref>
+          <div className={`col-span-1`}>
+            <Avatar profile={publication.profile} size={`small`} />
+          </div>
+        </Link>
+        <div className={`flex flex-col col-span-7 md:col-span-11`}>
+          <div className={`flex`}>
+            <Link
+              className={`hover:underline`}
+              href={`/profile/${publication.profile.handle}`}
+              passHref
+            >
+              <span className={`text-stone-700 font-medium`}>
+                {publication.profile.name}
+              </span>
+              <span
+                className={`text-stone-500 font-medium text-xs pl-2 my-auto`}
+              >
+                @{publication.profile.handle}
+              </span>
+            </Link>
+            <span
+              className={`text-right w-full text-stone-500 text-xs sm:text-sm my-auto`}
+            >
+              {cardFormatDate(publication.createdAt)}
+            </span>
+          </div>
+          <div className={`w-full`}>
+            {publication.metadata && (
+              <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 text-xs sm:text-sm md:text-base font-medium">
+                <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
+                  <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
+                    <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">
+                      <LinkItComment
+                        className=" cursor-pointer"
+                        publicationId={publication.id}
+                      >
+                        {publication.metadata.content}
+                      </LinkItComment>
+                    </LinkItHashtag>
+                  </LinkItProfile>
+                </LinkItUrl>
+              </div>
+            )}
+          </div>
         </div>
+        <div className={``}></div>
       </div>
-      {publication.metadata && (
-        <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 text-xs sm:text-sm md:text-base font-medium">
-          <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
-            <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
-              <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">
-                <LinkItComment
-                  className=" cursor-pointer"
-                  publicationId={publication.id}
-                >
-                  {publication.metadata.content}
-                </LinkItComment>
-              </LinkItHashtag>
-            </LinkItProfile>
-          </LinkItUrl>
-        </div>
-      )}
-      <Link href={`/post/${publication.id}`}>
-        <div className="cursor-pointer">
-          {publication.metadata && publication.metadata.media && (
-            <MediaDisplay publication={publication} />
-          )}
-        </div>
-      </Link>
+      <div>
+        {publication.metadata && publication.metadata.media && (
+          <MediaDisplay publication={publication} />
+        )}
+      </div>
     </div>
   );
 };

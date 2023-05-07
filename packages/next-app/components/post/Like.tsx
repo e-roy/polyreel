@@ -59,7 +59,7 @@ export const Like = ({ publication }: ILikeProps) => {
   }, [currentUser]);
 
   return (
-    <div className="flex ml-4 font-medium text-stone-600 hover:text-stone-700 cursor-pointer">
+    <div className="flex ml-4 my-auto font-medium text-stone-600 hover:text-stone-700 cursor-pointer">
       {numOfLikes}
       {userLiked ? (
         <button onClick={handleRemoveLike}>
