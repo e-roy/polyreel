@@ -73,9 +73,7 @@ export const UserTimeline = ({}: UserTimelineProps) => {
               <FeedItemCard feedItem={item} />
             </div>
           ))}
-        {/* {pageInfo?.next && (
-          <div className="h-4 bg-slate-600" ref={sentryRef}></div>
-        )} */}
+        {pageInfo?.next && <div className="h-8" ref={sentryRef}></div>}
       </div>
     </div>
   );

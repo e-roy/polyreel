@@ -12,6 +12,7 @@ import { Image, LivepeerPlayer } from "@/components/media";
 
 import { Post as PostType } from "@/types/graphql/generated";
 import { cardFormatDate } from "@/utils/formatDate";
+import { Stats } from "../post";
 
 interface IFeedItemCardProps {
   feedItem: FeedItem;
@@ -34,7 +35,7 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
               @{feedItem.root.profile.handle}
             </span>
             <span
-              className={`text-right w-full text-stone-700 text-xs sm:text-sm font-medium`}
+              className={`text-right w-full text-stone-500 text-xs sm:text-sm my-auto`}
             >
               {cardFormatDate(feedItem.root.createdAt)}
             </span>
@@ -64,6 +65,7 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
         {feedItem.root.metadata && feedItem.root.metadata.media && (
           <MediaDisplay publication={feedItem.root} />
         )}
+        <Stats publication={feedItem.root as PostType} />
       </div>
     </div>
   );

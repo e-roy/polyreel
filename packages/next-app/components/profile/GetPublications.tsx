@@ -27,6 +27,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
         publicationTypes: filter,
         limit: 10,
       },
+      skip: !profileId,
     },
   });
 
@@ -39,6 +40,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
           limit: 10,
           cursor: pageInfo?.next,
         },
+        skip: !profileId,
       },
     });
   };
