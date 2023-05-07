@@ -43,13 +43,15 @@ const ProfilePage: NextPage = () => {
     variables: {
       request: { handle: id },
     },
+    skip: !id,
   });
 
   if (loading) return <Loading />;
   if (error) return <Error />;
 
+  if (!profileData) return null;
+
   const { profile } = profileData;
-  if (!profile) return null;
 
   logger("profile/[id].tsx", profile);
 

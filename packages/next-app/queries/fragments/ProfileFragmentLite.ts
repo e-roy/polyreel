@@ -21,6 +21,10 @@ export const ProfileFragmentLite = gql`
         verified
       }
     }
+    stats {
+      totalFollowers
+      totalFollowing
+    }
   }
   ${MediaFieldsFragment}
 `;

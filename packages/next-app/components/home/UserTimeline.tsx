@@ -9,8 +9,6 @@ import { FeedItem } from "@/types/graphql/generated";
 
 import { FeedItemCard } from "@/components/home";
 
-// import { FeedCard } from "@/components/cards"; old card
-
 export type UserTimelineProps = {};
 
 export const UserTimeline = ({}: UserTimelineProps) => {
@@ -24,8 +22,8 @@ export const UserTimeline = ({}: UserTimelineProps) => {
         // publicationTypes: ["POST", "COMMENT", "MIRROR"],
         limit: 10,
       },
-      skip: !currentUser,
     },
+    skip: !currentUser,
   });
 
   const loadMore = () => {

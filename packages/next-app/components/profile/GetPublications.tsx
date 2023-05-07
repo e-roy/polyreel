@@ -27,8 +27,8 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
         publicationTypes: filter,
         limit: 10,
       },
-      skip: !profileId,
     },
+    skip: !profileId,
   });
 
   const loadMore = () => {

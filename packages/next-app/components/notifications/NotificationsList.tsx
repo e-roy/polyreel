@@ -10,6 +10,8 @@ import { PostCommentFragment } from "@/queries/fragments/PostCommentFragment";
 
 import { Loading, Error } from "@/components/elements";
 
+import { Notification } from "@/types/graphql/generated";
+
 import { NotificationCard } from "./";
 
 import { logger } from "@/utils/logger";
@@ -113,6 +115,10 @@ export const NotificationsList = () => {
   if (loading) return <Loading />;
   if (error) return <Error />;
 
+  if (!data || !data.notifications) return null;
+
+  const { items } = data.notifications;
+
   logger("NotificationsList.tsx", data);
 
   return (
@@ -124,9 +130,8 @@ export const NotificationsList = () => {
           Notifications
         </h1>
       </div>
-      {data.notifications &&
-        data.notifications.items &&
-        data.notifications.items.map((item: any, index: number) => (
+      {items &&
+        items.map((item: Notification, index: number) => (
           <div key={index} className={`border-b px-4`}>
             <NotificationCard item={item} />
           </div>

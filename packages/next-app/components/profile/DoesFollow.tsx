@@ -36,6 +36,7 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
         ],
       },
     },
+    skip: !address || !profileId,
     onCompleted: (data) => {
       const { doesFollow } = data;
       const { follows } = doesFollow[0];
@@ -54,6 +55,7 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   const handleRefetch = async () => {
     await refetch();
   };
+  // return null;
 
   if (
     profile.followModule === null ||

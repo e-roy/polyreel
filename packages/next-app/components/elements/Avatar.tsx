@@ -3,6 +3,10 @@ import { FaUserAlt } from "react-icons/fa";
 
 import { Profile } from "@/types/graphql/generated";
 
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/hover-card";
+
+// import * as HoverCard from "@radix-ui/react-hover-card";
+
 type AvatarProps = {
   profile?: Profile;
   size: "xs" | "small" | "medium" | "profile";
@@ -45,6 +49,56 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
 
   if (!profile || avatarSize === "") return null;
 
+  return (
+    <HoverCard>
+      <HoverCardTrigger>
+        <div className="relative">
+          <AvatarImage
+            profile={profile}
+            avatarSize={avatarSize}
+            bgSize={bgSize}
+          />
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div className="bg-white p-4">
+          <div className={`grid grid-cols-4`}>
+            <AvatarImage
+              profile={profile}
+              avatarSize={avatarSize}
+              bgSize={bgSize}
+            />
+            <div className={`col-span-3`}>
+              <div className="text-base font-semibold text-stone-800">
+                {profile.name}
+              </div>
+              <div className="text-xs text-stone-500">@{profile.handle}</div>
+            </div>
+          </div>
+          <div
+            className={`grid grid-cols-2 my-2 text-xs text-stone-600 font-medium`}
+          >
+            <div className={`col-span-1`}>
+              {profile.stats.totalFollowing} Following
+            </div>
+            <div className={`col-span-1`}>
+              {profile.stats.totalFollowers} Followers
+            </div>
+          </div>
+          <div className={`text-stone-600 text-sm`}>{profile.bio}</div>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  );
+};
+
+interface IAvatarImageProps {
+  profile: Profile;
+  avatarSize: string;
+  bgSize: string;
+}
+
+const AvatarImage = ({ profile, avatarSize, bgSize }: IAvatarImageProps) => {
   if (profile.picture?.__typename === "NftImage") {
     return (
       <img

@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "@/context";
+import React from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Head from "next/head";
 
 import { useQuery } from "@apollo/client";
 import { SEARCH_PUBLICATIONS } from "@/queries/publications/search-publications";
 
-import { Loading } from "@/components/elements";
+import { Loading, Error } from "@/components/elements";
 import { Post } from "@/components/post";
 
 const HashtagPage: NextPage = () => {
@@ -25,7 +23,7 @@ const HashtagPage: NextPage = () => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <p>Error :(</p>;
+  if (error) return <Error />;
 
   return (
     <div className="flex justify-center">
