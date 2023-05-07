@@ -10,9 +10,7 @@ import { UserContext } from "@/context";
 import { useRouter } from "next/router";
 import { Transition, Dialog } from "@headlessui/react";
 import { FiChevronLeft } from "react-icons/fi";
-import { FaHome, FaBell, FaUserAlt } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
-import { GoGlobe } from "react-icons/go";
+import { FaHome, FaUserAlt } from "react-icons/fa";
 
 import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
 
@@ -23,8 +21,6 @@ import { Avatar } from "@/components/elements";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
-
-import { CURRENT_CHAIN_ID } from "@/lib/constants";
 
 import { Profile } from "@/types/graphql/generated";
 
@@ -49,56 +45,9 @@ export const Header = ({}: HeaderProps) => {
     }
   }, [connector]);
 
-  const sidebarNav = [
-    {
-      id: 1,
-      label: "Home",
-      icon: <FaHome className="text-3xl h-8 w-8 mx-auto" />,
-      active: router.pathname === "/home" ? true : false,
-      href: "/home",
-    },
-    {
-      id: 2,
-      label: "Explore",
-      icon: <GoGlobe className="text-3xl h-8 w-8 mx-auto" />,
-      active: router.pathname === "/explore" ? true : false,
-      href: "/explore",
-    },
-    {
-      id: 3,
-      label: "Notifications",
-      icon: <FaBell className="text-3xl h-8 w-8 mx-auto" />,
-      active: router.pathname === "/notifications" ? true : false,
-      href: "/notifications",
-    },
-    {
-      id: 4,
-      label: "Profile",
-      icon: <FaUserAlt className="text-3xl h-8 w-8 mx-auto" />,
-      active:
-        router.asPath === `/profile/${currentUser?.handle}` ? true : false,
-      href: `/profile/${currentUser?.handle}`,
-    },
-    {
-      id: 5,
-      label: "Settings",
-      icon: <FiSettings className="text-3xl h-8 w-8 mx-auto" />,
-      active: router.pathname === "/settings" ? true : false,
-      href: "/settings",
-    },
-  ];
-
   const handleUserLoggedIn = () => {
     router.push("/home");
   };
-
-  // const handleProfileClick = (profile: Profile) => {
-  //   console.log("profile select", profile);
-  //   setCurrentUser(profile);
-  // };
-
-  const baseClass =
-    "flex cursor-pointer py-2 px-2 sm:px-6 rounded-lg uppercase text-stone-700 font-semibold hover:bg-sky-200 transition ease-in-out duration-150";
 
   if (loading) {
     return (
@@ -110,7 +59,7 @@ export const Header = ({}: HeaderProps) => {
     <header
       className={`md:hidden  p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
-      {router.pathname === "/home" ? (
+      {router.pathname === "/home" || router.pathname === "/" ? (
         <div onClick={() => setOpen(!open)} className="cursor-pointer">
           {address && currentUser ? (
             <div className="flex">
@@ -130,7 +79,11 @@ export const Header = ({}: HeaderProps) => {
               </div>
             </div>
           ) : (
-            <div></div>
+            <div className="flex text-black">
+              <FaUserAlt
+                className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
+              />
+            </div>
           )}
         </div>
       ) : (
