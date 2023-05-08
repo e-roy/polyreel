@@ -10,18 +10,16 @@ import { PostMirrorFragment } from "@/queries/fragments/PostMirrorFragment";
 export const GET_PUBLICATIONS = gql`
   query (
     $request: PublicationsQueryRequest!
-    $requestRequest: ReactionFieldResolverRequest
+    $reactionRequest: ReactionFieldResolverRequest
   ) {
     publications(request: $request) {
       items {
         __typename
         ... on Post {
           ...PostPostFragment
-          reaction(request: $requestRequest)
         }
         ... on Comment {
           ...PostCommentFragment
-          reaction(request: $requestRequest)
         }
         ... on Mirror {
           ...PostMirrorFragment
@@ -55,7 +53,9 @@ export const VideoComments = ({ postId }: VideoCommentsProps) => {
       request: {
         commentsOf: postId,
       },
-      requestRequest: { profileId: currentUser?.id },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
+      },
     },
   });
 
@@ -142,7 +142,7 @@ const CommentBody = ({ publication }: any) => {
   return (
     <div className="px-2 my-3 flex text-sm text-stone-700 font-medium w-full">
       <Link href={`/profile/${publication.profile.handle}`}>
-        <div className="cursor-pointer">
+        <div className={``}>
           <Avatar profile={publication.profile} size="xs" />
         </div>
       </Link>

@@ -14,16 +14,14 @@ import { PostMirrorFragment } from "@/queries/fragments/PostMirrorFragment";
 export const GET_PUBLICATION = gql`
   query (
     $request: PublicationQueryRequest!
-    $requestRequest: ReactionFieldResolverRequest
+    $reactionRequest: ReactionFieldResolverRequest
   ) {
     publication(request: $request) {
       ... on Post {
         ...PostPostFragment
-        reaction(request: $requestRequest)
       }
       ... on Comment {
         ...PostCommentFragment
-        reaction(request: $requestRequest)
       }
       ... on Mirror {
         ...PostMirrorFragment
@@ -50,7 +48,9 @@ const PostPage: NextPage = () => {
       request: {
         publicationId: id,
       },
-      requestRequest: { profileId: currentUser?.id },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
+      },
     },
   });
 

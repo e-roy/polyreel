@@ -3,7 +3,7 @@ import Link from "next/link";
 import { UserContext } from "@/context";
 import { Mirror, Collect, Like } from "@/components/post";
 
-import { BiChat } from "react-icons/bi";
+import { BsChat } from "react-icons/bs";
 
 import { CommentCard } from "@/components/comment";
 
@@ -32,7 +32,10 @@ export const Stats = ({ publication }: StatsProps) => {
         <Link href={`/post/${publication?.id}`}>
           <span className="hover:text-stone-700 flex cursor-pointer">
             {stats?.totalAmountOfComments}
-            <BiChat className="h-6 w-6 ml-2 " aria-hidden="true" />
+            <BsChat
+              className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2 "
+              aria-hidden="true"
+            />
           </span>
         </Link>
       </div>
@@ -41,12 +44,12 @@ export const Stats = ({ publication }: StatsProps) => {
   return (
     <>
       <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4">
-        <div className={`flex`}>
+        <div className={`flex space-x-4`}>
           <span className="hover:text-stone-700 flex cursor-pointer">
             {stats?.totalAmountOfComments}
-            <BiChat
+            <BsChat
               onClick={() => setShowComment(!showComment)}
-              className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 "
+              className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
               aria-hidden="true"
             />
           </span>
