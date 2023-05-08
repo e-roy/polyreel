@@ -154,7 +154,7 @@ export const CommentCard = ({ publicationId, onClose }: CommentCardProps) => {
       <div className="ml-6 h-8 w-0.5 bg-stone-400"></div>
       <div className="flex relative ml-1 mt-0.5 flex-1">
         <div>
-          <Avatar profile={currentUser as any} size={"small"} />
+          <Avatar profile={currentUser} size={"small"} />
         </div>
         <div className="w-full sm:ml-4 p-2">
           <textarea

@@ -136,8 +136,8 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
   return (
     <div className="mt-2 border-t">
       <div className="flex relative ml-1 mt-0.5 flex-1">
-        <div>
-          <Avatar profile={currentUser as any} size={"small"} />
+        <div className={`w-12`}>
+          <Avatar profile={currentUser} size={"small"} />
         </div>
         {isSubmitting ? (
           <div className="w-full font-medium flex justify-center items-center text-stone-700">

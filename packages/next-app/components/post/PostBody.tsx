@@ -29,11 +29,11 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
         <div className={`flex flex-col col-span-7 md:col-span-11`}>
           <div className={`flex`}>
             <Link
-              className={`hover:underline`}
+              className={`hover:underline w-full`}
               href={`/profile/${publication.profile.handle}`}
               passHref
             >
-              <span className={`text-stone-700 font-medium`}>
+              <span className={`text-stone-700 font-medium w-full`}>
                 {publication.profile.name}
               </span>
               <span

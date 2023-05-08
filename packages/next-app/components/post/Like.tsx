@@ -64,14 +64,14 @@ export const Like = ({ publication }: ILikeProps) => {
       {userLiked ? (
         <button onClick={handleRemoveLike}>
           <FaHeart
-            className="h-5 w-5 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2 text-red-600"
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2 text-red-600"
             aria-hidden="true"
           />
         </button>
       ) : (
         <button onClick={handleAddLike}>
           <FaHeart
-            className="h-5 w-5 sm:h-5 sm:w-5 md:h-5 md:w-5 ml-2"
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
             aria-hidden="true"
           />
         </button>

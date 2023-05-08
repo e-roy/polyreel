@@ -5,44 +5,31 @@ import { Profile } from "@/types/graphql/generated";
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/hover-card";
 
-// import * as HoverCard from "@radix-ui/react-hover-card";
-
 type AvatarProps = {
   profile?: Profile;
   size: "xs" | "small" | "medium" | "profile";
 };
 
-const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl object-cover`;
-const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-1 bg-white shadow-xl object-cover`;
-const SmallAvatar = `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 p-0.5 bg-white shadow-lg object-cover`;
-const XSAvatar = `inline-block rounded-full h-7 w-7 text-stone-500 p-0.5 bg-white shadow-lg object-cover`;
-
-const LargeBG = `h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32`;
-const MediumBG = `h-16 w-16`;
-const SmallBG = `h-10 w-10`;
-const XSBG = `h-7 w-7`;
+const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-0.5 bg-white shadow-xl object-cover`;
+const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-0.5 bg-white shadow-xl object-cover`;
+const SmallAvatar = `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 bg-white shadow object-cover`;
+const XSAvatar = `inline-block rounded-full h-7 w-7 text-stone-500 bg-white shadow object-cover`;
 
 export const Avatar = ({ profile, size }: AvatarProps) => {
   const [avatarSize, setAvatarSize] = useState("");
-  const [bgSize, setBgSize] = useState("");
 
   useEffect(() => {
     if (size) {
       if (size === "xs") {
         setAvatarSize(XSAvatar);
-        setBgSize(XSBG);
       } else if (size === "small") {
         setAvatarSize(SmallAvatar);
-        setBgSize(SmallBG);
       } else if (size === "medium") {
         setAvatarSize(MediumAvatar);
-        setBgSize(MediumBG);
       } else if (size === "profile") {
         setAvatarSize(LargeAvatar);
-        setBgSize(LargeBG);
       } else {
         setAvatarSize(LargeAvatar);
-        setBgSize(LargeBG);
       }
     }
   }, [size]);
@@ -53,22 +40,17 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
     <HoverCard>
       <HoverCardTrigger>
         <div className="relative">
-          <AvatarImage
-            profile={profile}
-            avatarSize={avatarSize}
-            bgSize={bgSize}
-          />
+          <AvatarImage profile={profile} avatarSize={avatarSize} />
         </div>
       </HoverCardTrigger>
       <HoverCardContent>
         <div className="bg-white p-4 w-72">
-          <div className={`grid grid-cols-4`}>
-            <AvatarImage
-              profile={profile}
-              avatarSize={avatarSize}
-              bgSize={bgSize}
-            />
-            <div className={`col-span-3`}>
+          <div className={`flex`}>
+            <div className={``}>
+              <AvatarImage profile={profile} avatarSize={MediumAvatar} />
+            </div>
+
+            <div className={`ml-4`}>
               <div className="text-base font-semibold text-stone-800">
                 {profile.name}
               </div>
@@ -95,10 +77,9 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
 interface IAvatarImageProps {
   profile: Profile;
   avatarSize: string;
-  bgSize: string;
 }
 
-const AvatarImage = ({ profile, avatarSize, bgSize }: IAvatarImageProps) => {
+const AvatarImage = ({ profile, avatarSize }: IAvatarImageProps) => {
   if (profile.picture?.__typename === "NftImage") {
     return (
       <img
@@ -109,13 +90,11 @@ const AvatarImage = ({ profile, avatarSize, bgSize }: IAvatarImageProps) => {
     );
   } else if (profile.picture?.__typename === "MediaSet") {
     return (
-      <div className={bgSize}>
-        <img
-          src={checkIpfs(profile?.picture.original.url)}
-          alt={`@${profile.handle}`}
-          className={avatarSize}
-        />
-      </div>
+      <img
+        src={checkIpfs(profile?.picture.original.url)}
+        alt={`@${profile.handle}`}
+        className={avatarSize}
+      />
     );
   } else {
     return <FaUserAlt className={avatarSize} />;

@@ -109,21 +109,21 @@ const ProfilePage: NextPage = () => {
           )}
         </div>
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
-          <div className="flex pl-12">
-            <div>
+          <div className="flex ml-12 w-full">
+            <div className={``}>
               <Avatar profile={profile} size={"profile"} />
             </div>
             <div className="mt-6 ml-2 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
-              <div className="py-1 my-auto font-semibold text-md sm:text-xl md:text-2xl lg:text-3xl">
-                @{profile.handle}
-              </div>
-              <div className="py-1 my-auto font-semibold text-sm sm:text-md md:text-xl">
+              <div className="py-1 my-auto font-semibold text-md sm:text-lg md:text-xl lg:text-2xl">
                 {profile.name}
+              </div>
+              <div className="my-auto font-semibold text-xs sm:text-md md:text-lg text-stone-600">
+                @{profile.handle}
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between w-full px-8">
+          <div className="flex justify-between px-8">
             <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
               {profile.attributes && checkWebsite() && (
                 <a

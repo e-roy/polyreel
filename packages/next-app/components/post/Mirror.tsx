@@ -93,7 +93,7 @@ export const Mirror = ({ publication }: IMirrorProps) => {
     >
       {stats?.totalAmountOfMirrors}
       <FaRegCopy
-        className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-2"
+        className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
         aria-hidden="true"
       />
     </button>
