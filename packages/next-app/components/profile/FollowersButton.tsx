@@ -25,20 +25,22 @@ export const FollowersButton = ({
   return (
     <>
       <div
-        className="flex bg-transparent cursor-pointer"
+        className="flex bg-transparent space-x-4 cursor-pointer"
         onClick={() => setIsModalOpen(!isModalOpen)}
       >
         <div
-          className="font-semibold py-2"
+          className="font-semibold py-2 hover:underline"
           onClick={() => setActive("following")}
         >
-          following : {following}
+          {following}{" "}
+          <span className={`text-stone-500 font-normal`}>Following</span>
         </div>
         <div
-          className="font-semibold py-2 ml-4"
+          className="font-semibold py-2 hover:underline"
           onClick={() => setActive("followers")}
         >
-          followers : {followers}
+          {followers}{" "}
+          <span className={`text-stone-500 font-normal`}>Followers</span>
         </div>
       </div>
 

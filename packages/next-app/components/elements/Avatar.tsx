@@ -10,7 +10,7 @@ type AvatarProps = {
   size: "xs" | "small" | "medium" | "profile";
 };
 
-const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-0.5 bg-white shadow-xl object-cover`;
+const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl object-cover`;
 const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-0.5 bg-white shadow-xl object-cover`;
 const SmallAvatar = `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 bg-white shadow object-cover`;
 const XSAvatar = `inline-block rounded-full h-7 w-7 text-stone-500 bg-white shadow object-cover`;

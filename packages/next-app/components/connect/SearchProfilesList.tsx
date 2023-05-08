@@ -53,12 +53,12 @@ export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
 
   return (
     <div className={``}>
-      <div className={`text-xl font-bold text-stone-800 px-4 py-3`}>
+      <div className={`text-xl font-bold text-stone-800 px-6 py-3`}>
         Search Profiles
       </div>
       <div className={``}>
-        {data.search.items.map((profile: Profile, index: number) => (
-          <ProfileItem profile={profile} key={index} />
+        {data.search.items.map((profile: Profile) => (
+          <ProfileItem profile={profile} key={profile.id} />
         ))}
       </div>
     </div>

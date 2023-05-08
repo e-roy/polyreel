@@ -38,12 +38,12 @@ export const SuggestedList = () => {
 
   return (
     <div className={``}>
-      <div className={`text-xl font-bold text-stone-800 py-3`}>
+      <div className={`text-xl font-bold text-stone-800 px-6 py-3`}>
         Suggested for you
       </div>
       <div className={``}>
-        {recommendedProfiles.map((profile: Profile, index: number) => (
-          <ProfileItem profile={profile} key={index} />
+        {recommendedProfiles.map((profile: Profile) => (
+          <ProfileItem profile={profile} key={profile.id} />
         ))}
       </div>
     </div>

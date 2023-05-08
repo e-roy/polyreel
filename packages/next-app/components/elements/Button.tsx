@@ -2,6 +2,7 @@ import React, { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
+  variant?: "follow" | undefined;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -9,21 +10,21 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const btnBase =
-    "flex rounded-xl border-2 border-stone-800 rounded-lg shadow-md hover:shadow-xl font-bold text-stone-800 bg-stone-200/80 hover:bg-stone-100/90";
+  const btnClass = (() => {
+    switch (props.variant) {
+      case "follow":
+        return "flex rounded-full border border-stone-500 shadow-lg hover:shadow-none font-semibold uppercase text-stone-700 py-1 px-4";
+      default:
+        return "flex rounded-xl border-2 border-stone-800 rounded-lg shadow-md hover:shadow-xl font-bold text-stone-800 bg-stone-200/80 hover:bg-stone-100/90 w-full border-stone-200/90 shadow-sm hover:shadow-sm text-stone-500/70";
+    }
+  })();
 
   if (props.disabled)
-    return (
-      <div
-        className={`${btnBase} ${className} w-full border-stone-200/90 shadow-sm hover:shadow-sm text-stone-500/70`}
-      >
-        <div className="m-[3px]hover:shadow-xl m-auto">{children}</div>
-      </div>
-    );
+    return <div className={`${btnClass} ${className}`}>{children}</div>;
 
   return (
-    <button className={`${className} ${btnBase} w-full `} {...props}>
-      <div className="m-[3px]hover:shadow-xl m-auto">{children}</div>
+    <button className={`${btnClass} ${className}`} {...props}>
+      {children}
     </button>
   );
 };

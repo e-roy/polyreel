@@ -108,30 +108,20 @@ const ProfilePage: NextPage = () => {
             <div className="bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-64 max-h-64 rounded-t shadow-xl"></div>
           )}
         </div>
-        <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
-          <div className="flex ml-12">
-            <div className={``}>
-              <Avatar profile={profile} size={"profile"} />
-            </div>
-            <div className="mt-6 ml-2 px-2 py-1 my-auto bg-white border shadow-lg text-stone-800  rounded-xl">
-              <div className="py-1 my-auto font-semibold text-md sm:text-lg md:text-xl lg:text-2xl">
-                {profile.name}
-              </div>
-              <div className="my-auto font-semibold text-xs sm:text-md md:text-lg text-stone-600">
-                @{profile.handle}
-              </div>
-            </div>
+        <div className="flex mb-4 -mt-12 sm:-mt-16 w-full justify-between">
+          <div className="ml-12">
+            <Avatar profile={profile} size={"profile"} />
           </div>
 
-          <div className="flex justify-between px-8">
-            <div className="mt-4 sm:mt-20 sm:ml-8 flex space-x-8">
+          <div className="flex space-x-6">
+            <div className="mt-16 pt-2 sm:pt-1 sm:mt-20 flex space-x-8">
               {profile.attributes && checkWebsite() && (
                 <a
                   href={`${checkWebsite()}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  <FaGlobeAmericas className="h-8 w-8 text-stone-500 hover:text-stone-700" />
+                  <FaGlobeAmericas className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700" />
                 </a>
               )}
               {profile.attributes && checkTwitter() && (
@@ -141,29 +131,32 @@ const ProfilePage: NextPage = () => {
                   rel="noreferrer noopener"
                   className="text-stone-500 hover:text-stone-700"
                 >
-                  <FaTwitter className="h-8 w-8 text-stone-500 hover:text-stone-700" />
+                  <FaTwitter className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700" />
                 </a>
               )}
             </div>
-            <div className="mt-2 sm:mt-16 sm:pt-2 sm:px-6">
+            <div className="mt-16 sm:mt-20 px-2 sm:px-6">
               {address === profile.ownedBy ? (
-                <div className="flex">
-                  <EditProfileButton
-                    refetch={handleRefetch}
-                    profile={profile}
-                  />
-                </div>
+                <EditProfileButton refetch={handleRefetch} profile={profile} />
               ) : (
-                <DoesFollow profile={profile} profileId={profile.id} />
+                <DoesFollow profile={profile} />
               )}
             </div>
           </div>
         </div>
         <div className="px-2 text-sm sm:text-base text-stone-700 font-medium">
+          <div className={`pb-4`}>
+            <div className="font-bold text-stone-900 text-md md:text-lg lg:text-xl">
+              {profile.name}
+            </div>
+            <div className="font-medium text-xs sm:text-sm md:text-md text-stone-500">
+              @{profile.handle}
+            </div>
+          </div>
           <div className="font-bold">
             <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
               <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
-                Bio :<span className="font-medium pl-1">{profile.bio}</span>
+                <span className="font-medium pl-1">{profile.bio}</span>
               </LinkItProfile>
             </LinkItUrl>
           </div>

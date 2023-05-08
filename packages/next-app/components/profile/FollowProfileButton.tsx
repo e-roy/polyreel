@@ -99,14 +99,22 @@ export const FollowProfileButton = ({
 
   if (isUpdating) {
     return (
-      <Button className="py-2 px-4" disabled>
+      <Button
+        variant={`follow`}
+        className={`bg-stone-800 hover:bg-stone-700 text-white`}
+        disabled
+      >
         Updating...
       </Button>
     );
   }
 
   return (
-    <Button className="py-2 px-4" onClick={() => handleFollow()}>
+    <Button
+      variant={`follow`}
+      className={`bg-stone-800 hover:bg-stone-700 text-white`}
+      onClick={() => handleFollow()}
+    >
       follow
     </Button>
   );

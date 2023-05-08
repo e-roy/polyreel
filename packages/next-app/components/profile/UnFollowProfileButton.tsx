@@ -82,14 +82,18 @@ export const UnFollowProfileButton = ({
 
   if (isUpdating) {
     return (
-      <Button className="py-2 px-4" disabled>
+      <Button variant={`follow`} disabled>
         Updating...
       </Button>
     );
   }
 
   return (
-    <Button className="py-2 px-4" onClick={() => handleUnFollow()}>
+    <Button
+      variant={`follow`}
+      className={`hover:text-red-600 hover:border-red-500`}
+      onClick={() => handleUnFollow()}
+    >
       unfollow
     </Button>
   );
