@@ -14,17 +14,13 @@ export const Image = ({ media }: ImageProps) => {
     else return url;
   };
 
-  // TODO: need a way to handle svg images, maybe react-svg?
-
   return (
-    <div>
-      <div className="relative border rounded-lg shadow-lg">
-        <img
-          src={checkImage(media.url as string)}
-          alt=""
-          className="rounded-lg"
-        />
-      </div>
+    <div className="relative border rounded-lg shadow-lg">
+      <img
+        src={checkImage(media.url as string)}
+        alt=""
+        className="rounded-lg"
+      />
     </div>
   );
 };

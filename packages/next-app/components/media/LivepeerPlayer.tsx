@@ -31,6 +31,7 @@ export const LivepeerPlayer = ({
   playbackId,
 }: ILivepeerPlayerProps) => {
   // remove ipfs:// from playbackId
+  if (!playbackId) return null;
   const Id = playbackId.replace("ipfs://", "");
 
   const { data: playbackInfo, error } = usePlaybackInfo(Id);

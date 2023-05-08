@@ -1,7 +1,12 @@
 import Link from "next/link";
 
 import { cardFormatDate } from "@/utils/formatDate";
-import { Image, LivepeerPlayer } from "@/components/media";
+import {
+  Image,
+  LivepeerPlayer,
+  VideoPlayer,
+  AudioPlayerCard,
+} from "@/components/media";
 
 import { Post as PostType } from "@/types/graphql/generated";
 
@@ -10,6 +15,7 @@ import {
   LinkItProfile,
   LinkItComment,
   LinkItHashtag,
+  urlRegex,
 } from "@/lib/links";
 import { Avatar } from "../elements";
 
@@ -18,6 +24,10 @@ interface IPostBodyProps {
 }
 
 export const PostBody = ({ publication }: IPostBodyProps) => {
+  // get urls from publication.metadata.content
+  // const urls = publication.metadata.content.match(urlRegex);
+  // console.log("urls", urls);
+
   return (
     <div className={`border-b my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
@@ -81,16 +91,30 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
 const MediaDisplay = ({ publication }: any) => {
   // console.log(publication);
 
-  if (publication.metadata.media[0]?.original.mimeType === "video/mp4")
+  if (
+    publication.metadata.media[0]?.original.mimeType === "video/mp4" ||
+    publication.metadata.media[0]?.original.mimeType === "video/webm"
+  )
+    if (publication.metadata.media[0]?.original.url.includes("ipfs://")) {
+      return (
+        <LivepeerPlayer
+          publication={publication}
+          playbackId={publication.metadata.media[0]?.original.url}
+        />
+      );
+    } else {
+      return (
+        <VideoPlayer source={publication.metadata.media[0]?.original.url} />
+      );
+    }
+
+  if (publication.metadata.media[0]?.original.mimeType === "audio/mpeg")
     return (
-      <LivepeerPlayer
-        publication={publication}
-        playbackId={publication.metadata.media[0]?.original.url}
-      />
+      <AudioPlayerCard src={publication.metadata.media[0]?.original.url} />
     );
 
   return (
-    <div className="md:flex md:flex-wrap">
+    <>
       {publication.metadata.media.map((media: any, index: number) => (
         <div key={index}>
           {media.original.url && media.original.mimeType !== "video/mp4" && (
@@ -98,6 +122,6 @@ const MediaDisplay = ({ publication }: any) => {
           )}
         </div>
       ))}
-    </div>
+    </>
   );
 };
