@@ -109,7 +109,7 @@ const ProfilePage: NextPage = () => {
           )}
         </div>
         <div className="sm:flex mb-4 -mt-12 sm:-mt-16">
-          <div className="flex ml-12 w-full">
+          <div className="flex ml-12">
             <div className={``}>
               <Avatar profile={profile} size={"profile"} />
             </div>
