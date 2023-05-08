@@ -29,6 +29,7 @@ export const ExplorePublications = () => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
   });
 
@@ -41,6 +42,10 @@ export const ExplorePublications = () => {
           limit: 10,
           cursor: pageInfo?.next,
         },
+        reactionRequest: {
+          profileId: currentUser?.id || null,
+        },
+        profileId: currentUser?.id || null,
       },
     });
   };

@@ -1,6 +1,7 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { UserContext } from "@/context";
-import { FaRegCopy } from "react-icons/fa";
+import { FaRegCopy, FaRetweet } from "react-icons/fa";
+import { AiOutlineRetweet } from "react-icons/ai";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_MIRROR_TYPED_DATA } from "@/queries/publications/mirror";
@@ -19,11 +20,18 @@ interface IMirrorProps {
 
 export const Mirror = ({ publication }: IMirrorProps) => {
   const { currentUser } = useContext(UserContext);
+  const [isMirrored, setIsMirrored] = useState(false);
 
-  const { stats } = publication;
+  const { stats, mirrors } = publication;
+
+  const checkMirrors = useCallback(() => {
+    if (mirrors) {
+      return mirrors.some((mirror) => mirror.includes(currentUser?.id));
+    }
+  }, [mirrors, currentUser]);
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { write } = useContractWrite({
+  const { writeAsync } = useContractWrite({
     address: LENS_HUB_PROXY_ADDRESS,
     abi: LENS_ABI,
     functionName: "mirrorWithSig",
@@ -63,7 +71,13 @@ export const Mirror = ({ publication }: IMirrorProps) => {
             deadline: typedData.value.deadline,
           },
         };
-        write({ recklesslySetUnpreparedArgs: [postARGS] });
+        // write({ recklesslySetUnpreparedArgs: [postARGS] });
+        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then((res) => {
+          res.wait(1).then(() => {
+            setIsMirrored(true);
+            // console.log("res", res);
+          });
+        });
       });
     },
     onError(error) {
@@ -86,16 +100,34 @@ export const Mirror = ({ publication }: IMirrorProps) => {
   }, [createMirrorTypedData, currentUser, publication]);
 
   return (
-    <button
-      className="flex ml-4 hover:text-stone-700"
-      type={`button`}
-      onClick={handleMirror}
-    >
-      {stats?.totalAmountOfMirrors}
-      <FaRegCopy
-        className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
-        aria-hidden="true"
-      />
-    </button>
+    <>
+      {checkMirrors() || isMirrored ? (
+        <button
+          className="flex ml-4 text-green-500 hover:text-green-600"
+          type={`button`}
+          onClick={handleMirror}
+        >
+          {isMirrored
+            ? stats?.totalAmountOfMirrors + 1
+            : stats?.totalAmountOfMirrors}
+          <AiOutlineRetweet
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
+      ) : (
+        <button
+          className="flex ml-4 hover:text-stone-700"
+          type={`button`}
+          onClick={handleMirror}
+        >
+          {stats?.totalAmountOfMirrors}
+          <AiOutlineRetweet
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
+      )}
+    </>
   );
 };

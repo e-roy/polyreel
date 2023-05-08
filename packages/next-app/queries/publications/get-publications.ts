@@ -8,6 +8,7 @@ export const GET_PUBLICATIONS = gql`
   query (
     $request: PublicationsQueryRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     publications(request: $request) {
       items {

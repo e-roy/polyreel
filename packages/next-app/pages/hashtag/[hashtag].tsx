@@ -25,6 +25,7 @@ const HashtagPage: NextPage = () => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
   });
 

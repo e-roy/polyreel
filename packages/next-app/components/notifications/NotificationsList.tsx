@@ -20,6 +20,7 @@ const GET_NOTIFICATIONS = gql`
   query (
     $request: NotificationRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     notifications(request: $request) {
       items {
@@ -132,6 +133,7 @@ export const NotificationsList = () => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
   });
   if (loading) return <Loading />;

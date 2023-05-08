@@ -14,6 +14,18 @@ export const PostCommentFragment = gql`
     }
     reaction(request: $reactionRequest)
 
+    mirrors(by: $profileId)
+    canComment(profileId: $profileId) {
+      result
+    }
+    canMirror(profileId: $profileId) {
+      result
+    }
+    canDecrypt(profileId: $profileId) {
+      result
+      reasons
+    }
+
     metadata {
       name
       description
