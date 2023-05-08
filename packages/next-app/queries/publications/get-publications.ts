@@ -5,7 +5,10 @@ import { PostCommentFragment } from "../fragments/PostCommentFragment";
 import { PostMirrorFragment } from "../fragments/PostMirrorFragment";
 
 export const GET_PUBLICATIONS = gql`
-  query ($request: PublicationsQueryRequest!) {
+  query (
+    $request: PublicationsQueryRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+  ) {
     publications(request: $request) {
       items {
         __typename

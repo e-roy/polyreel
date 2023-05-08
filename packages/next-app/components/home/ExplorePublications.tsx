@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 
@@ -10,18 +10,24 @@ import { Post } from "@/components/post";
 import { Publication } from "@/types/graphql/generated";
 
 import { logger } from "@/utils/logger";
+import { UserContext } from "@/context";
 
 import { Post as PostType } from "@/types/graphql/generated";
 import { Comment as CommentType } from "@/types/graphql/generated";
 import { Mirror as MirrorType } from "@/types/graphql/generated";
 
 export const ExplorePublications = () => {
+  const { currentUser } = useContext(UserContext);
+
   const { loading, error, data, fetchMore } = useQuery(EXPLORE_PUBLICATIONS, {
     variables: {
       request: {
         sortCriteria: "LATEST",
         // sortCriteria: "TOP_COMMENTED",
         limit: 10,
+      },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
       },
     },
   });

@@ -17,7 +17,10 @@ import { NotificationCard } from "./";
 import { logger } from "@/utils/logger";
 
 const GET_NOTIFICATIONS = gql`
-  query ($request: NotificationRequest!) {
+  query (
+    $request: NotificationRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+  ) {
     notifications(request: $request) {
       items {
         ... on NewFollowerNotification {
@@ -125,6 +128,9 @@ export const NotificationsList = () => {
       request: {
         profileId: currentUser?.id,
         limit: 25,
+      },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
       },
     },
   });

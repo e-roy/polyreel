@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_PUBLICATIONS } from "@/queries/publications/get-publications";
 import useInfiniteScroll from "react-infinite-scroll-hook";
@@ -8,6 +8,7 @@ import { Post } from "@/components/post";
 import { Loading, Error, LoadingMore } from "@/components/elements";
 
 import { logger } from "@/utils/logger";
+import { UserContext } from "@/context";
 
 interface GetPublicationsProps {
   profileId: string;
@@ -18,6 +19,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
   profileId,
   filter,
 }) => {
+  const { currentUser } = useContext(UserContext);
   if (!profileId) return null;
 
   const { loading, error, data, fetchMore } = useQuery(GET_PUBLICATIONS, {
@@ -26,6 +28,9 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
         profileId: profileId,
         publicationTypes: filter,
         limit: 10,
+      },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
       },
     },
     skip: !profileId,

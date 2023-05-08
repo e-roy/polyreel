@@ -4,7 +4,10 @@ import { PostPostFragment } from "../fragments/PostPostFragment";
 import { PostCommentFragment } from "../fragments/PostCommentFragment";
 
 export const GET_USER_FEED = gql`
-  query ($request: FeedRequest!) {
+  query (
+    $request: FeedRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+  ) {
     feed(request: $request) {
       items {
         collects {

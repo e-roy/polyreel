@@ -61,7 +61,7 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
         </div>
       </HoverCardTrigger>
       <HoverCardContent>
-        <div className="bg-white p-4">
+        <div className="bg-white p-4 w-72">
           <div className={`grid grid-cols-4`}>
             <AvatarImage
               profile={profile}
