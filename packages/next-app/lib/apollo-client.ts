@@ -98,10 +98,21 @@ export const apolloClient = () => {
       typePolicies: {
         Query: {
           fields: {
+            feed: lensPagination([
+              "request",
+              ["profileId", "feedEventItemTypes"],
+            ]),
             explorePublications: lensPagination(["request", ["sortCriteria"]]),
             publications: lensPagination([
               "request",
-              ["profileId", "publicationTypes", "commentsOf"],
+              [
+                "profileId",
+                "collectedBy",
+                "commentsOf",
+                "publicationTypes",
+                "metadata",
+                "commentsRankingFilter",
+              ],
             ]),
             followers: lensPagination(["request", ["profileId"]]),
             following: lensPagination(["request", ["address"]]),
@@ -115,15 +126,16 @@ export const apolloClient = () => {
 
 const lensPagination = (keyArgs: any) => {
   return {
-    keyArgs: [keyArgs],
+    keyArgs,
     merge(existing: any, incoming: any) {
       if (!existing) {
         return incoming;
       }
-      const existingItems = existing.items;
-      const incomingItems = incoming.items;
+      const existingItems = existing.items ?? [];
+      const incomingItems = incoming.items ?? [];
 
       return {
+        ...incoming,
         items: existingItems.concat(incomingItems),
         pageInfo: incoming.pageInfo,
       };

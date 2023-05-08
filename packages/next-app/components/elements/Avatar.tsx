@@ -39,7 +39,17 @@ export const Avatar = ({ profile, size }: AvatarProps) => {
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <div className="relative">
+        <div
+          className={
+            avatarSize === LargeAvatar
+              ? `h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32`
+              : avatarSize === MediumAvatar
+              ? `h-16 w-16`
+              : avatarSize === SmallAvatar
+              ? `h-10 w-10 md:h-10 md:w-10`
+              : `h-7 w-7`
+          }
+        >
           <AvatarImage profile={profile} avatarSize={avatarSize} />
         </div>
       </HoverCardTrigger>
@@ -93,7 +103,7 @@ const AvatarImage = ({ profile, avatarSize }: IAvatarImageProps) => {
       <img
         src={checkIpfs(profile?.picture.original.url)}
         alt={`@${profile.handle}`}
-        className={avatarSize}
+        className={`${avatarSize}`}
       />
     );
   } else {
