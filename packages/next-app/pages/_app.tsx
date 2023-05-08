@@ -49,7 +49,7 @@ if (ENV_PROD) {
 if (ENV_DEV && !LOCAL_MAINNET_TESTING) {
   networks.push(polygonMumbai);
 } else if (ENV_DEV && LOCAL_MAINNET_TESTING) {
-  networks.push(mainnet);
+  networks.push(polygon);
 }
 
 const { chains, provider } = configureChains(

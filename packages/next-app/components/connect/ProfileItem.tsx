@@ -14,7 +14,7 @@ export const ProfileItem = ({ profile }: IProfileItemProps) => {
     >
       <div className={`flex justify-between w-full`}>
         <div className={`flex`}>
-          <div>
+          <div className={``}>
             <Avatar profile={profile} size={`small`} />
           </div>
 
