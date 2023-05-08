@@ -15,6 +15,7 @@ export const GET_PUBLICATION = gql`
   query (
     $request: PublicationQueryRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     publication(request: $request) {
       ... on Post {
@@ -51,6 +52,7 @@ const PostPage: NextPage = () => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
   });
 

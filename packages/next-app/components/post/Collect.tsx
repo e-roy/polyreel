@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { UserContext } from "@/context";
 import { HiOutlineCollection } from "react-icons/hi";
 
@@ -20,19 +20,19 @@ interface ICollectProps {
 
 export const Collect = ({ publication }: ICollectProps) => {
   const { currentUser } = useContext(UserContext);
+  const [isCollected, setIsCollected] = useState(false);
   // console.log("currentuser", currentUser);
 
-  const { stats, collectModule } = publication;
+  const { stats, collectModule, hasCollectedByMe } = publication;
 
   const { signTypedDataAsync } = useSignTypedData();
   const { writeAsync } = useContractWrite({
     address: LENS_HUB_PROXY_ADDRESS,
     abi: LENS_ABI,
-    functionName: "commentWithSig",
+    functionName: "collectWithSig",
     mode: "recklesslyUnprepared",
   });
 
-  // TODO: error on collecting, need to fix
   const [createCollectTypedData, { loading, error }] = useMutation(
     CREATE_COLLECT_TYPED_DATA,
     {
@@ -65,16 +65,9 @@ export const Collect = ({ publication }: ICollectProps) => {
             writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then(
               (res) => {
                 res.wait(1).then(() => {
+                  setIsCollected(true);
                   // console.log("res", res);
-                  // onClose();
                 });
-                // if (!res.error) {
-                //   console.log(res.data);
-
-                //   // reset form  and other closing actions
-                // } else {
-                //   console.log(res.error);
-                // }
               }
             );
           }
@@ -99,16 +92,34 @@ export const Collect = ({ publication }: ICollectProps) => {
   if (collectModule?.__typename !== "FreeCollectModuleSettings") return null;
 
   return (
-    <button
-      className="flex ml-4 hover:text-stone-700"
-      type={`button`}
-      onClick={handleCollect}
-    >
-      {stats?.totalAmountOfCollects}
-      <HiOutlineCollection
-        className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
-        aria-hidden="true"
-      />
-    </button>
+    <>
+      {hasCollectedByMe || isCollected ? (
+        <button
+          className="flex ml-4 text-blue-600 hover:text-blue-700"
+          type={`button`}
+          onClick={handleCollect}
+        >
+          {isCollected
+            ? stats?.totalAmountOfCollects + 1
+            : stats?.totalAmountOfCollects}
+          <HiOutlineCollection
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
+      ) : (
+        <button
+          className="flex ml-4 hover:text-stone-700"
+          type={`button`}
+          onClick={handleCollect}
+        >
+          {stats?.totalAmountOfCollects}
+          <HiOutlineCollection
+            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
+      )}
+    </>
   );
 };

@@ -56,6 +56,7 @@ export const VideoComments = ({ postId }: VideoCommentsProps) => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
   });
 
@@ -66,7 +67,10 @@ export const VideoComments = ({ postId }: VideoCommentsProps) => {
           commentsOf: postId,
           cursor: pageInfo?.next,
         },
-        requestRequest: { profileId: currentUser?.id },
+        reactionRequest: {
+          profileId: currentUser?.id || null,
+        },
+        profileId: currentUser?.id || null,
       },
     });
   };

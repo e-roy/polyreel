@@ -32,6 +32,7 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
     skip: !profileId,
   });
@@ -45,6 +46,10 @@ export const GetPublications: React.FC<GetPublicationsProps> = ({
           limit: 10,
           cursor: pageInfo?.next,
         },
+        reactionRequest: {
+          profileId: currentUser?.id || null,
+        },
+        profileId: currentUser?.id || null,
         skip: !profileId,
       },
     });

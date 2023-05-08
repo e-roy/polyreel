@@ -7,6 +7,7 @@ export const SEARCH_PUBLICATIONS = gql`
   query (
     $request: SearchQueryRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     search(request: $request) {
       ... on PublicationSearchResult {

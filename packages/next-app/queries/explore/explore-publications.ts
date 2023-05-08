@@ -8,6 +8,7 @@ export const EXPLORE_PUBLICATIONS = gql`
   query (
     $request: ExplorePublicationRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     explorePublications(request: $request) {
       items {

@@ -7,6 +7,7 @@ export const GET_USER_FEED = gql`
   query (
     $request: FeedRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     feed(request: $request) {
       items {

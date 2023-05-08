@@ -25,6 +25,7 @@ export const UserTimeline = ({}: UserTimelineProps) => {
       reactionRequest: {
         profileId: currentUser?.id || null,
       },
+      profileId: currentUser?.id || null,
     },
     skip: !currentUser,
   });
@@ -38,6 +39,10 @@ export const UserTimeline = ({}: UserTimelineProps) => {
           limit: 10,
           cursor: pageInfo?.next,
         },
+        reactionRequest: {
+          profileId: currentUser?.id || null,
+        },
+        profileId: currentUser?.id || null,
         skip: !pageInfo?.next || !currentUser,
       },
     });
