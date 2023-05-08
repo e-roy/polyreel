@@ -1,4 +1,5 @@
-import React from "react";
+import { useContext } from "react";
+import { UserContext } from "@/context";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -9,6 +10,8 @@ import { Loading, Error } from "@/components/elements";
 import { Post } from "@/components/post";
 
 const HashtagPage: NextPage = () => {
+  const { currentUser } = useContext(UserContext);
+
   const router = useRouter();
   const { hashtag } = router.query;
 
@@ -18,6 +21,9 @@ const HashtagPage: NextPage = () => {
         query: hashtag,
         type: "PUBLICATION",
         limit: 25,
+      },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
       },
     },
   });

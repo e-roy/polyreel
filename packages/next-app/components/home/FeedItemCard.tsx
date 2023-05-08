@@ -21,6 +21,9 @@ interface IFeedItemCardProps {
 
 export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
   //   console.log(feedItem);
+
+  if (feedItem.root.hidden) return null;
+
   return (
     <div className={`border-b my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>

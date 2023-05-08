@@ -22,6 +22,9 @@ export const UserTimeline = ({}: UserTimelineProps) => {
         // publicationTypes: ["POST", "COMMENT", "MIRROR"],
         limit: 10,
       },
+      reactionRequest: {
+        profileId: currentUser?.id || null,
+      },
     },
     skip: !currentUser,
   });

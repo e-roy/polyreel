@@ -103,7 +103,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           {/* 3 column wrapper */}
           {/* Left Column */}
           <div className="md:col-span-1 xl:col-span-2 hidden md:block">
-            <aside className="flex flex-col pt-16 ml-1 w-12 xl:w-72 h-full">
+            <aside className="flex flex-col pt-16 ml-1 h-full">
               <LeftNavigation />
               {currentUser && <Logout className={``} />}
             </aside>

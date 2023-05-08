@@ -4,7 +4,10 @@ import { PostPostFragment } from "../fragments/PostPostFragment";
 import { PostCommentFragment } from "../fragments/PostCommentFragment";
 
 export const SEARCH_PUBLICATIONS = gql`
-  query ($request: SearchQueryRequest!) {
+  query (
+    $request: SearchQueryRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+  ) {
     search(request: $request) {
       ... on PublicationSearchResult {
         __typename

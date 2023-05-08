@@ -11,6 +11,7 @@ export const PostPostFragment = gql`
     profile {
       ...ProfileFragmentLite
     }
+    reaction(request: $reactionRequest)
 
     metadata {
       name
