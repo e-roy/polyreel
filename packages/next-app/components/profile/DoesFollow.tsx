@@ -12,10 +12,9 @@ import {
 
 type DoesFollowProps = {
   profile: Profile;
-  profileId: string;
 };
 
-export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
+export const DoesFollow = ({ profile }: DoesFollowProps) => {
   const { currentUser } = useContext(UserContext);
   const { address } = useAccount();
 
@@ -31,12 +30,12 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
         followInfos: [
           {
             followerAddress: address,
-            profileId,
+            profileId: profile.id,
           },
         ],
       },
     },
-    skip: !address || !profileId,
+    skip: !address || !profile.id,
     onCompleted: (data) => {
       const { doesFollow } = data;
       const { follows } = doesFollow[0];
@@ -64,13 +63,13 @@ export const DoesFollow = ({ profile, profileId }: DoesFollowProps) => {
   ) {
     if (isFollowing)
       return (
-        <UnFollowProfileButton profileId={profileId} refetch={handleRefetch} />
+        <UnFollowProfileButton profileId={profile.id} refetch={handleRefetch} />
       );
     else
       return (
         <FollowProfileButton
           profile={profile}
-          profileId={profileId}
+          profileId={profile.id}
           refetch={handleRefetch}
         />
       );
