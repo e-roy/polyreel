@@ -39,24 +39,26 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
               href={`/profile/${feedItem.root.profile.handle}`}
               passHref
             >
-              <span className={`text-stone-700 font-medium`}>
+              <span
+                className={`text-stone-700 dark:text-stone-200 font-medium`}
+              >
                 {feedItem.root.profile.name}
               </span>
               <span
-                className={`text-stone-500 font-medium text-xs pl-2 my-auto`}
+                className={`text-stone-500 dark:text-stone-400 font-medium text-xs pl-2 my-auto`}
               >
                 @{feedItem.root.profile.handle}
               </span>
             </Link>
             <span
-              className={`text-right w-full text-stone-500 text-xs sm:text-sm my-auto`}
+              className={`text-right w-full text-stone-500 dark:text-stone-300 text-xs sm:text-sm my-auto`}
             >
               {cardFormatDate(feedItem.root.createdAt)}
             </span>
           </div>
           <div className={`w-full`}>
             {feedItem.root.metadata && (
-              <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 text-xs sm:text-sm md:text-base font-medium">
+              <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 dark:text-stone-300 text-xs sm:text-sm md:text-base font-medium">
                 <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
                   <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
                     <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">

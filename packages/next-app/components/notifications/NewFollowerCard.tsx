@@ -20,14 +20,16 @@ export const NewFollowerCard = ({ item }: INewFollowerCardProps) => {
               </div>
             </Link>
             <div className={`flex justify-between w-full`}>
-              <div className="md:px-2 py-1 my-auto text-stone-800 rounded-xl">
+              <div className="md:px-2 py-1 my-auto text-stone-800 dark:text-stone-200 rounded-xl">
                 <div className="my-auto font-semibold text-md flex flex-col">
                   <Link
                     className={`hover:underline flex flex-col`}
                     href={`/profile/${item.wallet.defaultProfile.handle}`}
                   >
                     <span>{item.wallet.defaultProfile.name} </span>
-                    <span className={`text-stone-600 text-xs`}>
+                    <span
+                      className={`text-stone-600 dark:text-stone-400 text-xs`}
+                    >
                       @{item.wallet.defaultProfile.handle}{" "}
                     </span>
                   </Link>
@@ -36,7 +38,7 @@ export const NewFollowerCard = ({ item }: INewFollowerCardProps) => {
                 </div>
               </div>
 
-              <div className="text-sm text-stone-500 my-auto">
+              <div className="text-sm text-stone-500 dark:text-stone-300 my-auto">
                 {cardFormatDate(item.createdAt)}
               </div>
             </div>
@@ -44,7 +46,7 @@ export const NewFollowerCard = ({ item }: INewFollowerCardProps) => {
         </div>
       )}
       {!item.wallet.defaultProfile && (
-        <div className="flex justify-between font-medium text-stone-700 text-sm">
+        <div className="flex justify-between font-medium text-stone-700 dark:text-stone-300 text-sm">
           {addressShorten(item.wallet.address)} started following you
         </div>
       )}

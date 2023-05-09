@@ -30,7 +30,7 @@ export const Stats = ({ publication }: StatsProps) => {
     return (
       <div className="flex font-medium text-stone-500 mt-4 mx-2 sm:mx-4">
         <Link href={`/post/${publication?.id}`}>
-          <span className="hover:text-stone-700 flex my-auto">
+          <span className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
             {stats?.totalAmountOfComments}
             <BsChat
               className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2 cursor-pointer"
@@ -45,7 +45,7 @@ export const Stats = ({ publication }: StatsProps) => {
     <>
       <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4 mx-2 sm:mx-4">
         <div className={`flex space-x-4`}>
-          <span className="hover:text-stone-700 flex my-auto cursor-pointer">
+          <span className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer">
             {stats?.totalAmountOfComments}
             <BsChat
               onClick={() => setShowComment(!showComment)}
@@ -60,7 +60,7 @@ export const Stats = ({ publication }: StatsProps) => {
         </div>
         {publication?.appId && (
           <div className={`text-xs text-stone-500`}>
-            posted from: {publication?.appId}
+            posted on: {publication?.appId}
           </div>
         )}
       </div>

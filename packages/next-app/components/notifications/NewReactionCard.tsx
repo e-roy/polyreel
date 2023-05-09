@@ -19,28 +19,30 @@ export const NewReactionCard = ({ item }: INewReactionCardProps) => {
             </div>
           </Link>
           <div className={`flex justify-between w-full`}>
-            <div className="md:px-2 py-1 my-auto text-stone-800 rounded-xl">
+            <div className="md:px-2 py-1 my-auto text-stone-800 dark:text-stone-200 rounded-xl">
               <div className="my-auto font-semibold text-md flex flex-col">
                 <Link
                   className={`hover:underline flex flex-col`}
                   href={`/profile/${item.profile.handle}`}
                 >
                   <span>{item.profile.name} </span>
-                  <span className={`text-stone-600 text-xs`}>
+                  <span
+                    className={`text-stone-600 dark:text-stone-400 text-xs`}
+                  >
                     @{item.profile.handle}{" "}
                   </span>
                 </Link>
               </div>
             </div>
 
-            <div className="text-sm text-stone-500 my-auto">
+            <div className="text-sm text-stone-500 dark:text-stone-300 my-auto">
               {cardFormatDate(item.createdAt)}
             </div>
           </div>
         </div>
       </div>
       <Link href={`/post/${item?.publication?.id}`}>
-        <div className={`text-stone-600 font-medium`}>
+        <div className={`text-stone-600 dark:text-stone-300 font-medium`}>
           <div>{item.reaction}</div>
           <div>{item.publication.metadata.content}</div>
         </div>

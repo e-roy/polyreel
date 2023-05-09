@@ -151,7 +151,7 @@ export const EditProfileButton = ({
   return (
     <>
       <Button
-        className={``}
+        className={`bg-stone-800 hover:bg-stone-700 text-white`}
         type={`button`}
         variant={`follow`}
         onClick={handleButton}

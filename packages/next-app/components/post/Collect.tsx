@@ -109,7 +109,7 @@ export const Collect = ({ publication }: ICollectProps) => {
         </button>
       ) : (
         <button
-          className="flex ml-4 hover:text-stone-700"
+          className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
           type={`button`}
           onClick={handleCollect}
         >

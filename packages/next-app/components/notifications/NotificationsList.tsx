@@ -123,7 +123,6 @@ const GET_NOTIFICATIONS = gql`
 
 export const NotificationsList = () => {
   const { currentUser } = useContext(UserContext);
-  if (!currentUser) return <Loading />;
   const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
     variables: {
       request: {
@@ -135,8 +134,8 @@ export const NotificationsList = () => {
       },
       profileId: currentUser?.id || null,
     },
+    skip: !currentUser,
   });
-  if (loading) return <Loading />;
   if (error) return <Error />;
 
   if (!data || !data.notifications) return null;
