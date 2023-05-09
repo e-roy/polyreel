@@ -102,7 +102,10 @@ export const apolloClient = () => {
               "request",
               ["profileId", "feedEventItemTypes"],
             ]),
-            explorePublications: lensPagination(["request", ["sortCriteria"]]),
+            explorePublications: lensPagination([
+              "request",
+              ["sortCriteria", "metadata"],
+            ]),
             publications: lensPagination([
               "request",
               [

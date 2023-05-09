@@ -136,7 +136,7 @@ export const SetFollowModule = ({
     <>
       {isProcessing ? (
         <div className="py-32">
-          <Loading type={"Processing"} />
+          <Loading />
         </div>
       ) : (
         <div className="h-6/10">
