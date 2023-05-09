@@ -75,12 +75,6 @@ const customTheme: Theme = merge(lightTheme(), {
   },
 });
 
-// const livepeerClient = createReactClient({
-//   provider: studioProvider({
-//     apiKey: liverpeerKey,
-//   }),
-// });
-
 function MyApp({
   Component,
   pageProps,
@@ -106,11 +100,11 @@ function MyApp({
         >
           <ApolloProvider client={apolloClient()}>
             <UserProvider>
-              {/* <ThemeProvider defaultTheme="light" attribute="class"> */}
-              <AppLayout>
-                <Component {...pageProps} />
-              </AppLayout>
-              {/* </ThemeProvider> */}
+              <ThemeProvider defaultTheme="light" attribute="class">
+                <AppLayout>
+                  <Component {...pageProps} />
+                </AppLayout>
+              </ThemeProvider>
             </UserProvider>
           </ApolloProvider>
         </LivepeerConfig>

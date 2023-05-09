@@ -75,21 +75,23 @@ export const Avatar = ({ profile, size, loading }: AvatarProps) => {
         </div>
       </HoverCardTrigger>
       <HoverCardContent>
-        <div className="bg-white p-4 w-72">
+        <div className="bg-white p-4 w-72 rounded dark:bg-stone-900">
           <div className={`flex`}>
             <div className={``}>
               <AvatarImage profile={profile} avatarSize={MediumAvatar} />
             </div>
 
             <div className={`ml-4`}>
-              <div className="text-base font-semibold text-stone-800">
+              <div className="text-base font-semibold text-stone-800 dark:text-stone-100">
                 {profile.name}
               </div>
-              <div className="text-xs text-stone-500">@{profile.handle}</div>
+              <div className="text-xs text-stone-500 dark:text-stone-300">
+                @{profile.handle}
+              </div>
             </div>
           </div>
           <div
-            className={`grid grid-cols-2 my-2 text-xs text-stone-600 font-medium`}
+            className={`grid grid-cols-2 my-2 text-xs text-stone-600 dark:text-stone-200 font-medium`}
           >
             <div className={`col-span-1`}>
               {checkFollowerCount(profile.stats.totalFollowing)} Following
@@ -98,7 +100,9 @@ export const Avatar = ({ profile, size, loading }: AvatarProps) => {
               {checkFollowerCount(profile.stats.totalFollowers)} Followers
             </div>
           </div>
-          <div className={`text-stone-600 text-sm`}>{profile.bio}</div>
+          <div className={`text-stone-600 dark:text-stone-200 text-sm`}>
+            {profile.bio}
+          </div>
         </div>
       </HoverCardContent>
     </HoverCard>

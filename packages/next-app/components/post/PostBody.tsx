@@ -29,7 +29,7 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
   // console.log("urls", urls);
 
   return (
-    <div className={`border-b my-2 py-4 sm:p-4`}>
+    <div className={`border-b dark:border-stone-300/30 my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
         <Link href={`/profile/${publication.profile.handle}`} passHref>
           <div className={`col-span-1`}>
@@ -43,24 +43,26 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
               href={`/profile/${publication.profile.handle}`}
               passHref
             >
-              <span className={`text-stone-700 font-medium w-full`}>
+              <span
+                className={`text-stone-700 dark:text-stone-100 font-medium w-full`}
+              >
                 {publication.profile.name}
               </span>
               <span
-                className={`text-stone-500 font-medium text-xs pl-2 my-auto`}
+                className={`text-stone-500 dark:text-stone-400 font-medium text-xs pl-2 my-auto`}
               >
                 @{publication.profile.handle}
               </span>
             </Link>
             <span
-              className={`text-right w-full text-stone-500 text-xs sm:text-sm my-auto`}
+              className={`text-right w-full text-stone-500 dark:text-stone-400 text-xs sm:text-sm my-auto`}
             >
               {cardFormatDate(publication.createdAt)}
             </span>
           </div>
           <div className={`w-full`}>
             {publication.metadata && (
-              <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 text-xs sm:text-sm md:text-base font-medium">
+              <div className="overflow-hidden my-2 line-clamp-4 text-stone-700 dark:text-stone-300 text-xs sm:text-sm md:text-base font-medium">
                 <LinkItUrl className="text-sky-600 hover:text-sky-500 z-50">
                   <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
                     <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">

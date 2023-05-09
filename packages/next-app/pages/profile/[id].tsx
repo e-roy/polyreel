@@ -115,7 +115,7 @@ const ProfilePage: NextPage = () => {
         </div>
         <div className="flex mb-4 -mt-12 sm:-mt-16 w-full justify-between">
           <div className="ml-12">
-            <Avatar profile={profile} size={"profile"} />
+            <Avatar profile={profile} size={"profile"} loading={loading} />
           </div>
 
           <div className="flex space-x-6">
@@ -126,7 +126,7 @@ const ProfilePage: NextPage = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  <FaGlobeAmericas className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700" />
+                  <FaGlobeAmericas className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200" />
                 </a>
               )}
               {profile.attributes && checkTwitter() && (
@@ -136,7 +136,7 @@ const ProfilePage: NextPage = () => {
                   rel="noreferrer noopener"
                   className="text-stone-500 hover:text-stone-700"
                 >
-                  <FaTwitter className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700" />
+                  <FaTwitter className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200" />
                 </a>
               )}
             </div>
@@ -149,12 +149,12 @@ const ProfilePage: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="px-2 text-sm sm:text-base text-stone-700 font-medium">
+        <div className="px-2 text-sm sm:text-base text-stone-700 dark:text-stone-300 font-medium">
           <div className={`pb-4`}>
-            <div className="font-bold text-stone-900 text-md md:text-lg lg:text-xl">
+            <div className="font-bold text-stone-900 dark:text-stone-100 text-md md:text-lg lg:text-xl">
               {profile.name}
             </div>
-            <div className="font-medium text-xs sm:text-sm md:text-md text-stone-500">
+            <div className="font-medium text-xs sm:text-sm md:text-md text-stone-500 dark:text-stone-400">
               @{profile.handle}
             </div>
           </div>

@@ -51,7 +51,9 @@ export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
 
   return (
     <div className={``}>
-      <div className={`text-xl font-bold text-stone-800 px-6 py-3`}>
+      <div
+        className={`text-xl font-bold text-stone-800 dark:text-stone-100 px-6 py-3`}
+      >
         Search Profiles
       </div>
       <div className={``}>

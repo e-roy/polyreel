@@ -3,11 +3,11 @@ import { GET_FOLLOWING } from "@/queries/follow/following";
 import { FollowersCard } from "@/components/cards";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-type GetFollowingProps = {
+interface IGetFollowingProps {
   ownedBy: string | undefined;
-};
+}
 
-export const GetFollowing = ({ ownedBy }: GetFollowingProps) => {
+export const GetFollowing = ({ ownedBy }: IGetFollowingProps) => {
   const {
     loading,
     error,

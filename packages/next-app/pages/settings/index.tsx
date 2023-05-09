@@ -1,46 +1,17 @@
 import type { NextPage } from "next";
 
-import { useEffect, useState } from "react";
 import { MdDarkMode } from "react-icons/md";
+import { useTheme } from "next-themes";
 
 type Theme = "light" | "dark";
 
 const SettingsPage: NextPage = () => {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   function toggleTheme() {
     const newTheme: Theme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme); // save theme preference to localStorage
-    setIsDarkMode(!isDarkMode);
   }
-
-  // Load default theme preference from localStorage, if available
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme as Theme);
-    }
-  }, []);
-
-  useEffect(() => {
-    const body = document.querySelector("body");
-    // console.log(`body`, body);
-    if (body) {
-      body.classList.add(theme);
-      return () => body.classList.remove(theme);
-    }
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
   return (
     <div className={`p-6`}>

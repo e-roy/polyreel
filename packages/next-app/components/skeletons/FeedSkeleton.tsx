@@ -15,7 +15,7 @@ export const FeedSkeleton = () => {
 
 const SkeletonLine = () => {
   return (
-    <div className={`border-b my-2 p-8 animate-pulse`}>
+    <div className={`border-b my-2 sm:p-8 animate-pulse`}>
       <div className={`flex`}>
         <div className={``}>
           <Avatar profile={emptyProfile} size={`small`} loading={true} />

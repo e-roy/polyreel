@@ -34,7 +34,7 @@ export const Post = ({ publication, postType }: PostProps) => {
                 <Link
                   href={`/post/${publication.mirrorOf.mainPost.id}?comment=${publication.mirrorOf.id}`}
                 >
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 cursor-pointer hover:text-stone-700">
+                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
                     mirrored from{" "}
                     <span className="font-bold">
                       @{publication.mirrorOf.profile.handle}
@@ -43,7 +43,7 @@ export const Post = ({ publication, postType }: PostProps) => {
                 </Link>
               ) : (
                 <Link href={`/post/${publication.mirrorOf.id}`}>
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 cursor-pointer hover:text-stone-700">
+                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
                     mirrored from{" "}
                     <span className="font-bold">
                       @{publication.mirrorOf.profile.handle}
@@ -66,7 +66,7 @@ export const Post = ({ publication, postType }: PostProps) => {
                 <Link
                   href={`/post/${publication.mainPost.id}?comment=${publication.id}`}
                 >
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 cursor-pointer hover:text-stone-700">
+                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
                     <span className="font-bold">
                       @{publication.profile.handle}
                     </span>{" "}

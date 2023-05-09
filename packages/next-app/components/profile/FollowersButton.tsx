@@ -33,14 +33,18 @@ export const FollowersButton = ({
           onClick={() => setActive("following")}
         >
           {following}{" "}
-          <span className={`text-stone-500 font-normal`}>Following</span>
+          <span className={`text-stone-500 dark:text-stone-400 font-normal`}>
+            Following
+          </span>
         </div>
         <div
           className="font-semibold py-2 hover:underline"
           onClick={() => setActive("followers")}
         >
           {followers}{" "}
-          <span className={`text-stone-500 font-normal`}>Followers</span>
+          <span className={`text-stone-500 dark:text-stone-400 font-normal`}>
+            Followers
+          </span>
         </div>
       </div>
 
@@ -51,14 +55,14 @@ export const FollowersButton = ({
             setIsModalOpen(false);
           }}
         >
-          <div className="p-4 bg-white h-3/4 max-h-3/4">
+          <div className="p-4 bg-white dark:bg-stone-900 h-3/4 max-h-3/4">
             <div className="grid grid-cols-2 text-center">
               <button
                 onClick={() => setActive("following")}
                 className={classNames(
                   active === "following"
                     ? "bg-stone-700 text-stone-100"
-                    : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
+                    : "text-gray-600 dark:text-stone-300 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
                   "text-center px-3 py-2 text-sm font-medium rounded-md"
                 )}
               >
@@ -69,7 +73,7 @@ export const FollowersButton = ({
                 className={classNames(
                   active === "followers"
                     ? "bg-stone-700 text-stone-100"
-                    : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
+                    : "text-gray-600 dark:text-stone-300 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
                   "text-center px-3 py-2 text-sm font-medium rounded-md"
                 )}
               >

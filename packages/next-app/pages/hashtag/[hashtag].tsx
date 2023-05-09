@@ -36,7 +36,7 @@ const HashtagPage: NextPage = () => {
     <div className="flex justify-center">
       <div className="w-full mx-2">
         <div className="sm:px-2 lg:px-8">
-          <div className="pb-4 text-center text-stone-700 text-2xl font-bold sticky top-0 bg-white z-10">
+          <div className="pb-4 text-center text-stone-700 dark:text-stone-100 text-2xl font-bold sticky top-0 bg-white dark:bg-stone-900 z-10">
             #{hashtag}
           </div>
           {data.search.items.map((publication: any, index: number) => (

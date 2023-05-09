@@ -9,10 +9,12 @@ interface IProfileItemProps {
 
 export const ProfileItem = ({ profile }: IProfileItemProps) => {
   return (
-    <div className={`flex justify-between group hover:bg-stone-100`}>
+    <div
+      className={`flex justify-between group hover:bg-stone-100 dark:hover:bg-stone-700`}
+    >
       <Link
         href={`/profile/${profile.handle}`}
-        className={`flex items-center justify-between py-3 px-6 group-hover:bg-stone-100 w-full`}
+        className={`flex items-center justify-between py-3 px-6 group-hover:bg-stone-100 dark:group-hover:bg-stone-700 w-full`}
       >
         <div className={`flex justify-between w-full`}>
           <div className={`flex`}>
@@ -21,9 +23,15 @@ export const ProfileItem = ({ profile }: IProfileItemProps) => {
             </div>
 
             <div className={`ml-4`}>
-              <div className={`font-bold text-stone-800`}>{profile.name}</div>
-              <div className={`text-stone-400`}>@{profile.handle}</div>
-              <div className={`text-stone-600`}>{profile.bio}</div>
+              <div className={`font-bold text-stone-800 dark:text-stone-100`}>
+                {profile.name}
+              </div>
+              <div className={`text-stone-400 dark:text-stone-200`}>
+                @{profile.handle}
+              </div>
+              <div className={`text-stone-600 dark:text-stone-400`}>
+                {profile.bio}
+              </div>
             </div>
           </div>
         </div>

@@ -42,8 +42,12 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
   if (data) logger("WhoToFollow.tsx", data.recommendedProfiles);
 
   return (
-    <div className={`rounded-lg bg-stone-50`}>
-      <div className={`text-xl font-bold text-stone-800 px-4 py-3`}>
+    <div
+      className={`rounded-lg bg-stone-50 dark:bg-transparent dark:border dark:border-stone-300/50 dark:shadow-md dark:shadow-stone-100/30`}
+    >
+      <div
+        className={`text-xl font-bold text-stone-800 dark:text-stone-100 px-4 py-3`}
+      >
         Who To Follow
       </div>
       <div>
@@ -52,7 +56,7 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
             <Link
               key={index}
               href={`/profile/${profile.handle}`}
-              className={`flex items-center justify-between px-4 py-3 hover:bg-stone-100`}
+              className={`flex items-center justify-between px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-700`}
             >
               <div className={`flex items-center w-full`}>
                 <Avatar profile={profile} size={`small`} loading={loading} />
@@ -67,10 +71,14 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
                   </div>
                 ) : (
                   <div className={`ml-4`}>
-                    <div className={`font-bold text-stone-800`}>
+                    <div
+                      className={`font-bold text-stone-800 dark:text-stone-100`}
+                    >
                       {profile.name}
                     </div>
-                    <div className={`text-stone-500`}>@{profile.handle}</div>
+                    <div className={`text-stone-500 dark:text-stone-300`}>
+                      @{profile.handle}
+                    </div>
                   </div>
                 )}
               </div>
@@ -79,7 +87,7 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
       </div>
       <Link href={`/connect`}>
         <div
-          className={`hover:bg-stone-100 px-4 py-3 rounded-b-lg text-blue-400`}
+          className={`hover:bg-stone-100 dark:hover:bg-stone-700 px-4 py-3 rounded-b-lg text-blue-400`}
         >
           Show more
         </div>
