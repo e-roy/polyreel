@@ -24,6 +24,8 @@ import { Avatar, Loading, Error } from "@/components/elements";
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
 // import { Profile } from "@/types/graphql/generated";
+import { checkIpfsUrl } from "@/utils/check-ipfs-url";
+import { checkFollowerCount } from "@/utils/check-follower-count";
 
 import { logger } from "@/utils/logger";
 
@@ -52,6 +54,7 @@ const ProfilePage: NextPage = () => {
   if (!profileData) return null;
 
   const { profile } = profileData;
+  if (!profile) return <>profile not found</>;
 
   logger("profile/[id].tsx", profile);
 
@@ -80,7 +83,7 @@ const ProfilePage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>polyreel - {profile.name}</title>
+        <title>polyreel - {profile?.name || ""}</title>
         <meta name="description" content="polyreel" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -92,7 +95,7 @@ const ProfilePage: NextPage = () => {
               className="h-52 sm:h-80"
               style={{
                 backgroundImage: profile.coverPicture.original.url
-                  ? `url(${profile.coverPicture.original.url})`
+                  ? `url(${checkIpfsUrl(profile.coverPicture.original.url)})`
                   : "none",
                 backgroundColor: "#94a3b8",
                 backgroundSize: profile.coverPicture.original.url
@@ -171,8 +174,8 @@ const ProfilePage: NextPage = () => {
               <FollowersButton
                 ownedBy={profile.ownedBy}
                 profileId={profile.id}
-                followers={profile.stats.totalFollowers}
-                following={profile.stats.totalFollowing}
+                followers={checkFollowerCount(profile.stats.totalFollowers)}
+                following={checkFollowerCount(profile.stats.totalFollowing)}
               />
             </div>
             <NavSelect

@@ -9,8 +9,8 @@ function classNames(...classes: string[]) {
 type FollowersButtonProps = {
   ownedBy?: string;
   profileId: string;
-  followers?: number;
-  following?: number;
+  followers?: number | string;
+  following?: number | string;
 };
 
 export const FollowersButton = ({

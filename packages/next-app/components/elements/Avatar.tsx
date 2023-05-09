@@ -4,6 +4,8 @@ import { FaUserAlt } from "react-icons/fa";
 import { Profile } from "@/types/graphql/generated";
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/hover-card";
+import { checkIpfsUrl } from "@/utils/check-ipfs-url";
+import { checkFollowerCount } from "@/utils/check-follower-count";
 
 type AvatarProps = {
   profile?: Profile;
@@ -90,10 +92,10 @@ export const Avatar = ({ profile, size, loading }: AvatarProps) => {
             className={`grid grid-cols-2 my-2 text-xs text-stone-600 font-medium`}
           >
             <div className={`col-span-1`}>
-              {profile.stats.totalFollowing} Following
+              {checkFollowerCount(profile.stats.totalFollowing)} Following
             </div>
             <div className={`col-span-1`}>
-              {profile.stats.totalFollowers} Followers
+              {checkFollowerCount(profile.stats.totalFollowers)} Followers
             </div>
           </div>
           <div className={`text-stone-600 text-sm`}>{profile.bio}</div>
@@ -120,7 +122,7 @@ const AvatarImage = ({ profile, avatarSize }: IAvatarImageProps) => {
   } else if (profile.picture?.__typename === "MediaSet") {
     return (
       <img
-        src={checkIpfs(profile?.picture.original.url)}
+        src={checkIpfsUrl(profile?.picture.original.url)}
         alt={`@${profile.handle}`}
         className={`${avatarSize}`}
       />
@@ -128,11 +130,4 @@ const AvatarImage = ({ profile, avatarSize }: IAvatarImageProps) => {
   } else {
     return <FaUserAlt className={avatarSize} />;
   }
-};
-
-const checkIpfs = (url: string) => {
-  if (url.startsWith("ipfs://")) {
-    const ipfs = url.replace("ipfs://", "");
-    return `https://gateway.ipfscdn.io/ipfs/${ipfs}`;
-  } else return url;
 };
