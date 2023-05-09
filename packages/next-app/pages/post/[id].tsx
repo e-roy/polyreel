@@ -57,19 +57,20 @@ const PostPage: NextPage = () => {
     skip: !id,
   });
 
+  // TODO: need a if post doesn't exist view
   // if (loading) return <Loading />;
   if (error) return <Error />;
   // console.log(data);
   // const { publication } = data;
   logger("post/[id].tsx", data?.publication);
 
-  if (data?.publication.__typename === "Comment") {
+  if (data?.publication?.__typename === "Comment") {
     router.push(`/post/${data.publication.mainPost.id}`);
   }
 
   if (
-    data?.publication.metadata.media[0] &&
-    data?.publication.metadata.media[0].original.mimeType === "video/mp4"
+    data?.publication?.metadata?.media[0] &&
+    data?.publication?.metadata?.media[0].original.mimeType === "video/mp4"
   )
     return <VideoPost publication={data?.publication} />;
 
@@ -88,7 +89,7 @@ const PostPage: NextPage = () => {
             <div className="flex flex-1 justify-center w-full">
               <div className="w-full p-6">
                 <div className="mb-4">
-                  {data && (
+                  {data && data?.publication && (
                     <Post publication={data?.publication} postType="page" />
                   )}
                 </div>

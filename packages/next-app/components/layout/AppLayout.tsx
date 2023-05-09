@@ -146,11 +146,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         </div>
       </div>
       {/* Mobile Nav */}
-      <div className="w-full px-4 mx-auto md:hidden border-t bg-white/60 border-stone-500/50 block absolute h-8vh inset-x-0 bottom-0 z-10">
+      <div className="w-full px-4 mx-auto md:hidden border-t bg-white/60 dark:bg-stone-900/60 border-stone-500/50 block absolute h-8vh inset-x-0 bottom-0 z-10">
         <div className="flex flex-row justify-center space-x-6">
           {bottomNav.map((item: any, index: number) => (
             <Link key={index} href={item.href} className="flex group">
-              <span className="flex flex-col items-center hover:bg-stone-500 text-stone-700 hover:text-stone-100 mt-2 p-2 rounded">
+              <span className="flex flex-col items-center hover:bg-stone-500 text-stone-700 dark:text-stone-200 hover:text-stone-100 mt-2 p-2 rounded">
                 {item.icon}
               </span>
             </Link>

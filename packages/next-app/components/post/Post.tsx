@@ -15,7 +15,7 @@ export const Post = ({ publication, postType }: PostProps) => {
 
   // console.log("postType", postType);
 
-  logger("Post.tsx", publication);
+  // logger("Post.tsx", publication);
 
   return (
     <div className="my-2">

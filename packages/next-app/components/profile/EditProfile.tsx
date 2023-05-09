@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Button, TextField } from "@/components/elements";
+import { useState, useEffect, useCallback } from "react";
+import { Button } from "@/components/elements";
 
 import { Loading } from "@/components/elements";
 
@@ -12,10 +12,22 @@ import { omit, splitSignature } from "@/lib/helpers";
 import LENS_PERIPHERY_ABI from "@/abis/Lens-Periphery.json";
 import { LENS_PERIPHERY_CONTRACT } from "@/lib/constants";
 
-import { Profile } from "@/types/graphql/generated";
+import { Profile, Attribute } from "@/types/graphql/generated";
 
-const filterAttributes = (attributes: any, key: string) => {
-  return attributes?.filter((attribute: any) => attribute.key === key);
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type ProfileInputs = {
+  name: string;
+  bio: string;
+  cover_picture: string;
+  attributes: Attribute[];
+  location: string;
+  website: string;
+  twitter_handle: string;
+};
+
+const filterAttributes = (attributes: Attribute[], key: string) => {
+  return attributes?.filter((attribute: Attribute) => attribute.key === key);
 };
 
 type EditProfileProps = {
@@ -26,11 +38,7 @@ type EditProfileProps = {
 export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
-  const [updateName, setUpdateName] = useState<string>("");
-  const [updateBio, setUpdateBio] = useState<string>("");
-  const [updateLocation, setUpdateLocation] = useState<string>("");
-  const [updateWebsite, setUpdateWebsite] = useState<string>("");
-  const [updateTwitterUrl, setUpdateTwitterUrl] = useState<string>("");
+
   const [updateCoverPicture, setUpdateCoverPicture] = useState<string>("");
 
   const { signTypedDataAsync } = useSignTypedData();
@@ -56,7 +64,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
         if (res) {
           const { v, r, s } = splitSignature(res);
           const postARGS = {
-            user: profile.ownedBy,
+            // user: profile.ownedBy,
             profileId,
             metadata,
             sig: {
@@ -85,67 +93,81 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
 
   useEffect(() => {
     if (profile) {
-      if (profile.name) setUpdateName(profile.name as string);
-      if (profile.bio) setUpdateBio(profile.bio as string);
-      if (checkLocation()) setUpdateLocation(checkLocation() as string);
-      if (checkWebsite()) setUpdateWebsite(checkWebsite() as string);
-      if (checkTwitter()) setUpdateTwitterUrl(checkTwitter() as string);
       setUpdateCoverPicture((profile.coverPicture as any) || "");
     }
   }, [profile]);
 
   const checkLocation = () => {
-    const location = filterAttributes(profile.attributes, "location");
+    if (!profile.attributes) return;
+    const location = filterAttributes(profile?.attributes, "location");
     if (location && location[0]) return location[0].value;
   };
 
   const checkWebsite = () => {
+    if (!profile.attributes) return;
     const website = filterAttributes(profile.attributes, "website");
     if (website[0]) return website[0].value;
   };
 
   const checkTwitter = () => {
+    if (!profile.attributes) return;
     const twitter = filterAttributes(profile.attributes, "twitter");
     if (twitter[0]) return twitter[0].value;
   };
 
-  const handleSave = async () => {
+  const { register, handleSubmit, reset } = useForm<ProfileInputs>();
+  const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
     setIsUpdating(true);
     const payload = {
-      name: updateName,
-      bio: updateBio,
-      cover_picture: updateCoverPicture,
+      name: data.name,
+      bio: data.bio,
+      cover_picture: data.cover_picture,
       attributes: [
         {
           traitType: "string",
-          value: updateLocation,
+          value: data.location,
           key: "location",
         },
         {
           traitType: "string",
-          value: updateWebsite,
+          value: data.website,
           key: "website",
         },
         {
           traitType: "string",
-          value: updateTwitterUrl,
+          value: data.twitter_handle,
           key: "twitter",
         },
       ],
     };
-    console.log("payload", payload);
-    // TODO: current method obsolete, need to update
-    // const result = await uploadIpfsProfile({ payload });
+    // console.log("payload", payload);
+    const result = await uploadIpfsProfile(payload);
+    // console.log("result", result);
 
-    // createSetProfileMetadataTypedData({
-    //   variables: {
-    //     request: {
-    //       profileId: profile.id,
-    //       metadata: "https://ipfs.infura.io/ipfs/" + result.path,
-    //     },
-    //   },
-    // });
+    createSetProfileMetadataTypedData({
+      variables: {
+        request: {
+          profileId: profile.id,
+          metadata: "https://ipfs.infura.io/ipfs/" + result.path,
+        },
+      },
+    });
   };
+
+  const resetAsyncForm = useCallback(async () => {
+    reset({
+      name: profile?.name as string,
+      bio: profile.bio || "",
+      // cover_picture: profile.coverPicture || "",
+      location: checkLocation() || "",
+      website: checkWebsite() || "",
+      twitter_handle: checkTwitter() || "",
+    });
+  }, [reset]);
+
+  useEffect(() => {
+    resetAsyncForm();
+  }, [resetAsyncForm]);
 
   const handleRefetch = async () => {
     refetch();
@@ -181,53 +203,75 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
         </div>
       ) : (
         <div className="h-6/10">
-          <div className="h-1/2 overflow-y-scroll">
-            <TextField
-              className="my-4"
-              name="name"
-              label="Update Your Name"
-              value={updateName}
-              placeholder="name"
-              onChange={(e) => setUpdateName(e.target.value)}
-            />
-            <TextField
-              className="my-4"
-              name="bio"
-              label="Update Your Bio"
-              value={updateBio}
-              placeholder="bio"
-              onChange={(e) => setUpdateBio(e.target.value)}
-            />
-            <TextField
-              className="my-4"
-              name="location"
-              label="Update Your Location"
-              value={updateLocation}
-              placeholder="location"
-              onChange={(e) => setUpdateLocation(e.target.value)}
-            />
-            <TextField
-              className="my-4"
-              name="website"
-              label="Update Your Website Url"
-              value={updateWebsite || ""}
-              placeholder="website"
-              onChange={(e) => setUpdateWebsite(e.target.value)}
-            />
-            <TextField
-              className="my-4"
-              name="twitter"
-              label="Update Your Twitter Handle"
-              value={updateTwitterUrl || ""}
-              placeholder="Twitter Handle"
-              onChange={(e) => setUpdateTwitterUrl(e.target.value)}
-            />
-          </div>
-          <div className="mt-6">
-            <Button className="p-2" onClick={() => handleSave()}>
-              update profile
-            </Button>
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="h-1/2 overflow-y-scroll space-y-2 p-1">
+              <label
+                htmlFor={"name"}
+                className={"block text-sm font-medium text-stone-700"}
+              >
+                Name
+              </label>
+              <input
+                id={"name"}
+                type="text"
+                {...register("name")}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+              <label
+                htmlFor={"bio"}
+                className={"block text-sm font-medium text-stone-700"}
+              >
+                Bio
+              </label>
+              <input
+                id={"bio"}
+                type="text"
+                {...register("bio")}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+              <label
+                htmlFor={"location"}
+                className={"block text-sm font-medium text-stone-700"}
+              >
+                Location
+              </label>
+              <input
+                id={"location"}
+                type="text"
+                {...register("location")}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+              <label
+                htmlFor={"website"}
+                className={"block text-sm font-medium text-stone-700"}
+              >
+                Website
+              </label>
+              <input
+                id={"website"}
+                type="text"
+                {...register("website")}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+              <label
+                htmlFor={"twitter"}
+                className={"block text-sm font-medium text-stone-700"}
+              >
+                Twitter
+              </label>
+              <input
+                id={"twitter"}
+                type="text"
+                {...register("twitter_handle")}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+            </div>
+            <div className="mt-6">
+              <Button className="p-2" type={`submit`}>
+                update profile
+              </Button>
+            </div>
+          </form>
         </div>
       )}
     </>

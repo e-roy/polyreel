@@ -1,36 +1,25 @@
-import { create } from "ipfs-http-client";
-import { v4 as uuidv4 } from "uuid";
-
-const client = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-});
+import { Attribute } from "@/types/graphql/generated";
 
 type uploadIpfsProfileProps = {
-  payload: {
-    name: string;
-    bio: string;
-    cover_picture: string;
-    attributes: any[];
-  };
+  name: string;
+  bio: string;
+  cover_picture: string;
+  attributes: Attribute[];
 };
 
-export const uploadIpfsProfile = async ({
-  payload,
-}: uploadIpfsProfileProps) => {
-  // console.log("ipfs upload payload", payload);
-  const result = await client.add(
-    JSON.stringify({
-      version: "1.0.0",
-      metadata_id: uuidv4(),
-      appId: "polyreel.xyz",
-      name: payload.name,
-      bio: payload.bio,
-      cover_picture: payload.cover_picture || null,
-      attributes: payload.attributes || [],
-    })
-  );
+export async function uploadIpfsProfile(payload: uploadIpfsProfileProps) {
+  const response = await fetch("/api/ipfs-profile", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
 
+  if (!response.ok) {
+    throw new Error(`Error uploading to IPFS: ${response.statusText}`);
+  }
+
+  const result = await response.json();
   return result;
-};
+}

@@ -94,11 +94,6 @@ export const Header = ({}: HeaderProps) => {
               >
                 <FiChevronLeft className="h-8 w-8 text-stone-100" />
               </div>
-              <Link href={"/home"}>
-                <div className="cursor-pointer mt-2 relative grid content-center justify-center bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full">
-                  <FaHome className="h-6 w-6 text-stone-100" />
-                </div>
-              </Link>
             </>
           ) : (
             <div></div>
