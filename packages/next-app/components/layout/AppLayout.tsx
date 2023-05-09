@@ -94,7 +94,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   // if (router.pathname === "/post/[id]") return null;
 
   return (
-    <div className="flex flex-col h-screen dark:bg-stone-900 dark:text-stone-200">
+    <div className="flex flex-col h-screen dark:bg-stone-950 dark:text-stone-200">
       <Header />
       <div
         className={`container mx-auto max-w-screen-2xl flex-grow md:px-2 lg:px-5`}
@@ -109,7 +109,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
             </aside>
           </div>
           {router.pathname === "/post/[id]" ? (
-            <div className="h-9/10 md:h-98 my-1 col-span-12 md:col-span-11 xl:col-span-10 sm:border-r sm:border-l border-stone-300">
+            <div className="col-span-12 md:col-span-11 xl:col-span-10">
               {children}
             </div>
           ) : (

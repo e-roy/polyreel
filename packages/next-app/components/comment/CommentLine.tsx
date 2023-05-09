@@ -133,8 +133,10 @@ export const CommentLine = ({ publicationId }: CommentLineProps) => {
     // });
   };
 
+  if (!currentUser) return null;
+
   return (
-    <div className="mt-2 border-t">
+    <div className="mt-6">
       <div className="flex relative ml-1 mt-0.5 flex-1">
         <div className={`w-12`}>
           <Avatar profile={currentUser} size={"small"} />

@@ -11,6 +11,7 @@ export const GET_PUBLICATIONS = gql`
   query (
     $request: PublicationsQueryRequest!
     $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
   ) {
     publications(request: $request) {
       items {
@@ -85,12 +86,13 @@ export const VideoComments = ({ postId }: VideoCommentsProps) => {
     rootMargin: "0px 0px 400px 0px",
   });
 
-  if (loading) return <Loading />;
+  // if (loading) return <Loading />;
   if (error) return <Error />;
   //   console.log(data);
+  if (!data) return null;
   return (
     <>
-      {data.publications.items.map((publication: any, index: number) => (
+      {data?.publications.items.map((publication: any, index: number) => (
         <CommentedBranch key={index} publication={publication} />
       ))}
       {pageInfo.next && (
@@ -144,15 +146,15 @@ import { Avatar } from "@/components/elements";
 
 const CommentBody = ({ publication }: any) => {
   return (
-    <div className="px-2 my-3 flex text-sm text-stone-700 font-medium w-full">
+    <div className="px-2 my-3 flex text-sm text-stone-700 dark:text-stone-100 font-medium w-full">
       <Link href={`/profile/${publication.profile.handle}`}>
         <div className={``}>
           <Avatar profile={publication.profile} size="xs" />
         </div>
       </Link>
       <div className="w-full">
-        <div className="mx-2 py-1 px-2 border rounded-xl shadow-md">
-          <div className="">@{publication.profile.handle}</div>
+        <div className="mx-2 p-2 border dark:border-stone-400 rounded-xl shadow-md">
+          <div className="">{publication.profile.name}</div>
           <div className="text-xs">{publication.metadata.content}</div>
         </div>
         <div className="pl-2">

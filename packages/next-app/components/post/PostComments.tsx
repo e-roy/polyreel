@@ -16,10 +16,13 @@ export const PostComments = ({ postId }: PostCommentsProps) => {
         commentsOf: postId,
       },
     },
+    skip: !postId,
   });
 
   if (loading) return <Loading />;
   if (error) return <Error />;
+
+  if (!data) return null;
 
   return (
     <>

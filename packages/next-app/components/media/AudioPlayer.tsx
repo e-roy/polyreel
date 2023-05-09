@@ -77,7 +77,7 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
 
   return (
     <div className="w-full">
-      <div className="bg-white shadow-lg rounded-lg">
+      <div className="bg-white dark:bg-transparent shadow-lg dark:shadow-md dark:shadow-stone-100/30 rounded-lg">
         <div className="md:flex">
           <div>
             <img
@@ -98,7 +98,7 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
             </div>
             <div className="flex my-8">
               <button
-                className="text-stone-700 hover:bg-stone-100 border font-bold p-3 rounded-full mr-2 flex items-center shadow-lg hover:shadow-none"
+                className="text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:border-stone-300 dark:hover:bg-stone-800 border font-bold p-3 rounded-full mr-2 flex items-center shadow-lg hover:shadow-none"
                 onClick={togglePlay}
               >
                 {isPlaying ? (
@@ -114,7 +114,7 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
                 onLoadedMetadata={handleLoadedMetadata}
               />
             </div>
-            <div className="flex items-center space-x-2 text-stone-600 text-xs">
+            <div className="flex items-center space-x-2 text-stone-600 dark:text-stone-300 text-xs">
               <div className="flex items-center space-x-2 w-3/4">
                 <input
                   type="range"
