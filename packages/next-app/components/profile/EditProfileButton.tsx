@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import { useMutation, gql } from "@apollo/client";
 
 import { useSignTypedData, useContractWrite } from "wagmi";
@@ -126,14 +126,14 @@ export const EditProfileButton = ({
     }
   );
 
-  const handleButton = () => {
+  const handleButton = useCallback(() => {
     setIsOpen(true);
-  };
+  }, []);
 
-  const handleRefetch = async () => {
-    await refetch();
+  const handleRefetch = useCallback(async () => {
+    refetch();
     setEditProfileImage(!editProfileImage);
-  };
+  }, [refetch, editProfileImage]);
 
   const handleSetDefault = () => {
     setIsUpdating(true);
@@ -150,7 +150,12 @@ export const EditProfileButton = ({
 
   return (
     <>
-      <Button className="p-2" type={`button`} onClick={() => handleButton()}>
+      <Button
+        className={``}
+        type={`button`}
+        variant={`follow`}
+        onClick={handleButton}
+      >
         edit profile
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>
@@ -213,6 +218,7 @@ export const EditProfileButton = ({
           <div className="flex m-4">
             <button
               onClick={() => setEditProfile("profile")}
+              type={`button`}
               className={classNames(
                 editProfile === "profile"
                   ? "bg-stone-700 text-stone-100"
@@ -224,6 +230,7 @@ export const EditProfileButton = ({
             </button>
             <button
               onClick={() => setEditProfile("settings")}
+              type={`button`}
               className={classNames(
                 editProfile === "settings"
                   ? "bg-stone-700 text-stone-100"
