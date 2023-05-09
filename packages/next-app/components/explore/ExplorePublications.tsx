@@ -70,7 +70,7 @@ export const ExplorePublications = () => {
       {loading && <FeedSkeleton />}
 
       {data?.explorePublications.pageInfo && (
-        <div className="h-4" ref={sentryRef}>
+        <div className="h-36" ref={sentryRef}>
           <LoadingMore />
         </div>
       )}

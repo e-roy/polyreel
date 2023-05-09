@@ -8,6 +8,7 @@ import { logger } from "@/utils/logger";
 import { FeedItem } from "@/types/graphql/generated";
 
 import { FeedItemCard } from "@/components/home";
+import { LoadingMore } from "@/components/elements";
 
 export type UserTimelineProps = {};
 
@@ -79,7 +80,11 @@ export const UserTimeline = ({}: UserTimelineProps) => {
               <FeedItemCard feedItem={item} />
             </div>
           ))}
-        {pageInfo?.next && <div className="h-8" ref={sentryRef}></div>}
+        {pageInfo?.next && (
+          <div className="h-36" ref={sentryRef}>
+            <LoadingMore />
+          </div>
+        )}
       </div>
     </div>
   );
