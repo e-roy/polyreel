@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPlay, FaPause, FaVolumeUp } from "react-icons/fa";
 
+import { checkIpfsUrl } from "@/utils/check-ipfs-url";
+
+import { MetadataOutput, Post as PostType } from "@/types/graphql/generated";
+
 const formatTime = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
@@ -10,10 +14,10 @@ const formatTime = (seconds: number): string => {
 };
 
 interface AudioPlayerProps {
-  src: string;
+  publication: PostType;
 }
 
-export const AudioPlayerCard = ({ src }: AudioPlayerProps) => {
+export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
@@ -78,15 +82,17 @@ export const AudioPlayerCard = ({ src }: AudioPlayerProps) => {
           <div>
             <img
               className="w-full rounded-t-lg  md:rounded-l-lg md:rounded-tr-none"
-              src="https://tailwindcss.com/img/card-top.jpg"
-              alt="Album Pic"
+              src={checkIpfsUrl(publication?.metadata.image)}
+              alt="Song Pic"
             />
           </div>
           <div className="w-full p-4 md:p-8">
             <div className="flex justify-between">
               <div>
-                <h3 className="text-2xl font-medium">title</h3>
-                <p className="text-sm mt-1">description</p>
+                <h3 className="text-2xl font-medium">
+                  {publication.metadata.name}
+                </h3>
+                <p className="mt-1">{publication.profile.name}</p>
               </div>
               <div className=""></div>
             </div>
@@ -103,13 +109,13 @@ export const AudioPlayerCard = ({ src }: AudioPlayerProps) => {
               </button>
               <audio
                 ref={audioRef}
-                src={src}
+                src={checkIpfsUrl(publication?.metadata.media[0].original.url)}
                 onTimeUpdate={updateProgress}
                 onLoadedMetadata={handleLoadedMetadata}
               />
             </div>
-            <div className="flex items-center space-x-4 text-stone-600 text-xs">
-              <div className="flex items-center w-3/4">
+            <div className="flex items-center space-x-2 text-stone-600 text-xs">
+              <div className="flex items-center space-x-2 w-3/4">
                 <input
                   type="range"
                   min="0"
@@ -119,9 +125,9 @@ export const AudioPlayerCard = ({ src }: AudioPlayerProps) => {
                   onChange={handleProgressChange}
                   className="w-full"
                 />
-                <span className="ml-2">{formatTime(remainingTime)}</span>
+                <span className="">{formatTime(remainingTime)}</span>
               </div>
-              <div className="flex items-center space-x-4 w-1/4">
+              <div className="flex items-center space-x-2 w-1/4">
                 <span>
                   <FaVolumeUp className={`w-4 h-4`} />
                 </span>

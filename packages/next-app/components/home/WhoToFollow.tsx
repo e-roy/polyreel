@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Profile } from "@/types/graphql/generated";
 
 import { logger } from "@/utils/logger";
-import { emptyProfile } from "@/lib/empty";
+import { emptyProfile } from "@/utils/empty";
 
 const RECOMMENDED_PROFILES = gql`
   query ($options: RecommendedProfileOptions) {
@@ -57,12 +57,12 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
               <div className={`flex items-center w-full`}>
                 <Avatar profile={profile} size={`small`} loading={loading} />
                 {loading ? (
-                  <div className={`ml-4 w-full space-y-2 animate-pulse `}>
+                  <div className={`ml-4 w-full space-y-4 animate-pulse `}>
                     <div
-                      className={`font-bold bg-stone-300 w-3/4 h-3 rounded`}
+                      className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
                     ></div>
                     <div
-                      className={`font-bold bg-stone-300 w-3/4 h-3 rounded`}
+                      className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
                     ></div>
                   </div>
                 ) : (

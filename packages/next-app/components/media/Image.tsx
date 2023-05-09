@@ -1,10 +1,7 @@
+import { Media } from "@/types/graphql/generated";
+
 type ImageProps = {
-  media: {
-    height?: number;
-    width?: number;
-    url?: string;
-    mimeType?: string;
-  };
+  media: Media;
 };
 
 export const Image = ({ media }: ImageProps) => {
