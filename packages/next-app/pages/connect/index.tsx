@@ -7,7 +7,7 @@ const Connect: NextPage = () => {
   const [search, setSearch] = useState("");
   return (
     <>
-      <div className="flex border rounded-xl mx-4">
+      <div className="flex border rounded-xl mx-4 mt-4">
         <FaSearch className="text-3xl text-stone-500 h-6 w-6 my-auto ml-4" />
         <input
           className="w-full p-2 rounded-xl outline-none"

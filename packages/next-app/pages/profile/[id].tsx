@@ -54,6 +54,8 @@ const ProfilePage: NextPage = () => {
   if (!profileData) return null;
 
   const { profile } = profileData;
+
+  // TODO: need a screen for no profile found
   if (!profile) return <>profile not found</>;
 
   logger("profile/[id].tsx", profile);

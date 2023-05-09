@@ -1,8 +1,9 @@
 import { useQuery, gql } from "@apollo/client";
 import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
-import { Loading, Error } from "@/components/elements";
+import { Error } from "@/components/elements";
 import { Profile } from "@/types/graphql/generated";
 import { ProfileItem } from "@/components/connect";
+import { ConnectSkeleton } from "@/components/skeletons";
 
 import { logger } from "@/utils/logger";
 
@@ -18,7 +19,6 @@ const RECOMMENDED_PROFILES = gql`
   }
   ${ProfileFragmentLite}
 `;
-
 export const SuggestedList = () => {
   const { loading, error, data } = useQuery(RECOMMENDED_PROFILES, {
     variables: {
@@ -29,12 +29,9 @@ export const SuggestedList = () => {
     },
   });
 
-  if (loading) return <Loading />;
   if (error) return <Error />;
 
-  const { recommendedProfiles } = data;
-
-  logger("SuggestedList.tsx", recommendedProfiles);
+  if (data) logger("SuggestedList.tsx", data.recommendedProfiles);
 
   return (
     <div className={``}>
@@ -42,9 +39,10 @@ export const SuggestedList = () => {
         Suggested for you
       </div>
       <div className={``}>
-        {recommendedProfiles.map((profile: Profile) => (
+        {data?.recommendedProfiles.map((profile: Profile) => (
           <ProfileItem profile={profile} key={profile.id} />
         ))}
+        {loading && <ConnectSkeleton />}
       </div>
     </div>
   );

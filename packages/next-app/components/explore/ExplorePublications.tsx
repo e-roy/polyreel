@@ -2,15 +2,14 @@ import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 import { UserContext } from "@/context";
-
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { LoadingMore } from "@/components/elements";
-
 import { Post } from "@/components/post";
-
 import { Publication } from "@/types/graphql/generated";
 
 import { logger } from "@/utils/logger";
+
+import { FeedSkeleton } from "../skeletons/FeedSkeleton";
 
 import { Post as PostType } from "@/types/graphql/generated";
 import { Comment as CommentType } from "@/types/graphql/generated";
@@ -18,7 +17,6 @@ import { Mirror as MirrorType } from "@/types/graphql/generated";
 
 export const ExplorePublications = () => {
   const { currentUser } = useContext(UserContext);
-
   const { loading, error, data, fetchMore } = useQuery(EXPLORE_PUBLICATIONS, {
     variables: {
       request: {
@@ -32,7 +30,6 @@ export const ExplorePublications = () => {
       profileId: currentUser?.id || null,
     },
   });
-
   const loadMore = () => {
     fetchMore({
       variables: {
@@ -40,7 +37,7 @@ export const ExplorePublications = () => {
           sortCriteria: "LATEST",
           // sortCriteria: "TOP_COMMENTED",
           limit: 10,
-          cursor: pageInfo?.next,
+          cursor: data?.explorePublications.pageInfo,
         },
         reactionRequest: {
           profileId: currentUser?.id || null,
@@ -50,19 +47,15 @@ export const ExplorePublications = () => {
     });
   };
 
-  const pageInfo = data?.explorePublications.pageInfo;
-
   const [sentryRef] = useInfiniteScroll({
     loading,
-    hasNextPage: pageInfo?.next,
+    hasNextPage: data?.explorePublications.pageInfo,
     onLoadMore: loadMore,
     disabled: !!error,
     rootMargin: "0px 0px 400px 0px",
   });
-  if (!data) return null;
 
-  const { items } = data?.explorePublications;
-  logger("ExplorePublications.tsx", items);
+  if (data) logger("ExplorePublications.tsx", data?.explorePublications.items);
 
   return (
     <div className={`px-2`}>
@@ -73,10 +66,24 @@ export const ExplorePublications = () => {
           Explore
         </h1>
       </div>
-      {items &&
-        items.map((item: Publication, index: number) => (
+      <ExplorePublicationsList publications={data?.explorePublications.items} />
+      {loading && <FeedSkeleton />}
+
+      {data?.explorePublications.pageInfo && (
+        <div className="h-4" ref={sentryRef}>
+          <LoadingMore />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ExplorePublicationsList = ({ publications }: any) => {
+  return (
+    <>
+      {publications &&
+        publications.map((item: Publication, index: number) => (
           <div key={index}>
-            {/* <div className="h-60 bg-red-500">empty box</div> */}
             {item &&
               item.__typename === "Comment" &&
               item?.commentOn?.id === item.mainPost.id && (
@@ -97,11 +104,6 @@ export const ExplorePublications = () => {
             )}
           </div>
         ))}
-      {pageInfo.next && (
-        <div className="h-4" ref={sentryRef}>
-          <LoadingMore />
-        </div>
-      )}
-    </div>
+    </>
   );
 };

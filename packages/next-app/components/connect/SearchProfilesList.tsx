@@ -1,7 +1,9 @@
 import { useQuery, gql } from "@apollo/client";
+import { Error } from "@/components/elements";
 import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
 import { Profile } from "@/types/graphql/generated";
 import { ProfileItem } from "@/components/connect";
+import { ConnectSkeleton } from "@/components/skeletons";
 
 import { logger } from "@/utils/logger";
 
@@ -29,12 +31,9 @@ const SEARCH_PROFILES = gql`
   ${ProfileFragmentLite}
 `;
 
-import { Loading, Error } from "@/components/elements";
-
 interface ISearchProfilesListProps {
   search?: string;
 }
-
 export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
   const { loading, error, data } = useQuery(SEARCH_PROFILES, {
     variables: {
@@ -46,10 +45,9 @@ export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
     },
   });
 
-  if (loading) return <Loading />;
   if (error) return <Error />;
 
-  logger("SearchProfilesList.tsx", data.search);
+  if (data) logger("SearchProfilesList.tsx", data.search);
 
   return (
     <div className={``}>
@@ -57,9 +55,10 @@ export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
         Search Profiles
       </div>
       <div className={``}>
-        {data.search.items.map((profile: Profile) => (
+        {data?.search?.items.map((profile: Profile) => (
           <ProfileItem profile={profile} key={profile.id} />
         ))}
+        {loading && <ConnectSkeleton />}
       </div>
     </div>
   );
