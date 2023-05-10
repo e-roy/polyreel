@@ -105,7 +105,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           <div className="md:col-span-1 xl:col-span-2 hidden md:block">
             <aside className="flex flex-col pt-16 ml-1 h-full">
               <LeftNavigation />
-              {currentUser && <Logout className={``} />}
+              {currentUser && verified && <Logout className={``} />}
             </aside>
           </div>
           {router.pathname === "/post/[id]" ? (

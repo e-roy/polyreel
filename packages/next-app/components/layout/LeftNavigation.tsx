@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { UserContext } from "@/context";
 
 export const LeftNavigation = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, verified } = useContext(UserContext);
   const router = useRouter();
   // console.log(router);
 
@@ -69,7 +69,7 @@ export const LeftNavigation = () => {
     },
   ];
 
-  const sidebarNav = currentUser ? userNav : guestNav;
+  const sidebarNav = currentUser && verified ? userNav : guestNav;
   return (
     <>
       <ul className={``}>

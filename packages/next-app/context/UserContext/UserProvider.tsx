@@ -77,7 +77,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const {
     data: defaultProfileData,
     loading: defaultProfileLoading,
-    refetch,
+    refetch: refechProfiles,
   } = useQuery(GET_DEFAULT_PROFILE, {
     variables: {
       request: {
@@ -87,9 +87,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     skip: !address,
   });
 
-  const token = useMemo(() => getAuthenticationToken(), []);
+  const token = getAuthenticationToken();
 
-  const { data: verifyData, loading: verifyLoading } = useQuery(VERIFY, {
+  const {
+    data: verifyData,
+    loading: verifyLoading,
+    refetch: refetchVerify,
+  } = useQuery(VERIFY, {
     variables: {
       request: { accessToken: token },
     },
@@ -142,24 +146,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, [userProfilesData?.profiles]);
 
-  // useEffect(() => {
-  //   const body = document.querySelector("body");
-  //   // console.log(`body`, body);
-  //   // if (body) {
-  //   //   body.classList.add(theme);
-  //   //   return () => body.classList.remove(theme);
-  //   // }
-  //   if (
-  //     localStorage.theme === "dark" ||
-  //     (!("theme" in localStorage) &&
-  //       window.matchMedia("(prefers-color-scheme: dark)").matches)
-  //   ) {
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //   }
-  // }, []);
-
   const injectContext = useMemo(
     () => ({
       profiles: userProfilesData?.profiles?.items,
@@ -171,8 +157,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         setCurrentUserProfile(profile);
         localStorage.setItem("polyreel_current_user_profile_id", profile.id);
       },
-      refechProfiles: refetch,
+      refechProfiles: refechProfiles,
       verified: verifyData?.verify,
+      refetchVerify: refetchVerify,
       loading: verifyLoading,
     }),
     [

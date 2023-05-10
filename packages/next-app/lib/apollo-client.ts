@@ -42,7 +42,7 @@ const tokenRefreshLink = new ApolloLink((operation, forward) => {
           const newToken = res?.data?.refresh?.accessToken;
 
           if (newToken) {
-            setAuthenticationToken({ token: res.data.refresh });
+            await setAuthenticationToken({ token: res.data.refresh });
             operation.setContext(({ headers = {} }) => ({
               headers: {
                 ...headers,

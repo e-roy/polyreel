@@ -4,7 +4,7 @@ interface authToken {
     refreshToken: string;
   };
 }
-export const setAuthenticationToken = ({ token }: authToken) => {
+export const setAuthenticationToken = async ({ token }: authToken) => {
   if (typeof window !== "undefined") {
     sessionStorage.setItem("access_token", token.accessToken);
     sessionStorage.setItem("refresh_token", token.refreshToken);

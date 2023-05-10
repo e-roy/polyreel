@@ -2,13 +2,16 @@ import { useRouter } from "next/router";
 import { FiLogOut } from "react-icons/fi";
 import { useAccount, useDisconnect } from "wagmi";
 import { removeAuthenticationToken } from "@/lib/auth/state";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+import { UserContext } from "@/context";
 
 type LogoutProps = {
   className?: string;
 };
 
 export const Logout = ({ className }: LogoutProps) => {
+  const { refetchVerify } = useContext(UserContext);
+
   const router = useRouter();
 
   const { address } = useAccount();
@@ -18,9 +21,11 @@ export const Logout = ({ className }: LogoutProps) => {
     if (address) {
       disconnect();
       await removeAuthenticationToken();
+      refetchVerify();
       router.push("/");
     } else {
       await removeAuthenticationToken();
+      refetchVerify();
       router.push("/");
     }
   }, [address, disconnect, router]);

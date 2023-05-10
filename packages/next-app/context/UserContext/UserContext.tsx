@@ -8,6 +8,7 @@ export interface UserContextType {
   setCurrentUser: Dispatch<Profile>;
   refechProfiles: () => void;
   verified?: boolean;
+  refetchVerify: () => void;
   loading?: boolean;
 }
 
@@ -18,5 +19,6 @@ export const UserContext = createContext<UserContextType>({
   setCurrentUser: () => {},
   refechProfiles: () => {},
   verified: undefined,
+  refetchVerify: () => {},
   loading: true,
 });

@@ -67,15 +67,6 @@ export const Header = ({}: HeaderProps) => {
             <div className="flex">
               <Avatar profile={currentUser} size={"small"} />
             </div>
-          ) : address ? (
-            <div className="flex">
-              <FaUserAlt
-                className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
-              />
-              <div className="px-4 py-2 font-medium">
-                <div>Select Profile</div>
-              </div>
-            </div>
           ) : (
             <div className="flex text-black">
               <FaUserAlt
@@ -132,14 +123,8 @@ export const Header = ({}: HeaderProps) => {
                 leaveTo="-translate-x-full"
               >
                 <div className="pointer-events-auto max-w-md">
-                  <div className="flex h-full flex-col overflow-y-hidden bg-white pb-6 shadow">
-                    <div
-                      className="hover:bg-sky-200 cursor-pointer border-b shadow"
-                      onClick={() => {
-                        if (currentUser)
-                          router.push(`/profile/${currentUser?.handle}`);
-                      }}
-                    >
+                  <div className="flex h-full flex-col overflow-y-hidden bg-white dark:bg-stone-900 pb-6 shadow">
+                    <div className="border-b shadow">
                       {currentUser?.coverPicture ? (
                         <div className=" h-40 sm:h-56">
                           {currentUser.coverPicture.__typename ===
@@ -176,7 +161,7 @@ export const Header = ({}: HeaderProps) => {
                     </div>
                     <div className={`w-72 m-4`}>
                       <LeftNavigation />
-                      <Logout className={``} />
+                      {currentUser && verified && <Logout className={``} />}
                     </div>
                   </div>
                 </div>
