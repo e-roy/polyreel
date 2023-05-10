@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Avatar } from "../elements";
 import { cardFormatDate } from "@/utils/formatDate";
 
-interface ICommentCardProps {
+interface INewCommentCardProps {
   item: NewCommentNotification;
 }
 
-export const CommentCard = ({ item }: ICommentCardProps) => {
+export const NewCommentCard = ({ item }: INewCommentCardProps) => {
   // console.log(item);
   return (
     <div className="p-2">

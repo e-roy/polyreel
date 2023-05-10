@@ -10,7 +10,7 @@ import {
 } from "@/types/graphql/generated";
 
 import {
-  CommentCard,
+  NewCommentCard,
   NewFollowerCard,
   NewMentionCard,
   NewReactionCard,
@@ -24,7 +24,7 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
   if (!item) return null;
 
   if (item.__typename === "NewCommentNotification") {
-    return <CommentCard item={item} />;
+    return <NewCommentCard item={item} />;
   }
 
   if (item.__typename === "NewMentionNotification") {

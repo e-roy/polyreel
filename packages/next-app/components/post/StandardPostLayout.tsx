@@ -24,9 +24,9 @@ export const StandardPostLayout = ({
       <div className={`grid grid-cols-12 lg:gap-4 xl:gap-8 2xl:gap-12`}>
         {/* Main Column */}
         <div className="w-full md:mx-2 col-span-12 lg:col-span-9">
-          <div className="h-9/10 md:h-98vh my-1 overflow-y-scroll sm:border-r sm:border-l border-stone-300">
+          <div className="h-9/10 md:h-98vh my-1 overflow-y-scroll lg:border-r md:border-l border-stone-300">
             <div className="flex flex-1 justify-center w-full">
-              <div className="w-full p-6">
+              <div className="w-full px-2 sm:p-6">
                 <div className="mb-4">
                   {publication && (
                     <Post publication={publication} postType="page" />

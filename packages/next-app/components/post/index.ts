@@ -8,3 +8,4 @@ export { PostComments } from "./PostComments";
 export { VideoComments } from "./VideoComments";
 export * from "./VideoPostLayout";
 export * from "./StandardPostLayout";
+export * from "./CommentModal";

@@ -1,11 +1,11 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context";
 import { Mirror, Collect, Like } from "@/components/post";
 
 import { BsChat } from "react-icons/bs";
 
-import { CommentCard } from "@/components/comment";
+import { CommentModal } from "@/components/post/CommentModal";
 
 import { Post, PublicationStats } from "@/types/graphql/generated";
 
@@ -16,7 +16,6 @@ type StatsProps = {
 
 export const Stats = ({ publication }: StatsProps) => {
   const { currentUser } = useContext(UserContext);
-  const [showComment, setShowComment] = useState(false);
 
   if (!publication) return null;
 
@@ -45,15 +44,7 @@ export const Stats = ({ publication }: StatsProps) => {
     <>
       <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4 mx-2 sm:mx-4">
         <div className={`flex space-x-4`}>
-          <span className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer">
-            {stats?.totalAmountOfComments}
-            <BsChat
-              onClick={() => setShowComment(!showComment)}
-              className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
-              aria-hidden="true"
-            />
-          </span>
-
+          <CommentModal publication={publication} />
           <Mirror publication={publication} />
           <Like publication={publication} />
           <Collect publication={publication} />
@@ -64,12 +55,6 @@ export const Stats = ({ publication }: StatsProps) => {
           </div>
         )}
       </div>
-      {showComment && (
-        <CommentCard
-          publicationId={publication?.id}
-          onClose={() => setShowComment(!showComment)}
-        />
-      )}
     </>
   );
 };

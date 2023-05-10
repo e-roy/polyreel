@@ -165,7 +165,7 @@ export const CommentLine = ({ publicationId, refetch }: CommentLineProps) => {
                   className={`block w-full rounded-full border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
                 />
                 <button
-                  type={`button`}
+                  type={`submit`}
                   className={
                     "bg-sky-500 hover:bg-sky-600 hover:text-white text-gray-100 rounded-full p-2 my-auto"
                   }

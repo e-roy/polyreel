@@ -95,7 +95,7 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
   if (!data) return null;
   return (
     <div className={`relative lg:h-95vh`}>
-      <div className={`lg:overflow-y-scroll flex-grow`}>
+      <div className={`lg:overflow-y-scroll lg:h-8/10 flex-grow`}>
         {data?.publications.items.map((publication: any, index: number) => (
           <CommentedBranch key={index} publication={publication} />
         ))}
