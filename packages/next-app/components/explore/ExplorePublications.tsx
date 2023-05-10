@@ -22,7 +22,7 @@ export const ExplorePublications = () => {
       request: {
         sortCriteria: "LATEST",
         // sortCriteria: "TOP_COMMENTED",
-        limit: 10,
+        limit: 20,
       },
       reactionRequest: {
         profileId: currentUser?.id || null,
@@ -36,7 +36,7 @@ export const ExplorePublications = () => {
         request: {
           sortCriteria: "LATEST",
           // sortCriteria: "TOP_COMMENTED",
-          limit: 10,
+          limit: 20,
           cursor: data?.explorePublications.pageInfo,
         },
         reactionRequest: {

@@ -42,6 +42,7 @@ export const ProfileFragmentFull = gql`
       value
     }
     stats {
+      id
       totalFollowers
       totalFollowing
       totalPosts

@@ -22,6 +22,7 @@ export const ProfileFragmentLite = gql`
       }
     }
     stats {
+      id
       totalFollowers
       totalFollowing
     }

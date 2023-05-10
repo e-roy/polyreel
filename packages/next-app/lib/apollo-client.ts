@@ -119,6 +119,10 @@ export const apolloClient = () => {
             ]),
             followers: lensPagination(["request", ["profileId"]]),
             following: lensPagination(["request", ["address"]]),
+            profiles: lensPagination([
+              "request",
+              ["profileIds", "ownedBy", "handles", "whoMirroredPublicationId"],
+            ]),
           },
         },
       },
