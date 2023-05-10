@@ -3,7 +3,6 @@ import { LivepeerPlayer } from "@/components/media";
 import { LinkItUrl, LinkItProfile, LinkItHashtag } from "@/lib/links";
 import { cardFormatDate } from "@/utils/formatDate";
 import { Mirror, Collect, Like, VideoComments } from "@/components/post";
-import { CommentLine } from "@/components/comment";
 
 import { Post as PostType } from "@/types/graphql/generated";
 import Link from "next/link";

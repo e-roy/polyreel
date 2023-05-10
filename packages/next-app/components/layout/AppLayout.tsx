@@ -116,7 +116,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
             <>
               {/* Main Column */}
               <div className="w-full md:mx-2 col-span-12 md:col-span-11 lg:col-span-8 xl:col-span-7">
-                <div className="h-9/10 md:98vh my-1 overflow-y-scroll sm:border-r sm:border-l border-stone-300">
+                <div className="h-9/10 md:h-98vh my-1 overflow-y-scroll sm:border-r sm:border-l border-stone-300">
                   {children}
                 </div>
               </div>

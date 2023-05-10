@@ -1,12 +1,3 @@
-// description: payload.description,
-// content: payload.content,
-// external_url: null,
-// image: payload.image || null,
-// imageMimeType: payload.imageMimeType || null,
-// name: payload.name,
-// attributes: payload.attributes || [],
-// media: payload.media || [],
-
 type uploadIpfsPostProps = {
   name: string;
   description: string;
