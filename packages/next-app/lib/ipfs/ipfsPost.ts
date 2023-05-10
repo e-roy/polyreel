@@ -8,9 +8,11 @@
 // media: payload.media || [],
 
 type uploadIpfsPostProps = {
+  name: string;
   description: string;
   content: string;
-  image: string;
+  image: string | null;
+  imageMimeType: any | null;
   attributes: any[];
   media: any[];
 };

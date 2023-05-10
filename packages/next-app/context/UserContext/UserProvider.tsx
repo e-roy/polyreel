@@ -97,7 +97,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     variables: {
       request: { accessToken: token },
     },
-    skip: !token,
+    skip: !token || !address,
   });
 
   // let verifyData = { verify: true };

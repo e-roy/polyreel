@@ -215,7 +215,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
                 id={"name"}
                 type="text"
                 {...register("name")}
-                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
               />
               <label
                 htmlFor={"bio"}
@@ -227,7 +227,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
                 id={"bio"}
                 type="text"
                 {...register("bio")}
-                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
               />
               <label
                 htmlFor={"location"}
@@ -239,7 +239,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
                 id={"location"}
                 type="text"
                 {...register("location")}
-                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
               />
               <label
                 htmlFor={"website"}
@@ -251,7 +251,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
                 id={"website"}
                 type="text"
                 {...register("website")}
-                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
               />
               <label
                 htmlFor={"twitter"}
@@ -263,7 +263,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
                 id={"twitter"}
                 type="text"
                 {...register("twitter_handle")}
-                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                className={`block w-full rounded-md border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
               />
             </div>
             <div className="mt-6">

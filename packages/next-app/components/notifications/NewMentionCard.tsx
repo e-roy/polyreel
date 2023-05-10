@@ -13,14 +13,13 @@ export const NewMentionCard = ({ item }: INewMentionCardProps) => {
     <div className="p-2 my-1">
       <div className="flex justify-between mb-2">
         <div className="flex w-full">
-          <Link href={`/profile/${item.mentionPublication.profile.handle}`}>
-            <div className="cursor-pointer">
-              <Avatar
-                profile={item.mentionPublication.profile}
-                size={"small"}
-              />
-            </div>
-          </Link>
+          <div className="cursor-pointer">
+            <Avatar
+              profile={item.mentionPublication.profile}
+              size={"small"}
+              href={`/profile/${item.mentionPublication.profile.handle}`}
+            />
+          </div>
           <div className={`flex justify-between w-full`}>
             <div className="md:px-2 py-1 my-auto text-stone-800 dark:text-stone-200 rounded-xl">
               <div className="my-auto font-semibold text-md flex flex-col">

@@ -15,6 +15,8 @@ import { Post as PostType } from "@/types/graphql/generated";
 import { cardFormatDate } from "@/utils/formatDate";
 import { Stats } from "../post";
 
+import { checkIpfsUrl } from "@/utils/check-ipfs-url";
+
 interface IFeedItemCardProps {
   feedItem: FeedItem;
 }
@@ -27,11 +29,13 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
   return (
     <div className={`border-b my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
-        <Link href={`/profile/${feedItem.root.profile.handle}`} passHref>
-          <div className={`col-span-1`}>
-            <Avatar profile={feedItem.root.profile} size={`small`} />
-          </div>
-        </Link>
+        <div className={`col-span-1`}>
+          <Avatar
+            profile={feedItem.root.profile}
+            size={`small`}
+            href={`/profile/${feedItem.root.profile.handle}`}
+          />
+        </div>
         <div className={`flex flex-col col-span-7 md:col-span-11`}>
           <div className={`flex`}>
             <Link
@@ -88,11 +92,11 @@ export const FeedItemCard = ({ feedItem }: IFeedItemCardProps) => {
 };
 
 const MediaDisplay = ({ publication }: any) => {
-  const checkImage = (url: string) => {
-    if (url.startsWith("ipfs://"))
-      return `https://ipfs.io/ipfs/${url.substring(7)}`;
-    else return url;
-  };
+  // const checkImage = (url: string) => {
+  //   if (url.startsWith("ipfs://"))
+  //     return `https://ipfs.io/ipfs/${url.substring(7)}`;
+  //   else return url;
+  // };
 
   if (publication.metadata.media[0]?.original.mimeType === "video/mp4")
     return (
@@ -106,7 +110,7 @@ const MediaDisplay = ({ publication }: any) => {
     return (
       <div className="relative border rounded-lg shadow-lg">
         <img
-          src={checkImage(publication.metadata.image as string)}
+          src={checkIpfsUrl(publication.metadata.image as string)}
           alt=""
           className="rounded-lg"
         />

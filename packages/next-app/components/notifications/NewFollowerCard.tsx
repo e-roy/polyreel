@@ -14,11 +14,13 @@ export const NewFollowerCard = ({ item }: INewFollowerCardProps) => {
       {item.wallet.defaultProfile && (
         <div className="flex justify-between mb-2">
           <div className="flex w-full">
-            <Link href={`/profile/${item.wallet.defaultProfile.handle}`}>
-              <div className="cursor-pointer">
-                <Avatar profile={item.wallet.defaultProfile} size={"small"} />
-              </div>
-            </Link>
+            <div className="cursor-pointer">
+              <Avatar
+                profile={item.wallet.defaultProfile}
+                size={"small"}
+                href={`/profile/${item.wallet.defaultProfile.handle}`}
+              />
+            </div>
             <div className={`flex justify-between w-full`}>
               <div className="md:px-2 py-1 my-auto text-stone-800 dark:text-stone-200 rounded-xl">
                 <div className="my-auto font-semibold text-md flex flex-col">

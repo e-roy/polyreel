@@ -6,4 +6,5 @@ export { Collect } from "./Collect";
 export { Like } from "./Like";
 export { PostComments } from "./PostComments";
 export { VideoComments } from "./VideoComments";
-export { VideoCommentsReactions } from "./VideoCommentsReactions";
+export * from "./VideoPostLayout";
+export * from "./StandardPostLayout";

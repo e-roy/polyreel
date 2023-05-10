@@ -31,11 +31,13 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
   return (
     <div className={`border-b dark:border-stone-300/30 my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
-        <Link href={`/profile/${publication.profile.handle}`} passHref>
-          <div className={`col-span-1`}>
-            <Avatar profile={publication.profile} size={`small`} />
-          </div>
-        </Link>
+        <div className={`col-span-1`}>
+          <Avatar
+            profile={publication.profile}
+            size={`small`}
+            href={`/profile/${publication.profile.handle}`}
+          />
+        </div>
         <div className={`flex flex-col col-span-7 md:col-span-11`}>
           <div className={`flex`}>
             <Link

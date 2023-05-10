@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/router";
 import { FaUserAlt } from "react-icons/fa";
 
 import { Profile } from "@/types/graphql/generated";
@@ -11,6 +12,7 @@ type AvatarProps = {
   profile?: Profile;
   size: "xs" | "small" | "medium" | "profile";
   loading?: boolean;
+  href?: string;
 };
 
 const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white shadow-xl object-cover`;
@@ -18,7 +20,8 @@ const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-0.5 b
 const SmallAvatar = `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 bg-white shadow object-cover`;
 const XSAvatar = `inline-block rounded-full h-7 w-7 text-stone-500 bg-white shadow object-cover`;
 
-export const Avatar = ({ profile, size, loading }: AvatarProps) => {
+export const Avatar = ({ profile, size, loading, href }: AvatarProps) => {
+  const router = useRouter();
   const [avatarSize, setAvatarSize] = useState("");
 
   useEffect(() => {
@@ -57,10 +60,29 @@ export const Avatar = ({ profile, size, loading }: AvatarProps) => {
     );
   }
 
+  const handleClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (href) {
+      router.push(href);
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (href) {
+        router.push(href);
+      }
+    }
+  };
+
   return (
     <HoverCard>
       <HoverCardTrigger>
         <div
+          role="link"
+          tabIndex={0}
+          aria-label={`Profile of ${profile.name}`}
           className={
             avatarSize === LargeAvatar
               ? `h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32`
@@ -70,6 +92,8 @@ export const Avatar = ({ profile, size, loading }: AvatarProps) => {
               ? `h-10 w-10 md:h-10 md:w-10`
               : `h-7 w-7`
           }
+          onClick={handleClick}
+          onKeyDown={handleKeyPress}
         >
           <AvatarImage profile={profile} avatarSize={avatarSize} />
         </div>
@@ -115,23 +139,24 @@ interface IAvatarImageProps {
 }
 
 const AvatarImage = ({ profile, avatarSize }: IAvatarImageProps) => {
-  if (profile.picture?.__typename === "NftImage") {
-    return (
-      <img
-        src={profile.picture.uri}
-        alt={`@${profile.handle}`}
-        className={avatarSize}
-      />
-    );
-  } else if (profile.picture?.__typename === "MediaSet") {
-    return (
-      <img
-        src={checkIpfsUrl(profile?.picture.original.url)}
-        alt={`@${profile.handle}`}
-        className={`${avatarSize}`}
-      />
-    );
-  } else {
-    return <FaUserAlt className={avatarSize} />;
-  }
+  const imageElement = (
+    <>
+      {profile.picture?.__typename === "NftImage" ? (
+        <img
+          src={profile.picture.uri}
+          alt={`@${profile.handle}`}
+          className={`${avatarSize} cursor-pointer`}
+        />
+      ) : profile.picture?.__typename === "MediaSet" ? (
+        <img
+          src={checkIpfsUrl(profile?.picture.original.url)}
+          alt={`@${profile.handle}`}
+          className={`${avatarSize} cursor-pointer`}
+        />
+      ) : (
+        <FaUserAlt className={avatarSize} />
+      )}
+    </>
+  );
+  return imageElement;
 };
