@@ -83,8 +83,8 @@ const ExplorePublicationsList = ({ publications }: any) => {
   return (
     <>
       {publications &&
-        publications.map((item: Publication) => (
-          <div key={item.id}>
+        publications.map((item: Publication, index: number) => (
+          <div key={index}>
             {item &&
               item.__typename === "Comment" &&
               item?.commentOn?.id === item.mainPost.id && (

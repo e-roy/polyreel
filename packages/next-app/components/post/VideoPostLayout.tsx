@@ -23,7 +23,7 @@ export const VideoPostLayout = ({ publication }: { publication: PostType }) => {
           <div className="md:mx-20 lg:mx-0">
             <LivepeerPlayer
               publication={publication}
-              playbackId={publication.metadata.media[0]?.original.url}
+              playbackId={publication?.metadata?.media[0]?.original.url}
             />
           </div>
           <div className="p-4">
@@ -31,26 +31,26 @@ export const VideoPostLayout = ({ publication }: { publication: PostType }) => {
               <div className={`flex`}>
                 <div className={`col-span-1`}>
                   <Avatar
-                    profile={publication.profile}
+                    profile={publication?.profile}
                     size={`small`}
-                    href={`/profile/${publication.profile.handle}`}
+                    href={`/profile/${publication?.profile?.handle}`}
                   />
                 </div>
                 <div className={`flex pl-4 my-auto`}>
                   <Link
                     className={`hover:underline`}
-                    href={`/profile/${publication.profile.handle}`}
+                    href={`/profile/${publication?.profile?.handle}`}
                     passHref
                   >
                     <span
                       className={`text-stone-700 dark:text-stone-100 font-medium`}
                     >
-                      {publication.profile.name}
+                      {publication?.profile?.name}
                     </span>
                     <span
                       className={`text-stone-500 dark:text-stone-300 font-medium text-xs pl-2 my-auto`}
                     >
-                      @{publication.profile.handle}
+                      @{publication?.profile?.handle}
                     </span>
                   </Link>
                 </div>

@@ -96,7 +96,7 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
   return (
     <div className={`relative lg:h-95vh`}>
       <div className={`lg:overflow-y-scroll lg:h-8/10 flex-grow`}>
-        {data?.publications.items.map((publication: any, index: number) => (
+        {data?.publications?.items.map((publication: any, index: number) => (
           <CommentedBranch key={index} publication={publication} />
         ))}
         {pageInfo.next && (
@@ -107,7 +107,7 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
       </div>
 
       <div className={`lg:absolute bottom-0 w-full`}>
-        {publication.canComment.result ? (
+        {publication?.canComment?.result ? (
           <CommentLine publicationId={publication.id} refetch={refetch} />
         ) : (
           <div
@@ -127,7 +127,7 @@ const CommentedBranch = ({ publication }: any) => {
       <div className="w-full">
         <CommentBody publication={publication} />
       </div>
-      {publication.stats.totalAmountOfComments > 0 ? (
+      {publication?.stats?.totalAmountOfComments > 0 ? (
         <div className="pl-4 w-full">
           <div className="w-0.5 h-8 ml-10 bg-gray-400 " />
           <div className="-mt-6">
