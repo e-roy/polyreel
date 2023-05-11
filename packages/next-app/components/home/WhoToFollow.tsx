@@ -3,6 +3,7 @@ import { ProfileFragmentLite } from "@/queries/fragments/ProfileFragmentLite";
 import { Error, Avatar } from "@/components/elements";
 import Link from "next/link";
 import { Profile } from "@/types/graphql/generated";
+import { useRouter } from "next/router";
 
 import { logger } from "@/utils/logger";
 import { emptyProfile } from "@/utils/empty";
@@ -23,6 +24,7 @@ const RECOMMENDED_PROFILES = gql`
 interface IWhoToFollowProps {}
 
 export const WhoToFollow = ({}: IWhoToFollowProps) => {
+  const router = useRouter();
   const { loading, error, data } = useQuery(RECOMMENDED_PROFILES, {
     variables: {
       options: {
@@ -55,7 +57,11 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
           profiles?.map((profile: Profile, index: number) => (
             <div
               key={index}
-              className={`flex items-center px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-700`}
+              role="link"
+              tabIndex={0}
+              aria-label={`Profile of ${profile?.name}`}
+              onClick={() => router.push(`/profile/${profile?.handle}`)}
+              className={`flex items-center px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer`}
             >
               <Avatar
                 profile={profile}

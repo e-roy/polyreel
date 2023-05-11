@@ -1,1 +1,0 @@
-export { FollowersCard } from "./FollowersCard";
