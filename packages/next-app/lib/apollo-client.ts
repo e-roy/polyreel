@@ -131,15 +131,55 @@ export const apolloClient = () => {
   return apolloClient;
 };
 
-const lensPagination = (keyArgs: any) => {
+import type { FieldPolicy, StoreValue } from "@apollo/client/core";
+import { PaginatedResultInfo } from "@/types/graphql/generated";
+
+interface CursorBasedPagination<T = StoreValue> {
+  items: T[];
+  pageInfo: PaginatedResultInfo;
+}
+
+type SafeReadonly<T> = T extends object ? Readonly<T> : T;
+
+const lensPagination = <T extends CursorBasedPagination>(
+  keyArgs: FieldPolicy["keyArgs"]
+) => {
   return {
     keyArgs,
-    merge(existing: any, incoming: any) {
+
+    read(existing: SafeReadonly<T> | undefined) {
+      if (!existing) {
+        return existing;
+      }
+      const { items, pageInfo } = existing;
+
+      return {
+        ...existing,
+        items,
+        pageInfo: {
+          ...pageInfo,
+        },
+      };
+    },
+
+    merge(existing: Readonly<T> | undefined, incoming: SafeReadonly<T>) {
       if (!existing) {
         return incoming;
       }
       const existingItems = existing.items ?? [];
       const incomingItems = incoming.items ?? [];
+
+      // console.log("existing", existing);
+      // console.log("incoming", incoming);
+      // console.log("existingItems", existingItems);
+      // console.log("incomingItems", incomingItems);
+
+      // const filteredIncomingItems = incomingItems.filter(
+      //   (incomingItem: any) =>
+      //     !existingItems.some(
+      //       (existingItem: any) => existingItem.id === incomingItem.id
+      //     )
+      // );
 
       return {
         ...incoming,

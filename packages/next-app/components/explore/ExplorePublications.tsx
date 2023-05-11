@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { EXPLORE_PUBLICATIONS } from "@/queries/explore/explore-publications";
 import { UserContext } from "@/context";
@@ -30,27 +30,28 @@ export const ExplorePublications = () => {
       profileId: currentUser?.id || null,
     },
   });
-  const loadMore = () => {
-    fetchMore({
-      variables: {
-        request: {
-          sortCriteria: "LATEST",
-          // sortCriteria: "TOP_COMMENTED",
-          limit: 20,
-          cursor: data?.explorePublications.pageInfo,
+
+  const pageInfo = data?.explorePublications?.pageInfo;
+
+  const handleLoadMore = useCallback(
+    () =>
+      fetchMore({
+        variables: {
+          request: {
+            sortCriteria: "LATEST",
+            // sortCriteria: "TOP_COMMENTED",
+            limit: 20,
+            cursor: pageInfo?.next,
+          },
         },
-        reactionRequest: {
-          profileId: currentUser?.id || null,
-        },
-        profileId: currentUser?.id || null,
-      },
-    });
-  };
+      }),
+    [fetchMore, pageInfo?.next]
+  );
 
   const [sentryRef] = useInfiniteScroll({
     loading,
-    hasNextPage: data?.explorePublications.pageInfo,
-    onLoadMore: loadMore,
+    hasNextPage: pageInfo?.next,
+    onLoadMore: handleLoadMore,
     disabled: !!error,
     rootMargin: "0px 0px 400px 0px",
   });
@@ -82,23 +83,17 @@ const ExplorePublicationsList = ({ publications }: any) => {
   return (
     <>
       {publications &&
-        publications.map((item: Publication, index: number) => (
-          <div key={index}>
+        publications.map((item: Publication) => (
+          <div key={item.id}>
             {item &&
               item.__typename === "Comment" &&
               item?.commentOn?.id === item.mainPost.id && (
-                <div
-                  key={index}
-                  className="sm:p-4 border-b-4 border-stone-400/40"
-                >
+                <div className="sm:p-4 border-b-4 border-stone-400/40">
                   <Post publication={item} postType="feed" />
                 </div>
               )}
             {item && item.__typename !== "Comment" && (
-              <div
-                key={index}
-                className="sm:p-4 border-b-4 border-stone-400/40"
-              >
+              <div className="sm:p-4 border-b-4 border-stone-400/40">
                 <Post publication={item} postType="feed" />
               </div>
             )}

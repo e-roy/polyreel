@@ -12,7 +12,6 @@ import { FaTwitter, FaGlobeAmericas } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import {
   EditProfileButton,
-  FollowersButton,
   DoesFollow,
   NavSelect,
   GetUserNfts,
@@ -23,15 +22,22 @@ import { Avatar, Loading, Error } from "@/components/elements";
 
 import { LinkItUrl, LinkItProfile } from "@/lib/links";
 
-// import { Profile } from "@/types/graphql/generated";
 import { checkIpfsUrl } from "@/utils/check-ipfs-url";
 import { checkFollowerCount } from "@/utils/check-follower-count";
 
 import { logger } from "@/utils/logger";
+import Link from "next/link";
+
+const endSuffix = process.env.NODE_ENV === "production" ? ".lens" : ".test";
 
 const ProfilePage: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id: rawId } = router.query;
+  const id =
+    typeof rawId === "string" && !rawId.endsWith(endSuffix)
+      ? `${rawId}` + endSuffix
+      : rawId;
+
   const [navSelect, setNavSelect] = useState("POST");
 
   const { address } = useAccount();
@@ -172,13 +178,35 @@ const ProfilePage: NextPage = () => {
             </div>
           )}
           <div className="sm:flex justify-between">
-            <div className="font-semibold">
-              <FollowersButton
+            <div className="flex bg-transparent space-x-4 font-semibold">
+              <Link
+                href={`/profile/${profile.handle}/following`}
+                className="font-semibold py-2 hover:underline"
+              >
+                {checkFollowerCount(profile.stats.totalFollowing)}{" "}
+                <span
+                  className={`text-stone-500 dark:text-stone-400 font-normal`}
+                >
+                  Following
+                </span>
+              </Link>
+              <Link
+                href={`/profile/${profile.handle}/followers`}
+                className="font-semibold py-2 hover:underline"
+              >
+                {checkFollowerCount(profile.stats.totalFollowers)}{" "}
+                <span
+                  className={`text-stone-500 dark:text-stone-400 font-normal`}
+                >
+                  Followers
+                </span>
+              </Link>
+              {/* <FollowersButton
                 ownedBy={profile.ownedBy}
                 profileId={profile.id}
                 followers={checkFollowerCount(profile.stats.totalFollowers)}
                 following={checkFollowerCount(profile.stats.totalFollowing)}
-              />
+              /> */}
             </div>
             <NavSelect
               select={(res) => setNavSelect(res)}

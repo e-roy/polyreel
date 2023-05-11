@@ -118,10 +118,10 @@ export const Avatar = ({ profile, size, loading, href }: AvatarProps) => {
             className={`grid grid-cols-2 my-2 text-xs text-stone-600 dark:text-stone-200 font-medium`}
           >
             <div className={`col-span-1`}>
-              {checkFollowerCount(profile.stats.totalFollowing)} Following
+              {checkFollowerCount(profile?.stats?.totalFollowing)} Following
             </div>
             <div className={`col-span-1`}>
-              {checkFollowerCount(profile.stats.totalFollowers)} Followers
+              {checkFollowerCount(profile?.stats?.totalFollowers)} Followers
             </div>
           </div>
           <div className={`text-stone-600 dark:text-stone-200 text-sm`}>
