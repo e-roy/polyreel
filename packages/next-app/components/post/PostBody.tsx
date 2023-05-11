@@ -1,14 +1,9 @@
 import Link from "next/link";
 
 import { cardFormatDate } from "@/utils/formatDate";
-import {
-  Image,
-  LivepeerPlayer,
-  VideoPlayer,
-  AudioPlayerCard,
-} from "@/components/media";
+import { MediaDisplay } from "@/components/media";
 
-import { MediaSet, Post as PostType } from "@/types/graphql/generated";
+import { Post as PostType } from "@/types/graphql/generated";
 
 import {
   LinkItUrl,
@@ -89,45 +84,5 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
         )}
       </div>
     </div>
-  );
-};
-
-interface IMediaDisplayProps {
-  publication: PostType;
-}
-
-const MediaDisplay = ({ publication }: IMediaDisplayProps) => {
-  // console.log(publication);
-
-  if (
-    publication.metadata.media[0]?.original.mimeType === "video/mp4" ||
-    publication.metadata.media[0]?.original.mimeType === "video/webm"
-  )
-    if (publication.metadata.media[0]?.original.url.includes("ipfs://")) {
-      return (
-        <LivepeerPlayer
-          publication={publication}
-          playbackId={publication.metadata.media[0]?.original.url}
-        />
-      );
-    } else {
-      return (
-        <VideoPlayer source={publication.metadata.media[0]?.original.url} />
-      );
-    }
-
-  if (publication.metadata.media[0]?.original.mimeType === "audio/mpeg")
-    return <AudioPlayerCard publication={publication} />;
-
-  return (
-    <>
-      {publication.metadata.media.map((media: MediaSet, index: number) => (
-        <div key={index}>
-          {media.original.url && media.original.mimeType !== "video/mp4" && (
-            <Image media={media.original} />
-          )}
-        </div>
-      ))}
-    </>
   );
 };

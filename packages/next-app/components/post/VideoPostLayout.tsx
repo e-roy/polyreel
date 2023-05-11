@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { LivepeerPlayer } from "@/components/media";
+import { MediaDisplay } from "@/components/media";
 import { LinkItUrl, LinkItProfile, LinkItHashtag } from "@/lib/links";
 import { cardFormatDate } from "@/utils/formatDate";
 import { Mirror, Collect, Like, VideoComments } from "@/components/post";
@@ -18,13 +18,12 @@ export const VideoPostLayout = ({ publication }: { publication: PostType }) => {
         <meta name="description" content="polyreel" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="lg:flex h-screen">
+      <div className="lg:flex w-full">
         <div className="border dark:border-stone-300/30 lg:w-2/3">
           <div className="md:mx-20 lg:mx-0">
-            <LivepeerPlayer
-              publication={publication}
-              playbackId={publication?.metadata?.media[0]?.original.url}
-            />
+            {publication.metadata && publication.metadata.media && (
+              <MediaDisplay publication={publication} />
+            )}
           </div>
           <div className="p-4">
             <div className="flex justify-between">

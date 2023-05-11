@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useQuery, gql } from "@apollo/client";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { UserContext } from "@/context";
 
 import useInfiniteScroll from "react-infinite-scroll-hook";
@@ -42,7 +42,7 @@ export const GET_PUBLICATIONS = gql`
 `;
 
 type VideoCommentsProps = {
-  publication: Post;
+  publication: PostType;
 };
 
 export const VideoComments = ({ publication }: VideoCommentsProps) => {
@@ -64,27 +64,48 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
     }
   );
 
-  const loadMore = () => {
-    fetchMore({
-      variables: {
-        request: {
-          commentsOf: publication?.id,
-          cursor: pageInfo?.next,
-        },
-        reactionRequest: {
-          profileId: currentUser?.id || null,
-        },
-        profileId: currentUser?.id || null,
-      },
-    });
-  };
+  // const loadMore = () => {
+  //   fetchMore({
+  //     variables: {
+  //       request: {
+  //         commentsOf: publication?.id,
+  //         cursor: pageInfo?.next,
+  //       },
+  //       reactionRequest: {
+  //         profileId: currentUser?.id || null,
+  //       },
+  //       profileId: currentUser?.id || null,
+  //     },
+  //   });
+  // };
 
   const pageInfo = data?.publications.pageInfo;
+
+  // console.log("pageInfo", pageInfo);
+
+  const handleLoadMore = useCallback(
+    () =>
+      fetchMore({
+        variables: {
+          variables: {
+            request: {
+              commentsOf: publication?.id,
+              cursor: pageInfo?.next,
+            },
+            reactionRequest: {
+              profileId: currentUser?.id || null,
+            },
+            profileId: currentUser?.id || null,
+          },
+        },
+      }),
+    [fetchMore, pageInfo?.next]
+  );
 
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage: pageInfo?.next,
-    onLoadMore: loadMore,
+    onLoadMore: handleLoadMore,
     disabled: !!error,
     rootMargin: "0px 0px 400px 0px",
   });
@@ -93,17 +114,21 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
   if (error) return <Error />;
   // console.log(data);
   if (!data) return null;
+
+  logger("VideoComments.tsx", data);
+
   return (
     <div className={`relative lg:h-95vh`}>
       <div className={`lg:overflow-y-scroll lg:h-8/10 flex-grow`}>
-        {data?.publications?.items.map((publication: any, index: number) => (
-          <CommentedBranch key={index} publication={publication} />
+        {data?.publications?.items.map((publication: PostType) => (
+          <CommentedBranch key={publication.id} publication={publication} />
         ))}
-        {pageInfo.next && (
+        {/* Disabled due to causing issues with infinite scroll */}
+        {/* {pageInfo.next && (
           <div className="h-4" ref={sentryRef}>
             <LoadingMore />
           </div>
-        )}
+        )} */}
       </div>
 
       <div className={`lg:absolute bottom-0 w-full`}>
@@ -121,20 +146,22 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
   );
 };
 
-const CommentedBranch = ({ publication }: any) => {
+const CommentedBranch = ({ publication }: { publication: PostType }) => {
+  // console.log("CommentedBranch", publication);
   return (
     <>
       <div className="w-full">
         <CommentBody publication={publication} />
       </div>
-      {publication?.stats?.totalAmountOfComments > 0 ? (
+      {/* Comments on Comments doesn't seem practical, also difficult to query from grahpql */}
+      {/* {publication?.stats?.totalAmountOfComments > 0 ? (
         <div className="pl-4 w-full">
           <div className="w-0.5 h-8 ml-10 bg-gray-400 " />
           <div className="-mt-6">
             <Comment postId={publication.id} />
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </>
   );
 };
@@ -157,7 +184,7 @@ const Comment = ({ postId }: ICommentProps) => {
 
   return (
     <>
-      {data.publications.items.map((publication: any, index: number) => (
+      {data.publications.items.map((publication: PostType, index: number) => (
         <CommentedBranch key={index} publication={publication} />
       ))}
     </>
@@ -166,7 +193,8 @@ const Comment = ({ postId }: ICommentProps) => {
 
 import { Avatar } from "@/components/elements";
 import { CommentLine } from "../comment";
-import { Post } from "@/types/graphql/generated";
+import { Post as PostType } from "@/types/graphql/generated";
+import { logger } from "@/utils/logger";
 
 const CommentBody = ({ publication }: any) => {
   return (

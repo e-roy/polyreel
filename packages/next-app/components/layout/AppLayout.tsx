@@ -94,11 +94,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   // if (router.pathname === "/post/[id]") return null;
 
   return (
-    <div className="flex flex-col h-screen dark:bg-stone-950 dark:text-stone-200">
+    <div className="flex flex-col h-screen overflow-hidden dark:bg-stone-950 dark:text-stone-200">
       <Header />
-      <div
-        className={`container mx-auto max-w-screen-2xl flex-grow md:px-2 lg:px-5`}
-      >
+      <div className={`max-w-screen-2xl flex-grow md:px-2 lg:px-5`}>
         <div className="grid grid-cols-12 lg:gap-4 xl:gap-8 2xl:gap-12">
           {/* 3 column wrapper */}
           {/* Left Column */}
@@ -109,7 +107,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
             </aside>
           </div>
           {router.pathname === "/post/[id]" ? (
-            <div className="col-span-12 md:col-span-11 xl:col-span-10">
+            <div className="col-span-12 md:col-span-11 xl:col-span-10 overflow-y-scroll lg:overflow-y-hidden h-85vh md:h-screen">
               {children}
             </div>
           ) : (
