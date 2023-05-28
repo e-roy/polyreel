@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { Loading, Error, LoadingMore } from "@/components/elements";
+import { FollowHeader } from "./FollowHeader";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/queries/profile/get-profile";
-import { GET_FOLLOWING } from "@/queries/follow/following";
 import { GET_FOLLOWERS } from "@/queries/follow/followers";
 
 import { ProfileItem } from "../connect";
@@ -87,6 +87,7 @@ export const FollowersList = ({}: IFollowersListProps) => {
 
   return (
     <div>
+      <FollowHeader profile={profile} />
       {followers?.items.map((item: Follower, index: number) => (
         <ProfileItem
           profile={item.wallet.defaultProfile as Profile}

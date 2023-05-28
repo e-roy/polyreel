@@ -10,3 +10,4 @@ export { GetPublications } from "./GetPublications";
 export { SetFollowModule } from "./SetFollowModule";
 export * from "./FollowersList";
 export * from "./FollowingList";
+export * from "./FollowHeader";

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Loading, Error, LoadingMore } from "@/components/elements";
+import { FollowHeader } from "./FollowHeader";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/queries/profile/get-profile";
@@ -85,6 +86,7 @@ export const FollowingList = ({}: IFollowingListProps) => {
 
   return (
     <div>
+      <FollowHeader profile={profile} />
       {following?.items.map((item: Following) => (
         <ProfileItem profile={item.profile} key={item.profile.id} />
       ))}
