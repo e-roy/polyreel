@@ -1,1 +1,0 @@
-export { HasCollectedPublication } from "./HasCollectedPublication";
