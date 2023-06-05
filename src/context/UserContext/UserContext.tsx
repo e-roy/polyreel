@@ -1,6 +1,7 @@
 "use client";
+// context/UserContext/UserContext.tsx
 
-import { createContext, Dispatch } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 import { Profile } from "@/types/graphql/generated";
 
 export interface UserContextType {

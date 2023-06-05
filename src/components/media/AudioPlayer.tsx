@@ -1,6 +1,7 @@
 "use client";
+// components/media/AudioPlayer.tsx
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FaPlay, FaPause, FaVolumeUp } from "react-icons/fa";
 
 import { checkIpfsUrl } from "@/utils/check-ipfs-url";
@@ -19,7 +20,9 @@ interface AudioPlayerProps {
   publication: PostType;
 }
 
-export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
+export const AudioPlayerCard = React.memo(function AudioPlayerCard({
+  publication,
+}: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
@@ -41,25 +44,31 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
     }
   }, [volume]);
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+  const togglePlay = useCallback(() => {
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  }, []);
 
-  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setVolume(parseFloat(event.target.value));
-  };
+  const handleVolumeChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setVolume(parseFloat(event.target.value));
+    },
+    []
+  );
 
-  const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newProgress = parseFloat(event.target.value);
-    setProgress(newProgress);
-    if (audioRef.current) {
-      const newCurrentTime = (audioRef.current.duration * newProgress) / 100;
-      audioRef.current.currentTime = newCurrentTime;
-      setRemainingTime(audioRef.current.duration - newCurrentTime);
-    }
-  };
+  const handleProgressChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newProgress = parseFloat(event.target.value);
+      setProgress(newProgress);
+      if (audioRef.current) {
+        const newCurrentTime = (audioRef.current.duration * newProgress) / 100;
+        audioRef.current.currentTime = newCurrentTime;
+        setRemainingTime(audioRef.current.duration - newCurrentTime);
+      }
+    },
+    []
+  );
 
-  const updateProgress = () => {
+  const updateProgress = useCallback(() => {
     if (audioRef.current) {
       const newProgress =
         (audioRef.current.currentTime / audioRef.current.duration) * 100;
@@ -68,14 +77,14 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
         audioRef.current.duration - audioRef.current.currentTime
       );
     }
-  };
+  }, []);
 
-  const handleLoadedMetadata = () => {
+  const handleLoadedMetadata = useCallback(() => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
       setRemainingTime(audioRef.current.duration);
     }
-  };
+  }, []);
 
   return (
     <div className="w-full">
@@ -150,4 +159,4 @@ export const AudioPlayerCard = ({ publication }: AudioPlayerProps) => {
       </div>
     </div>
   );
-};
+});

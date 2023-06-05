@@ -1,4 +1,5 @@
 "use client";
+// components/elements/Avatar.tsx
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -21,46 +22,30 @@ type AvatarProps = {
   href?: string;
 };
 
-const LargeAvatar = `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-1 bg-white dark:bg-stone-950 shadow-xl object-cover`;
-const MediumAvatar = `inline-block rounded-full h-16 w-16 text-stone-500 p-0.5 bg-white dark:bg-stone-950 shadow-xl object-cover`;
-const SmallAvatar = `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 bg-white shadow object-cover`;
-const XSAvatar = `inline-block rounded-full h-7 w-7 text-stone-500 bg-white shadow object-cover`;
+const avatarSizeMap = {
+  xs: `inline-block rounded-full h-7 w-7 text-stone-500 bg-white shadow object-cover`,
+  small: `inline-block rounded-full h-10 w-10 md:h-10 md:w-10  text-stone-500 bg-white shadow object-cover`,
+  medium: `inline-block rounded-full h-16 w-16 text-stone-500 p-0.5 bg-white dark:bg-stone-950 shadow-xl object-cover`,
+  profile: `inline-block rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-stone-500 p-0.5 bg-white dark:bg-stone-950 shadow-xl object-cover`,
+};
 
 export const Avatar = ({ profile, size, loading, href }: AvatarProps) => {
   const router = useRouter();
   const [avatarSize, setAvatarSize] = useState("");
 
   useEffect(() => {
-    if (size) {
-      if (size === "xs") {
-        setAvatarSize(XSAvatar);
-      } else if (size === "small") {
-        setAvatarSize(SmallAvatar);
-      } else if (size === "medium") {
-        setAvatarSize(MediumAvatar);
-      } else if (size === "profile") {
-        setAvatarSize(LargeAvatar);
-      } else {
-        setAvatarSize(LargeAvatar);
-      }
-    }
+    setAvatarSize(avatarSizeMap[size] || avatarSizeMap["profile"]);
   }, [size]);
 
   if (!profile || avatarSize === "") return null;
 
   if (loading) {
+    const pulseSize = avatarSize
+      .match(/(h-\d+ w-\d+)/g)?.[0]
+      .concat(" animate-pulse");
+
     return (
-      <div
-        className={
-          avatarSize === LargeAvatar
-            ? `h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 animate-pulse`
-            : avatarSize === MediumAvatar
-            ? `h-16 w-16 animate-pulse`
-            : avatarSize === SmallAvatar
-            ? `h-10 w-10 md:h-10 md:w-10 animate-pulse`
-            : `h-7 w-7 animate-pulse`
-        }
-      >
+      <div className={pulseSize}>
         <div className="rounded-full bg-stone-300 h-10 w-10"></div>
       </div>
     );
@@ -89,15 +74,7 @@ export const Avatar = ({ profile, size, loading, href }: AvatarProps) => {
           role="link"
           tabIndex={0}
           aria-label={`Profile of ${profile.name}`}
-          className={
-            avatarSize === LargeAvatar
-              ? `h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32`
-              : avatarSize === MediumAvatar
-              ? `h-16 w-16`
-              : avatarSize === SmallAvatar
-              ? `h-10 w-10 md:h-10 md:w-10`
-              : `h-7 w-7`
-          }
+          className={avatarSize}
           onClick={handleClick}
           onKeyDown={handleKeyPress}
         >
@@ -108,7 +85,10 @@ export const Avatar = ({ profile, size, loading, href }: AvatarProps) => {
         <div className="bg-white p-4 w-72 rounded dark:bg-stone-900">
           <div className={`flex`}>
             <div className={``}>
-              <AvatarImage profile={profile} avatarSize={MediumAvatar} />
+              <AvatarImage
+                profile={profile}
+                avatarSize={avatarSizeMap["medium"]}
+              />
             </div>
 
             <div className={`ml-4`}>

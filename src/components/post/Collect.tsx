@@ -1,4 +1,5 @@
 "use client";
+// components/post/Collect.tsx
 
 import { useCallback, useContext, useState } from "react";
 import { UserContext } from "@/context";
@@ -89,40 +90,23 @@ export const Collect = ({ publication }: ICollectProps) => {
         },
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, [createCollectTypedData, publication.id]);
 
   if (collectModule?.__typename !== "FreeCollectModuleSettings") return null;
 
   return (
-    <>
-      {hasCollectedByMe || isCollected ? (
-        <button
-          className="flex ml-4 text-blue-600 hover:text-blue-700"
-          type={`button`}
-          onClick={handleCollect}
-        >
-          {isCollected
-            ? stats?.totalAmountOfCollects + 1
-            : stats?.totalAmountOfCollects}
-          <HiOutlineCollection
-            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
-            aria-hidden="true"
-          />
-        </button>
-      ) : (
-        <button
-          className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
-          type={`button`}
-          onClick={handleCollect}
-        >
-          {stats?.totalAmountOfCollects}
-          <HiOutlineCollection
-            className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
-            aria-hidden="true"
-          />
-        </button>
-      )}
-    </>
+    <button
+      className="flex ml-4 text-blue-600 hover:text-blue-700"
+      type={`button`}
+      onClick={handleCollect}
+    >
+      {hasCollectedByMe || isCollected
+        ? stats?.totalAmountOfCollects + 1
+        : stats?.totalAmountOfCollects}
+      <HiOutlineCollection
+        className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
+        aria-hidden="true"
+      />
+    </button>
   );
 };

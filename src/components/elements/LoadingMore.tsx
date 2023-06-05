@@ -1,6 +1,9 @@
+// components/elements/LoadingMore.tsx
+
+import { FunctionComponent } from "react";
 import { ImSpinner3 } from "react-icons/im";
 
-export const LoadingMore = () => {
+export const LoadingMore: FunctionComponent = () => {
   return (
     <div className="text-center text-stone-700 dark:text-stone-100 font-medium text-lg uppercase py-4">
       <ImSpinner3 className="inline-block animate-spin mr-2 h-8 w-8" />

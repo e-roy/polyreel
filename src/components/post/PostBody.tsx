@@ -1,6 +1,8 @@
 "use client";
+// components/post/PostBody.tsx
 
 import Link from "next/link";
+import { FC } from "react";
 
 import { cardFormatDate } from "@/utils/formatDate";
 import { MediaDisplay } from "@/components/media";
@@ -12,7 +14,6 @@ import {
   LinkItProfile,
   LinkItComment,
   LinkItHashtag,
-  urlRegex,
 } from "@/lib/links";
 import { Avatar } from "../elements";
 
@@ -20,11 +21,7 @@ interface IPostBodyProps {
   publication: PostType;
 }
 
-export const PostBody = ({ publication }: IPostBodyProps) => {
-  // get urls from publication.metadata.content
-  // const urls = publication.metadata.content.match(urlRegex);
-  // console.log("urls", urls);
-
+export const PostBody: FC<IPostBodyProps> = ({ publication }) => {
   return (
     <div className={`border-b dark:border-stone-300/30 my-2 py-4 sm:p-4`}>
       <div className={`grid grid-cols-8 md:grid-cols-12`}>
@@ -66,7 +63,7 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
                   <LinkItProfile className="text-sky-600 hover:text-sky-500 cursor-pointer">
                     <LinkItHashtag className="text-sky-600 hover:text-sky-500 cursor-pointer">
                       <LinkItComment
-                        className=" cursor-pointer"
+                        className="cursor-pointer"
                         publicationId={publication.id}
                       >
                         {publication.metadata.content}
@@ -78,10 +75,9 @@ export const PostBody = ({ publication }: IPostBodyProps) => {
             )}
           </div>
         </div>
-        <div className={``}></div>
       </div>
       <div>
-        {publication.metadata && publication.metadata.media && (
+        {publication.metadata?.media && (
           <MediaDisplay publication={publication} />
         )}
       </div>

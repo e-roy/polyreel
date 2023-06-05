@@ -1,7 +1,10 @@
+// components/connect/ProfileItem.tsx
+
 import { Profile } from "@/types/graphql/generated";
 import { Avatar } from "@/components/elements";
 import { DoesFollow } from "@/components/profile";
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 interface IProfileItemProps {
   profile: Profile;
@@ -9,7 +12,13 @@ interface IProfileItemProps {
 
 export const ProfileItem = ({ profile }: IProfileItemProps) => {
   const router = useRouter();
+
+  const redirectToProfile = useCallback(() => {
+    router.push(`/profile/${profile.handle}`);
+  }, [router, profile.handle]);
+
   if (!profile) return null;
+
   return (
     <div
       className={`flex justify-between group hover:bg-stone-100 dark:hover:bg-stone-700`}
@@ -18,7 +27,7 @@ export const ProfileItem = ({ profile }: IProfileItemProps) => {
         role="link"
         tabIndex={0}
         aria-label={`Profile of ${profile?.name}`}
-        onClick={() => router.push(`/profile/${profile?.handle}`)}
+        onClick={redirectToProfile}
         className={`flex items-center justify-between py-3 px-6 group-hover:bg-stone-100 dark:group-hover:bg-stone-700 w-full cursor-pointer`}
       >
         <div className={`flex justify-between w-full`}>

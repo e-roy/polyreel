@@ -1,4 +1,5 @@
 "use client";
+// components/home/FeedItemCard.tsx
 
 import { FeedItem } from "@/types/graphql/generated";
 import { Avatar } from "../elements";

@@ -46,8 +46,12 @@ export const GetUserNfts = ({ ownedBy }: GetUserNftsProps) => {
                 className={`w-full rounded-t`}
               />
               <div className={`p-2`}>
-                <p className={`font-semibold text-stone-800`}>{nft.name}</p>
-                <p className={`text-stone-600 font-medium`}>
+                <p
+                  className={`font-semibold text-stone-800 dark:text-stone-200`}
+                >
+                  {nft.name}
+                </p>
+                <p className={`text-stone-600 dark:text-stone-400 font-medium`}>
                   {nft.collectionName}
                 </p>
               </div>

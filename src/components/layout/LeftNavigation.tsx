@@ -1,73 +1,88 @@
 "use client";
+// components/layout/LeftNavigation.tsx
 
 import { FaHome, FaBell, FaUserAlt } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { UserContext } from "@/context";
 import { CreatePost } from "@/components/home";
 import { Logout } from "@/components/lens/auth";
+
+type NavLink = {
+  id: number;
+  label: string;
+  icon: React.ReactNode;
+  active: boolean;
+  href: string;
+};
 
 export const LeftNavigation = () => {
   const { currentUser, verified } = useContext(UserContext);
   const pathname = usePathname();
 
-  const userNav = [
-    {
-      id: 1,
-      label: "Home",
-      icon: <FaHome className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/home" ? true : false,
-      href: "/home",
-    },
-    {
-      id: 2,
-      label: "Explore",
-      icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/explore" ? true : false,
-      href: "/explore",
-    },
-    {
-      id: 3,
-      label: "Notifications",
-      icon: <FaBell className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/notifications" ? true : false,
-      href: "/notifications",
-    },
-    {
-      id: 4,
-      label: "Profile",
-      icon: <FaUserAlt className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === `/profile/${currentUser?.handle}` ? true : false,
-      href: `/profile/${currentUser?.handle}`,
-    },
-    {
-      id: 5,
-      label: "Settings",
-      icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/settings" ? true : false,
-      href: "/settings",
-    },
-  ];
+  const userNav: NavLink[] = useMemo(
+    () => [
+      {
+        id: 1,
+        label: "Home",
+        icon: <FaHome className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/home",
+        href: "/home",
+      },
+      {
+        id: 2,
+        label: "Explore",
+        icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/explore",
+        href: "/explore",
+      },
+      {
+        id: 3,
+        label: "Notifications",
+        icon: <FaBell className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/notifications",
+        href: "/notifications",
+      },
+      {
+        id: 4,
+        label: "Profile",
+        icon: <FaUserAlt className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === `/profile/${currentUser?.handle}`,
+        href: `/profile/${currentUser?.handle}`,
+      },
+      {
+        id: 5,
+        label: "Settings",
+        icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/settings",
+        href: "/settings",
+      },
+    ],
+    [pathname, currentUser]
+  );
 
-  const guestNav = [
-    {
-      id: 2,
-      label: "Explore",
-      icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/explore" ? true : false,
-      href: "/explore",
-    },
-    {
-      id: 5,
-      label: "Settings",
-      icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
-      active: pathname === "/settings" ? true : false,
-      href: "/settings",
-    },
-  ];
+  const guestNav: NavLink[] = useMemo(
+    () => [
+      {
+        id: 2,
+        label: "Explore",
+        icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/explore",
+        href: "/explore",
+      },
+      {
+        id: 5,
+        label: "Settings",
+        icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
+        active: pathname === "/settings",
+        href: "/settings",
+      },
+    ],
+    [pathname]
+  );
 
   const sidebarNav = currentUser && verified ? userNav : guestNav;
   return (

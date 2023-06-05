@@ -1,4 +1,5 @@
 "use client";
+// pages/profile/[id]/page.tsx
 
 import React, { useState } from "react";
 
@@ -29,10 +30,22 @@ import Link from "next/link";
 
 const endSuffix = process.env.NODE_ENV === "production" ? ".lens" : ".test";
 
+const filterAttributes = (
+  attributes: Attribute[],
+  key: string
+): Attribute[] => {
+  return attributes?.filter((attribute) => attribute.key === key);
+};
+
 interface Props {
   params: {
     id: string;
   };
+}
+
+interface Attribute {
+  key: string;
+  value: string;
 }
 
 const ProfilePage = ({ params }: Props) => {
@@ -69,20 +82,14 @@ const ProfilePage = ({ params }: Props) => {
 
   logger("profile/[id].tsx", profile);
 
-  const checkLocation = () => {
-    const location = filterAttributes(profile.attributes, "location");
-    if (location && location[0]) return location[0].value;
+  const checkAttribute = (key: string) => {
+    const attribute = filterAttributes(profile.attributes, key);
+    if (attribute && attribute[0]) return attribute[0].value;
   };
 
-  const checkWebsite = () => {
-    const website = filterAttributes(profile.attributes, "website");
-    if (website[0]) return website[0].value;
-  };
-
-  const checkTwitter = () => {
-    const twitter = filterAttributes(profile.attributes, "twitter");
-    if (twitter[0]) return twitter[0].value;
-  };
+  const location = checkAttribute("location");
+  const website = checkAttribute("website");
+  const twitter = checkAttribute("twitter");
 
   const handleRefetch = async () => {
     await refetch();
@@ -122,18 +129,14 @@ const ProfilePage = ({ params }: Props) => {
 
         <div className="flex space-x-6">
           <div className="mt-16 pt-2 sm:pt-1 sm:mt-20 flex space-x-8">
-            {profile.attributes && checkWebsite() && (
-              <a
-                href={`${checkWebsite()}`}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+            {profile.attributes && website && (
+              <a href={`${website}`} target="_blank" rel="noreferrer noopener">
                 <FaGlobeAmericas className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200" />
               </a>
             )}
-            {profile.attributes && checkTwitter() && (
+            {profile.attributes && twitter && (
               <a
-                href={`https://twitter.com/${checkTwitter()}`}
+                href={`https://twitter.com/${twitter}`}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-stone-500 hover:text-stone-700"
@@ -167,10 +170,10 @@ const ProfilePage = ({ params }: Props) => {
             </LinkItProfile>
           </LinkItUrl>
         </div>
-        {checkLocation() && (
+        {location && (
           <div className="flex font-bold py-2">
             <MdLocationOn className="h-4 w-4 sm:h-5 sm:w-5 text-stone-500 hover:text-stone-700 cursor-pointer" />
-            <span className="font-medium pl-1">{checkLocation()}</span>
+            <span className="font-medium pl-1">{location}</span>
           </div>
         )}
         <div className="sm:flex justify-between">
@@ -198,14 +201,13 @@ const ProfilePage = ({ params }: Props) => {
               </span>
             </Link>
           </div>
-          <NavSelect
-            select={(res) => setNavSelect(res)}
-            profile={profile}
-            navSelect={navSelect}
-          />
-          <div className="sm:w-1/6"></div>
         </div>
       </div>
+      <NavSelect
+        select={(res) => setNavSelect(res)}
+        profile={profile}
+        navSelect={navSelect}
+      />
       <div className="mb-12">
         {navSelect === "NFTS" && <GetUserNfts ownedBy={profile.ownedBy} />}
         {(navSelect === "POST" ||
@@ -219,7 +221,3 @@ const ProfilePage = ({ params }: Props) => {
 };
 
 export default ProfilePage;
-
-const filterAttributes = (attributes: any, key: string) => {
-  return attributes?.filter((attribute: any) => attribute.key === key);
-};

@@ -1,4 +1,5 @@
 "use client";
+// components/layout/Header.tsx
 
 import React, {
   Fragment,
@@ -7,12 +8,9 @@ import React, {
   useRef,
   useContext,
 } from "react";
-import Link from "next/link";
 import { UserContext } from "@/context";
 import { useRouter } from "next/navigation";
 import { Transition, Dialog } from "@headlessui/react";
-import { FiChevronLeft } from "react-icons/fi";
-import { FaHome, FaUserAlt } from "react-icons/fa";
 
 import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
 
@@ -24,20 +22,17 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
-import { Profile } from "@/types/graphql/generated";
-
 import { LeftNavigation } from "./LeftNavigation";
 
 export type HeaderProps = {};
 
 export const Header = ({}: HeaderProps) => {
-  const { currentUser, setCurrentUser, profiles, verified, loading } =
-    useContext(UserContext);
+  const { currentUser, verified, loading } = useContext(UserContext);
   const router = useRouter();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [open, setOpen] = useState(false);
   let completeButtonRef = useRef(null);
-  const { address, connector } = useAccount();
+  const { connector } = useAccount();
 
   const correctNetwork = useCheckNetwork();
 
@@ -61,39 +56,6 @@ export const Header = ({}: HeaderProps) => {
     <header
       className={`md:hidden p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
-      {/* {router.pathname === "/home" ||
-      router.pathname === "/" ||
-      router.pathname === "/explore" ? (
-        <div onClick={() => setOpen(!open)} className="cursor-pointer">
-          {address && currentUser ? (
-            <div className="flex">
-              <Avatar profile={currentUser} size={"small"} />
-            </div>
-          ) : (
-            <div className="flex text-black">
-              <FaUserAlt
-                className={`inline-block rounded-full h-10 w-10  text-stone-500 p-0.5 bg-white shadow-lg`}
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <>
-          {router.pathname !== "/" && router.pathname !== "/explore" ? (
-            <>
-              <div
-                className="cursor-pointer mt-2 bg-stone-700/20 hover:bg-stone-700/40 h-8 w-8 rounded-full"
-                onClick={() => router.back()}
-              >
-                <FiChevronLeft className="h-8 w-8 text-stone-100" />
-              </div>
-            </>
-          ) : (
-            <div></div>
-          )}
-        </>
-      )} */}
-
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           initialFocus={completeButtonRef}

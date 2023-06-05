@@ -1,6 +1,7 @@
 "use client";
+// context/UserContext/UserProvider.tsx
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useAccount, useDisconnect } from "wagmi";
 
@@ -105,9 +106,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   // let verifyData = { verify: true };
   // let verifyLoading = false;
 
-  const [currentUserProfile, setCurrentUserProfile] = useState(
-    defaultProfileData?.defaultProfile
-  );
+  const [currentUserProfile, setCurrentUserProfile] = useState<
+    Profile | undefined
+  >();
 
   if (!userProfilesLoading && !defaultProfileLoading && !verifyLoading) {
     if (userProfilesData)
@@ -148,17 +149,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, [userProfilesData?.profiles]);
 
+  const setCurrentUser = useCallback((profile: Profile) => {
+    setCurrentUserProfile(profile);
+    localStorage.setItem("polyreel_current_user_profile_id", profile.id);
+  }, []);
+
   const injectContext = useMemo(
     () => ({
       profiles: userProfilesData?.profiles?.items,
       defaultProfile: defaultProfileData?.defaultProfile,
       currentUser: defaultProfileData?.defaultProfile,
-      // currentUser: currentUserProfile,
-      setCurrentUser: (profile: Profile) => {
-        console.log(profile);
-        setCurrentUserProfile(profile);
-        localStorage.setItem("polyreel_current_user_profile_id", profile.id);
-      },
+      setCurrentUser,
       refechProfiles: refechProfiles,
       verified: verifyData?.verify,
       refetchVerify: refetchVerify,

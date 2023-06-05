@@ -1,17 +1,16 @@
 "use client";
+// components/elements/Modal.tsx
 
 import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export type ModalProps = {
-  children?: React.ReactNode;
-  isOpen?: boolean;
+interface ModalProps {
+  children: React.ReactNode;
+  isOpen: boolean;
   onClose: () => void;
-};
+}
 
-export const Modal = ({ children, isOpen, onClose }: ModalProps) => {
-  if (!isOpen) return null;
-
+export const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog

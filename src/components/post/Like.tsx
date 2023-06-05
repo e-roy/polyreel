@@ -1,6 +1,7 @@
 "use client";
+// components/post/Like.tsx
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState, useMemo } from "react";
 import { UserContext } from "@/context";
 import { useMutation, gql } from "@apollo/client";
 import { FaHeart } from "react-icons/fa";
@@ -28,39 +29,39 @@ export const Like = ({ publication }: ILikeProps) => {
   const [numOfLikes, setNumofLikes] = useState(stats?.totalUpvotes || 0);
   const [userLiked, setUserLiked] = useState(reaction === "UPVOTE");
 
-  const [addReaction, {}] = useMutation(ADD_LIKE, {
+  const [addReaction] = useMutation(ADD_LIKE, {
     onCompleted() {
       setNumofLikes(numOfLikes + 1);
       setUserLiked(true);
     },
   });
 
-  const [removeReaction, {}] = useMutation(REMOVE_LIKE, {
+  const [removeReaction] = useMutation(REMOVE_LIKE, {
     onCompleted() {
       setNumofLikes(numOfLikes - 1);
       setUserLiked(false);
     },
   });
 
-  const likeRequest = {
-    variables: {
-      request: {
-        profileId: currentUser?.id,
-        reaction: "UPVOTE",
-        publicationId: id,
+  const likeRequest = useMemo(() => {
+    return {
+      variables: {
+        request: {
+          profileId: currentUser?.id,
+          reaction: "UPVOTE",
+          publicationId: id,
+        },
       },
-    },
-  };
+    };
+  }, [currentUser, id]);
 
   const handleAddLike = useCallback(() => {
     if (currentUser) addReaction(likeRequest);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, [currentUser, addReaction, likeRequest]);
 
   const handleRemoveLike = useCallback(() => {
     if (currentUser) removeReaction(likeRequest);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, [currentUser, removeReaction, likeRequest]);
 
   return (
     <div className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer">

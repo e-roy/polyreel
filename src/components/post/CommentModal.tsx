@@ -1,13 +1,12 @@
 "use client";
+// components/post/CommentModal.tsx
 
 import { Post } from "@/types/graphql/generated";
 import { Avatar, Modal } from "@/components/elements";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { UserContext } from "@/context";
-import { BsChat } from "react-icons/bs";
-
-import { BsFillSendFill } from "react-icons/bs";
+import { BsChat, BsFillSendFill } from "react-icons/bs";
 
 import { CREATE_COMMENT_TYPED_DATA } from "@/graphql/publications/comment";
 
@@ -52,7 +51,7 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
     mode: "recklesslyUnprepared",
   });
 
-  const [createCommentTypedData, {}] = useMutation(CREATE_COMMENT_TYPED_DATA, {
+  const [createCommentTypedData] = useMutation(CREATE_COMMENT_TYPED_DATA, {
     onCompleted({ createCommentTypedData }: any) {
       const { typedData } = createCommentTypedData;
 
@@ -109,6 +108,10 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
     },
   });
 
+  const handleToggleModal = useCallback(() => {
+    setShowModal(!showModal);
+  }, [showModal]);
+
   const { register, handleSubmit, reset } = useForm<CommentInputs>();
   const onSubmit: SubmitHandler<CommentInputs> = async (data) => {
     // console.log(data);
@@ -160,11 +163,10 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
       <button
         className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
         type={`button`}
-        onClick={() => setShowModal(!showModal)}
+        onClick={handleToggleModal}
       >
         {publication?.stats?.totalAmountOfComments}
         <BsChat
-          onClick={() => setShowModal(!showModal)}
           className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
           aria-hidden="true"
         />

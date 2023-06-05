@@ -1,11 +1,17 @@
 "use client";
+// components/connect/ConnectPage.tsx
 
 import { SuggestedList, SearchProfilesList } from "@/components/connect";
-import { useState } from "react";
+import { useState, ChangeEvent, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
 
 export const ConnectPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
+
+  const handleSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  }, []);
+
   return (
     <>
       <div className="flex border rounded-xl mx-4 mt-4">
@@ -14,7 +20,7 @@ export const ConnectPage = () => {
           className="w-full p-2 rounded-xl outline-none"
           placeholder="Search Profiles"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearchChange}
         />
       </div>
       <div className="border-stone-300 rounded-xl mt-4">

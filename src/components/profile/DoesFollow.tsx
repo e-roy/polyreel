@@ -1,6 +1,7 @@
 "use client";
+// components/profile/DoesFollow.tsx
 
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import { UserContext } from "@/context";
 import { useAccount } from "wagmi";
 import { useQuery } from "@apollo/client";
@@ -45,22 +46,19 @@ export const DoesFollow = ({ profile }: DoesFollowProps) => {
     },
   });
 
+  const handleRefetch = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
+
   // return null if no current user
   if (!currentUser || !verified) return null;
   // return null if loading
   if (loading) return null;
   // return null if no data
   if (!doesFollowData || !doesFollowData.doesFollow[0]) return null;
-  // console.log(profile);
-
-  const handleRefetch = async () => {
-    await refetch();
-  };
-  // return null;
 
   if (
     profile.followModule === null ||
-    // @ts-ignore
     profile.followModule?.__typename === "ProfileFollowModuleSettings"
   ) {
     if (isFollowing)

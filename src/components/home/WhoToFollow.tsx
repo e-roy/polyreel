@@ -1,4 +1,5 @@
 "use client";
+// components/home/WhoToFollow.tsx
 
 import { useQuery, gql } from "@apollo/client";
 import { ProfileFragmentLite } from "@/graphql/fragments/ProfileFragmentLite";
@@ -25,7 +26,7 @@ const RECOMMENDED_PROFILES = gql`
 
 interface IWhoToFollowProps {}
 
-export const WhoToFollow = ({}: IWhoToFollowProps) => {
+export const WhoToFollow: React.FC<IWhoToFollowProps> = () => {
   const router = useRouter();
 
   const { loading, error, data } = useQuery(RECOMMENDED_PROFILES, {
@@ -39,9 +40,8 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
 
   if (error) return <Error />;
 
-  let profiles: Profile[];
-  profiles = data
-    ? data?.recommendedProfiles.slice(0, 3)
+  const profiles: Profile[] = data
+    ? data.recommendedProfiles.slice(0, 3)
     : [{ ...emptyProfile }, { ...emptyProfile }, { ...emptyProfile }];
 
   if (data) logger("WhoToFollow.tsx", data.recommendedProfiles);
@@ -56,45 +56,42 @@ export const WhoToFollow = ({}: IWhoToFollowProps) => {
         Who To Follow
       </div>
       <div>
-        {profiles &&
-          profiles?.map((profile: Profile, index: number) => (
-            <div
-              key={index}
-              role="link"
-              tabIndex={0}
-              aria-label={`Profile of ${profile?.name}`}
-              onClick={() => router.push(`/profile/${profile?.handle}`)}
-              className={`flex items-center px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer`}
-            >
-              <Avatar
-                profile={profile}
-                size={`small`}
-                loading={loading}
-                href={`/profile/${profile.handle}`}
-              />
-              {loading ? (
-                <div className={`ml-4 w-full space-y-4 animate-pulse `}>
-                  <div
-                    className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
-                  ></div>
-                  <div
-                    className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
-                  ></div>
+        {profiles.map((profile: Profile, index: number) => (
+          <div
+            key={index}
+            role="link"
+            tabIndex={0}
+            aria-label={`Profile of ${profile.name}`}
+            onClick={() => router.push(`/profile/${profile.handle}`)}
+            className={`flex items-center px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer`}
+          >
+            <Avatar
+              profile={profile}
+              size={`small`}
+              loading={loading}
+              href={`/profile/${profile.handle}`}
+            />
+            {loading ? (
+              <div className={`ml-4 w-full space-y-4 animate-pulse `}>
+                <div
+                  className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
+                ></div>
+                <div
+                  className={`font-bold bg-stone-300 w-3/4 h-4 rounded`}
+                ></div>
+              </div>
+            ) : (
+              <div className={`ml-4`}>
+                <div className={`font-bold text-stone-800 dark:text-stone-100`}>
+                  {profile.name}
                 </div>
-              ) : (
-                <div className={`ml-4`}>
-                  <div
-                    className={`font-bold text-stone-800 dark:text-stone-100`}
-                  >
-                    {profile.name}
-                  </div>
-                  <div className={`text-stone-500 dark:text-stone-300`}>
-                    @{profile.handle}
-                  </div>
+                <div className={`text-stone-500 dark:text-stone-300`}>
+                  @{profile.handle}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
       <Link href={`/connect`}>
         <div

@@ -1,4 +1,5 @@
 "use client";
+// components/profile/NavSelect.tsx
 
 import { BiPhotoAlbum, BiChat } from "react-icons/bi";
 import { FaRegCopy } from "react-icons/fa";
@@ -15,71 +16,60 @@ type NavSelectProps = {
   navSelect: string;
 };
 
+type NavItemProps = {
+  isSelected: boolean;
+  onClick: () => void;
+  Icon: React.ComponentType<React.SVGAttributes<SVGElement>>;
+  count: number;
+};
+
+const NavItem: React.FC<NavItemProps> = ({
+  isSelected,
+  onClick,
+  Icon,
+  count,
+}) => {
+  const baseClasses =
+    "flex justify-center py-2 px-4 text-sm font-medium w-1/2 border border-stone-400 shadow-lg";
+  const selectedClasses = isSelected
+    ? "bg-stone-700 text-stone-100"
+    : "text-stone-600 dark:text-stone-400 hover:bg-stone-500 hover:text-stone-100 cursor-pointer";
+
+  return (
+    <div onClick={onClick} className={classNames(baseClasses, selectedClasses)}>
+      <Icon className="h-5 w-5" aria-hidden="true" />
+      <span className="pl-1 font-semibold">{count}</span>
+    </div>
+  );
+};
+
 export const NavSelect = ({ select, profile, navSelect }: NavSelectProps) => {
-  // console.log("profile", profile);
   return (
     <div className="flex justify-center">
-      <div
+      <NavItem
+        isSelected={navSelect === "POST"}
         onClick={() => select("POST")}
-        className={classNames(
-          navSelect === "POST"
-            ? "bg-stone-700 text-stone-100"
-            : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
-          "flex justify-center py-2 pl-6 pr-4 text-sm font-medium rounded-sm w-1/2 border rounded-l-2xl border-stone-400 shadow-lg"
-        )}
-      >
-        <MdDynamicFeed className="h-5 w-5" aria-hidden="true" />
-        <span className="pl-1 font-semibold">{profile.stats.totalPosts}</span>
-      </div>
-      <div
+        Icon={MdDynamicFeed}
+        count={profile.stats.totalPosts}
+      />
+      <NavItem
+        isSelected={navSelect === "COMMENT"}
         onClick={() => select("COMMENT")}
-        className={classNames(
-          navSelect === "COMMENT"
-            ? "bg-stone-700 text-stone-100"
-            : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
-          "flex justify-center py-2 px-4 text-sm font-medium rounded-sm w-1/2 border border-stone-400 shadow-lg"
-        )}
-      >
-        <BiChat className="h-5 w-5" aria-hidden="true" />
-        <span className="pl-1 font-semibold">
-          {profile.stats.totalComments}
-        </span>
-      </div>
-      {/* <div
-        onClick={() => select("COLLECT")}
-        className="flex py-2 px-4 border border-stone-400 text-stone-700 hover:bg-stone-400 cursor-pointer"
-      >
-        <CollectionIcon className="h-6 w-6" aria-hidden="true" />
-        <span className="pl-1 font-semibold">
-          {profile.stats.totalCollects}
-        </span>
-      </div> */}
-      <div
+        Icon={BiChat}
+        count={profile.stats.totalComments}
+      />
+      <NavItem
+        isSelected={navSelect === "MIRROR"}
         onClick={() => select("MIRROR")}
-        className={classNames(
-          navSelect === "MIRROR"
-            ? "bg-stone-700 text-stone-100"
-            : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
-          "flex justify-center py-2 px-4 text-sm font-medium rounded-sm w-1/2 border border-stone-400 shadow-lg"
-        )}
-      >
-        <FaRegCopy className="h-5 w-5" aria-hidden="true" />
-        <span className="pl-1 font-semibold">{profile.stats.totalMirrors}</span>
-      </div>
-      <div
+        Icon={FaRegCopy}
+        count={profile.stats.totalMirrors}
+      />
+      <NavItem
+        isSelected={navSelect === "NFTS"}
         onClick={() => select("NFTS")}
-        className={classNames(
-          navSelect === "NFTS"
-            ? "bg-stone-700 text-stone-100"
-            : "text-gray-600 hover:bg-stone-500 hover:text-stone-100 cursor-pointer",
-          "flex justify-center py-2 pl-4 pr-6 text-sm font-medium rounded-sm w-1/2 border rounded-r-full border-stone-400 shadow-lg"
-        )}
-      >
-        <BiPhotoAlbum className="h-5 w-5" aria-hidden="true" />
-        <span className="pl-1 font-semibold">
-          {/* {profile.stats.totalMirrors} */}
-        </span>
-      </div>
+        Icon={BiPhotoAlbum}
+        count={0} // Replace with the proper value for NFTs count
+      />
     </div>
   );
 };
