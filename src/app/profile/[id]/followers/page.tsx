@@ -1,6 +1,6 @@
 "use client";
 
-import { FollowersList } from "@/components/profile";
+import { FollowersList } from "@/components/profile/FollowersList";
 
 interface Props {
   params: {

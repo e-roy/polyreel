@@ -1,126 +1,126 @@
-"use client";
-
 import React from "react";
-import Link from "next/link";
-import { PostBody, Stats } from "@/components/post";
-import { Post as PostType } from "@/types/graphql/generated";
-import { Publication } from "@/types/graphql/generated";
+import { PostBody } from "@/components/post/PostBody";
+import { Stats } from "@/components/post/Stats";
+
+import {
+  ExplorePublication,
+  PrimaryPublication,
+  Post as PostType,
+  Quote,
+  VideoMetadataV3,
+  AnyPublication,
+} from "@/types/graphql/generated";
 import { logger } from "@/utils/logger";
+import { AudioPlayerCard } from "../media/AudioPlayer";
+import { ImageDisplay } from "../media/ImageDisplay";
+import { VideoDisplay } from "../media/VideoDisplay";
 
 type PostProps = {
-  publication: Publication;
-  postType?: string;
+  publication: AnyPublication;
 };
 
-export const Post = ({ publication, postType }: PostProps) => {
-  // console.log("publication type", publication.__typename);
+type PublicationProps = {
+  publication: ExplorePublication | PrimaryPublication;
+  ifComment?: boolean;
+};
 
-  // console.log("postType", postType);
+export const Post = ({ publication }: PostProps) => {
+  switch (publication.__typename) {
+    case "Post":
+      return (
+        <>
+          <PostComponent publication={publication} />
+          <Stats publication={publication as PostType} />
+        </>
+      );
 
-  // logger("Post.tsx", publication);
+    case "Quote":
+      return (
+        <>
+          <QuoteComponent publication={publication} />
+          <Stats publication={publication as PostType} />
+        </>
+      );
 
+    case "Comment":
+      return (
+        <>
+          <PostComponent publication={publication.commentOn} ifComment />
+
+          <PostComponent publication={publication} />
+          <Stats publication={publication as PostType} />
+        </>
+      );
+
+    case "Mirror":
+      return (
+        <>
+          <div className={`text-sm text-primary/60 font-medium pl-4 italic`}>
+            Mirrored by @{publication.by.handle?.localName}
+          </div>
+          <PostComponent publication={publication.mirrorOn} />
+          <Stats publication={publication.mirrorOn as PostType} />
+        </>
+      );
+
+    default:
+      return <div className={`uppercase text-xl`}>Unknown publication</div>;
+  }
+};
+
+const PostComponent = ({ publication, ifComment }: PublicationProps) => {
+  const renderMedia = () => {
+    switch (publication?.metadata?.__typename) {
+      case "TextOnlyMetadataV3":
+        return null;
+      case "ImageMetadataV3":
+        return publication.metadata.asset.image.optimized ? (
+          <ImageDisplay
+            media={publication.metadata.asset.image.optimized}
+            alt={publication.metadata.asset.altTag}
+          />
+        ) : null;
+      case "VideoMetadataV3":
+        return (
+          <VideoDisplay metadata={publication.metadata as VideoMetadataV3} />
+        );
+      case "AudioMetadataV3":
+        return <AudioPlayerCard metadata={publication.metadata} />;
+      case "ArticleMetadataV3":
+        return <div className={`uppercase text-xl`}>Article media type</div>;
+      default:
+        return <div className={`uppercase text-xl`}>Unknown media type</div>;
+    }
+  };
   return (
-    <div className="my-2">
-      {publication.__typename === "Post" && (
-        <>
-          <PostBody publication={publication} />
-          <Stats publication={publication} />
-        </>
-      )}
-
-      {publication.__typename === "Mirror" && (
-        <>
-          {publication.mirrorOf.profile.handle && (
-            <>
-              {publication.mirrorOf.__typename === "Comment" ? (
-                <Link
-                  href={`/post/${publication.mirrorOf.mainPost.id}?comment=${publication.mirrorOf.id}`}
-                >
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
-                    mirrored from{" "}
-                    <span className="font-bold">
-                      @{publication.mirrorOf.profile.handle}
-                    </span>
-                  </div>
-                </Link>
-              ) : (
-                <Link href={`/post/${publication.mirrorOf.id}`}>
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
-                    mirrored from{" "}
-                    <span className="font-bold">
-                      @{publication.mirrorOf.profile.handle}
-                    </span>
-                  </div>
-                </Link>
-              )}
-            </>
+    <div>
+      <PostBody publication={publication as PostType} />
+      <div className={`grid grid-cols-8 md:grid-cols-12`}>
+        <div className={`col-span-1 relative`}>
+          {ifComment && (
+            <div
+              className={`border-r-2 border-stone-500 absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2`}
+              style={{ height: "calc(100%)" }}
+            />
           )}
-          <PostBody publication={publication as unknown as PostType} />
-          <Stats publication={publication as unknown as PostType} />
-        </>
-      )}
-
-      {publication.__typename === "Comment" && postType === "feed" && (
-        <>
-          <div className="mb-2">
-            {publication.mainPost.profile && (
-              <>
-                <Link
-                  href={`/post/${publication.mainPost.id}?comment=${publication.id}`}
-                >
-                  <div className="mb-4 ml-6 text-xs sm:text-sm lg:text-medium font-semibold text-stone-500 dark:text-stone-400 dark:hover:text-stone-500 cursor-pointer hover:text-stone-700">
-                    <span className="font-bold">
-                      @{publication.profile.handle}
-                    </span>{" "}
-                    commented on @
-                    <span className="font-bold">
-                      {publication.mainPost.profile.handle}
-                    </span>
-                  </div>
-                </Link>
-              </>
-            )}
-            {publication.mainPost && (
-              <>
-                <PostBody
-                  publication={publication.mainPost as unknown as PostType}
-                />
-                <Stats publication={publication as unknown as PostType} />
-              </>
-            )}
-          </div>
-          <div className="ml-8 w-0.5 h-8 bg-gray-400" />
-          <div className="p-2 sm:p-4 border rounded-lg shadow-md">
-            <PostBody publication={publication as unknown as PostType} />
-            <Stats publication={publication as unknown as PostType} />
-          </div>
-        </>
-      )}
-
-      {publication.__typename === "Comment" && postType === "commment" && (
-        <div className="p-2 sm:p-4 border rounded-lg shadow-md">
-          <PostBody publication={publication as unknown as PostType} />
-          <Stats publication={publication as unknown as PostType} />
         </div>
-      )}
+        <div className={`col-span-7 md:col-span-11`}>{renderMedia()}</div>
+      </div>
+    </div>
+  );
+};
 
-      {publication.__typename === "Comment" && postType === "profile" && (
-        <div className="p-2 sm:p-4">
-          <div className="">
-            <div className="mb-4">
-              <PostBody
-                publication={publication.mainPost as unknown as PostType}
-              />
-              <Stats publication={publication as unknown as PostType} />
-            </div>
-            <div className="ml-10 w-0.5 h-8 bg-gray-400 " />
-            <div className="p-2 sm:p-4 border rounded-lg shadow-lg">
-              <PostBody publication={publication as unknown as PostType} />
-              <Stats publication={publication as unknown as PostType} />
-            </div>
-          </div>
-        </div>
-      )}
+interface QuoteProps {
+  publication: Quote;
+}
+
+const QuoteComponent = ({ publication }: QuoteProps) => {
+  return (
+    <div className={``}>
+      <PostComponent publication={publication} />
+      <div className={`border p-2 rounded-lg ml-20`}>
+        <PostComponent publication={publication?.quoteOn} />
+      </div>
     </div>
   );
 };

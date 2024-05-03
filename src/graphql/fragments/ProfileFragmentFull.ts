@@ -1,77 +1,114 @@
 import { gql } from "@apollo/client";
 
-import { MediaFieldsFragment } from "./MediaFieldsFragment";
+import { ImageSetFragment } from "./ImageSetFragment";
 
 export const ProfileFragmentFull = gql`
   fragment ProfileFragmentFull on Profile {
     id
-    handle
-    name
-    bio
-    isDefault
-    ownedBy
-    picture {
-      ... on MediaSet {
-        original {
-          ...MediaFieldsFragment
+
+    handle {
+      id
+      fullHandle
+      localName
+      namespace
+    }
+
+    ownedBy {
+      address
+      chainId
+    }
+
+    metadata {
+      appId
+      displayName
+      bio
+      rawURI
+
+      picture {
+        ... on ImageSet {
+          ...ImageSetFragment
+        }
+        ... on NftImage {
+          collection {
+            address
+            chainId
+          }
+          image {
+            ...ImageSetFragment
+          }
+          tokenId
+          verified
         }
       }
-      ... on NftImage {
-        tokenId
-        uri
-        verified
-      }
-    }
-    coverPicture {
-      ... on NftImage {
-        tokenId
-        uri
-        verified
-      }
-      ... on MediaSet {
-        original {
-          ...MediaFieldsFragment
+
+      coverPicture {
+        optimized {
+          mimeType
+          width
+          height
+          uri
+        }
+        raw {
+          mimeType
+          width
+          height
+          uri
         }
       }
-      __typename
+
+      attributes {
+        type
+        key
+        value
+      }
     }
-    attributes {
-      displayType
-      traitType
-      key
-      value
-    }
+
     stats {
       id
-      totalFollowers
-      totalFollowing
-      totalPosts
-      totalComments
-      totalMirrors
-      totalPublications
-      totalCollects
+      followers
+      following
+      comments
+      posts
+      mirrors
+      publications
+      quotes
     }
+
+    operations {
+      id
+      isBlockedByMe {
+        value
+        isFinalisedOnchain
+      }
+      hasBlockedMe {
+        value
+        isFinalisedOnchain
+      }
+      isFollowedByMe {
+        value
+        isFinalisedOnchain
+      }
+      isFollowingMe {
+        value
+        isFinalisedOnchain
+      }
+      canBlock
+      canUnblock
+      canFollow
+      canUnfollow
+    }
+
     followModule {
       ... on FeeFollowModuleSettings {
-        type
-        amount {
-          asset {
-            symbol
-            name
-            decimals
-            address
-          }
-          value
-        }
-        recipient
-      }
-      ... on ProfileFollowModuleSettings {
         type
       }
       ... on RevertFollowModuleSettings {
         type
       }
+      ... on UnknownFollowModuleSettings {
+        type
+      }
     }
   }
-  ${MediaFieldsFragment}
+  ${ImageSetFragment}
 `;

@@ -1,12 +1,14 @@
 interface authToken {
   token: {
     accessToken: string;
+    identityToken: string;
     refreshToken: string;
   };
 }
 export const setAuthenticationToken = async ({ token }: authToken) => {
   if (typeof window !== "undefined") {
     sessionStorage.setItem("access_token", token.accessToken);
+    sessionStorage.setItem("identity_token", token.identityToken);
     sessionStorage.setItem("refresh_token", token.refreshToken);
   }
 };
@@ -28,8 +30,8 @@ export const getRefreshToken = () => {
 export const removeAuthenticationToken = async () => {
   if (typeof window !== "undefined") {
     sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("identity_token");
     sessionStorage.removeItem("refresh_token");
-    localStorage.removeItem("polyreel_current_user_profile_id");
     sessionStorage.clear();
   }
 };

@@ -1,0 +1,60 @@
+"use client";
+// search/_components/ProfileItem.tsx
+
+import { Profile } from "@/types/graphql/generated";
+import { Avatar } from "@/components/elements/Avatar";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
+
+interface IProfileItemProps {
+  profile: Profile;
+}
+
+export const ProfileItem = ({ profile }: IProfileItemProps) => {
+  const router = useRouter();
+
+  const redirectToProfile = useCallback(() => {
+    router.push(`/profile/${profile.handle?.localName}`);
+  }, [router, profile.handle]);
+
+  if (!profile) return null;
+
+  return (
+    <div
+      className={`flex justify-between group hover:bg-stone-100 dark:hover:bg-stone-700`}
+    >
+      <div
+        role="link"
+        tabIndex={0}
+        aria-label={`Profile of ${profile?.metadata?.displayName}`}
+        onClick={redirectToProfile}
+        className={`flex items-center justify-between py-3 px-6 group-hover:bg-stone-100 dark:group-hover:bg-stone-700 w-full cursor-pointer`}
+      >
+        <div className={`flex justify-between w-full`}>
+          <div className={`flex`}>
+            <div className={``}>
+              <Avatar
+                profile={profile}
+                size={`small`}
+                href={`/profile/${profile?.handle?.localName}`}
+              />
+            </div>
+
+            <div className={`ml-4`}>
+              <div className={`font-bold text-stone-800 dark:text-stone-100`}>
+                {profile?.metadata?.displayName}
+              </div>
+              <div className={`text-stone-400 dark:text-stone-200`}>
+                @{profile?.handle?.localName}
+              </div>
+              <div className={`text-stone-600 dark:text-stone-400`}>
+                {profile?.metadata?.bio}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={`pr-6 my-auto`}></div>
+    </div>
+  );
+};

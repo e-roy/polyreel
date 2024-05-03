@@ -1,42 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useQuery } from "@apollo/client";
+import { GET_PUBLICATION } from "./_graphql/get-publication";
 
-import { useContext } from "react";
-import { UserContext } from "@/context";
-import { useQuery, gql } from "@apollo/client";
+import { Loading } from "@/components/elements/Loading";
+import { Error } from "@/components/elements/Error";
+import { StandardPostLayout } from "./_components/StandardPostLayout";
+import { VideoPostLayout } from "./_components/VideoPostLayout";
 
-import { PostPostFragment } from "@/graphql/fragments/PostPostFragment";
-import { PostCommentFragment } from "@/graphql/fragments/PostCommentFragment";
-import { PostMirrorFragment } from "@/graphql/fragments/PostMirrorFragment";
-
-import { Loading, Error } from "@/components/elements";
-import { StandardPostLayout, VideoPostLayout } from "@/components/post";
 import { logger } from "@/utils/logger";
-
-const GET_PUBLICATION = gql`
-  query (
-    $request: PublicationQueryRequest!
-    $reactionRequest: ReactionFieldResolverRequest
-    $profileId: ProfileId
-  ) {
-    publication(request: $request) {
-      ... on Post {
-        ...PostPostFragment
-      }
-      ... on Comment {
-        ...PostCommentFragment
-      }
-      ... on Mirror {
-        ...PostMirrorFragment
-      }
-    }
-  }
-
-  ${PostPostFragment}
-  ${PostCommentFragment}
-  ${PostMirrorFragment}
-`;
+import { Post as PostType } from "@/types/graphql/generated";
 
 interface Props {
   params: {
@@ -45,19 +18,15 @@ interface Props {
 }
 
 const PostPage = ({ params }: Props) => {
-  const { currentUser } = useContext(UserContext);
-
-  const router = useRouter();
   const { id } = params;
   const { loading, error, data } = useQuery(GET_PUBLICATION, {
     variables: {
       request: {
-        publicationId: id,
+        forId: id,
       },
-      reactionRequest: {
-        profileId: currentUser?.id || null,
+      hasReactedRequest2: {
+        type: "UPVOTE",
       },
-      profileId: currentUser?.id || null,
     },
     skip: !id,
   });
@@ -67,20 +36,20 @@ const PostPage = ({ params }: Props) => {
 
   if (data) logger("post/[id].tsx", data?.publication);
 
-  // TODO: need a if post doesn't exist view
   if (!data?.publication) return <Error />;
 
-  if (data?.publication?.__typename === "Comment") {
-    router.push(`/post/${data.publication.mainPost.id}`);
-  }
+  const publication = data.publication as PostType;
 
-  if (
-    data?.publication?.metadata?.media[0] &&
-    (data?.publication?.metadata?.media[0].original.mimeType === "video/mp4" ||
-      data?.publication?.metadata?.media[0].original.mimeType === "video/webm")
-  )
-    return <VideoPostLayout publication={data?.publication} />;
-  else return <StandardPostLayout publication={data?.publication} />;
+  const renderPublicationLayout = () => {
+    switch (publication?.metadata?.__typename) {
+      case "VideoMetadataV3":
+        return <VideoPostLayout publication={publication} />;
+      default:
+        return <StandardPostLayout publication={publication} />;
+    }
+  };
+
+  return renderPublicationLayout();
 };
 
 export default PostPage;

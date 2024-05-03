@@ -8,7 +8,6 @@ import Image from "next/image";
 //   "bafybeida3w2w7fch2fy6rfvfttqamlcyxgd3ddbf4u25n7fxzvyvcaegxy";
 
 // import blenderPoster from "@/images/polygon.png";
-import { Post } from "@/types/graphql/generated";
 
 const PosterImage = ({ blenderPoster }: { blenderPoster: string }) => {
   return (
@@ -24,16 +23,17 @@ const PosterImage = ({ blenderPoster }: { blenderPoster: string }) => {
 };
 
 interface ILivepeerPlayerProps {
-  publication?: Post;
+  // publication?: Post;
   playbackId: string;
 }
 
 export const LivepeerPlayer = ({
-  publication,
+  // publication,
   playbackId,
 }: ILivepeerPlayerProps) => {
   // remove ipfs:// from playbackId
   const Id = playbackId.replace("ipfs://", "");
+  console.log("livepeer player   ======> ", Id);
 
   const { data: playbackInfo, error } = usePlaybackInfo(Id);
 

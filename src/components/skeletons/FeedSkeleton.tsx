@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@/components/elements";
+import { Avatar } from "@/components/elements/Avatar";
 import { emptyProfile } from "@/utils/empty";
 
 export const FeedSkeleton = () => {
@@ -15,7 +15,7 @@ export const FeedSkeleton = () => {
   );
 };
 
-const SkeletonLine = () => {
+export const SkeletonLine = () => {
   return (
     <div className={`border-b my-2 sm:p-8 animate-pulse`}>
       <div className={`flex`}>

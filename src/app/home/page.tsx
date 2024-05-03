@@ -1,8 +1,6 @@
-"use client";
-
 import type { NextPage } from "next";
 
-import { UserTimeline } from "@/components/home";
+import { UserTimeline } from "./_components/UserTimeline";
 
 const Home: NextPage = () => {
   return <UserTimeline />;

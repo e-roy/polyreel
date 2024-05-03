@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ImageUploading from "react-images-uploading";
 import { FaPhotoVideo } from "react-icons/fa";
-import { Button } from "@/components/elements";
+import { Button } from "@/components/elements/Button";
 import { uploadImageIpfs } from "@/lib/ipfs/ipfsImage";
 
 type AddPhotoProps = {

@@ -6,22 +6,11 @@ export const GET_FOLLOWERS = gql`
   query ($request: FollowersRequest!) {
     followers(request: $request) {
       items {
-        wallet {
-          address
-          defaultProfile {
-            ...ProfileFragmentLite
-            stats {
-              totalFollowers
-              totalFollowing
-            }
-          }
-        }
-        totalAmountOfTimesFollowed
+        ...ProfileFragmentLite
       }
       pageInfo {
         prev
         next
-        totalCount
       }
     }
   }

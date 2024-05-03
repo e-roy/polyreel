@@ -13,9 +13,10 @@ import {
 } from "@/lib/auth/state";
 
 import { useQuery, gql } from "@apollo/client";
-import { ProfileFragmentFull, ProfileFragmentLite } from "@/graphql/fragments";
+import { ProfileFragmentFull } from "@/graphql/fragments/ProfileFragmentFull";
+import { ProfileFragmentLite } from "@/graphql/fragments/ProfileFragmentLite";
 
-import { Loading } from "@/components/elements";
+import { Loading } from "@/components/elements/Loading";
 
 import { Profile } from "@/types/graphql/generated";
 
@@ -31,7 +32,7 @@ const GET_DEFAULT_PROFILE = gql`
 `;
 
 const GET_PROFILES = gql`
-  query ($request: ProfileQueryRequest!) {
+  query ($request: ProfilesRequest!) {
     profiles(request: $request) {
       items {
         ...ProfileFragmentLite
@@ -39,7 +40,6 @@ const GET_PROFILES = gql`
       pageInfo {
         prev
         next
-        totalCount
       }
     }
   }
@@ -60,18 +60,18 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const { address, connector, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
 
-  useEffect(() => {
-    connector?.on("change", () => {
-      removeAuthenticationToken();
-      disconnect();
-    });
-  }, [address, connector, isDisconnected]);
+  // useEffect(() => {
+  //   connector?.on("change", () => {
+  //     removeAuthenticationToken();
+  //     disconnect();
+  //   });
+  // }, [address, connector, isDisconnected]);
 
   const { data: userProfilesData, loading: userProfilesLoading } = useQuery(
     GET_PROFILES,
     {
       variables: {
-        request: { ownedBy: address },
+        request: { where: { ownedBy: [address] } },
       },
       skip: !address,
     }
@@ -80,11 +80,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const {
     data: defaultProfileData,
     loading: defaultProfileLoading,
-    refetch: refechProfiles,
+    refetch: refetchProfiles,
   } = useQuery(GET_DEFAULT_PROFILE, {
     variables: {
       request: {
-        ethereumAddress: address,
+        for: address,
       },
     },
     skip: !address,
@@ -103,54 +103,36 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     skip: !token || !address,
   });
 
-  // let verifyData = { verify: true };
-  // let verifyLoading = false;
-
-  const [currentUserProfile, setCurrentUserProfile] = useState<
-    Profile | undefined
-  >();
-
-  if (!userProfilesLoading && !defaultProfileLoading && !verifyLoading) {
-    if (userProfilesData)
-      logger(
-        "UserProvider.tsx ---- userProfilesData",
-        userProfilesData,
-        "green"
-      );
-
-    if (defaultProfileData)
-      logger(
-        "UserProvider.tsx ---- defaultProfileData",
-        defaultProfileData,
-        "green"
-      );
-
-    if (verifyData)
-      logger("UserProvider.tsx ---- verifyData", verifyData, "green");
-  }
-
   useEffect(() => {
-    if (userProfilesData?.profiles) {
-      const profileId = localStorage.getItem(
-        "polyreel_current_user_profile_id"
-      );
-      if (profileId) {
-        const profile = userProfilesData.profiles.items.find(
-          (profile: Profile) => profile.id === profileId
+    if (!userProfilesLoading && !defaultProfileLoading && !verifyLoading) {
+      if (userProfilesData) {
+        logger(
+          "UserProvider.tsx ---- userProfilesData",
+          userProfilesData,
+          "green"
         );
-        if (profile) {
-          setCurrentUserProfile(profile);
-        } else if (defaultProfileData?.defaultProfile) {
-          setCurrentUserProfile(defaultProfileData?.defaultProfile);
-        } else {
-          setCurrentUserProfile(userProfilesData.profiles.items[0]);
-        }
+      }
+      if (defaultProfileData) {
+        logger(
+          "UserProvider.tsx ---- defaultProfileData",
+          defaultProfileData,
+          "green"
+        );
+      }
+      if (verifyData) {
+        logger("UserProvider.tsx ---- verifyData", verifyData, "green");
       }
     }
-  }, [userProfilesData?.profiles]);
+  }, [
+    userProfilesData,
+    defaultProfileData,
+    verifyData,
+    userProfilesLoading,
+    defaultProfileLoading,
+    verifyLoading,
+  ]);
 
   const setCurrentUser = useCallback((profile: Profile) => {
-    setCurrentUserProfile(profile);
     localStorage.setItem("polyreel_current_user_profile_id", profile.id);
   }, []);
 
@@ -160,21 +142,25 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       defaultProfile: defaultProfileData?.defaultProfile,
       currentUser: defaultProfileData?.defaultProfile,
       setCurrentUser,
-      refechProfiles: refechProfiles,
-      verified: verifyData?.verify,
-      refetchVerify: refetchVerify,
+      refetchProfiles,
+      verified: verifyData?.verify || false,
+      refetchVerify,
       loading: verifyLoading,
     }),
     [
       userProfilesData,
       defaultProfileData,
-      currentUserProfile,
       verifyData,
       verifyLoading,
+      setCurrentUser,
+      refetchProfiles,
+      refetchVerify,
     ]
   );
 
-  if (userProfilesLoading || defaultProfileLoading) return <Loading />;
+  if (userProfilesLoading || defaultProfileLoading) {
+    return <Loading />;
+  }
 
   return (
     <UserContext.Provider value={injectContext}>

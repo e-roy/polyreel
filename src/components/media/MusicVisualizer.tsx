@@ -1,3 +1,4 @@
+"use client";
 // components/media/MusicVisualizer.tsx
 
 import React, { useRef, useEffect } from "react";

@@ -6,7 +6,7 @@ import { FaPlay, FaPause, FaVolumeUp } from "react-icons/fa";
 
 import { checkIpfsUrl } from "@/utils/check-ipfs-url";
 
-import { MetadataOutput, Post as PostType } from "@/types/graphql/generated";
+import { AudioMetadataV3 } from "@/types/graphql/generated";
 
 const formatTime = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
@@ -17,32 +17,17 @@ const formatTime = (seconds: number): string => {
 };
 
 interface AudioPlayerProps {
-  publication: PostType;
+  metadata: AudioMetadataV3;
 }
 
 export const AudioPlayerCard = React.memo(function AudioPlayerCard({
-  publication,
+  metadata,
 }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current?.play();
-    } else {
-      audioRef.current?.pause();
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
 
   const togglePlay = useCallback(() => {
     setIsPlaying((prevIsPlaying) => !prevIsPlaying);
@@ -79,22 +64,48 @@ export const AudioPlayerCard = React.memo(function AudioPlayerCard({
     }
   }, []);
 
-  const handleLoadedMetadata = useCallback(() => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
-      setRemainingTime(audioRef.current.duration);
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const handleLoadedMetadata = () => {
+      if (audio) {
+        setRemainingTime(audio.duration);
+      }
+    };
+
+    if (audio) {
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.volume = volume;
     }
-  }, []);
+
+    return () => {
+      if (audio) {
+        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      }
+    };
+  }, [volume]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (audio) {
+      if (isPlaying) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  }, [isPlaying]);
 
   return (
     <div className="w-full">
-      <div className="bg-white dark:bg-transparent shadow-lg dark:shadow-md dark:shadow-stone-100/30 rounded-lg">
-        <div className="md:flex">
+      <div className="bg-white dark:bg-transparent shadow dark:shadow dark:shadow-stone-100/30 rounded-lg">
+        <div className="md:grid md:grid-cols-2">
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className="w-full rounded-t-lg  md:rounded-l-lg md:rounded-tr-none"
-              src={checkIpfsUrl(publication?.metadata.image)}
+              className="w-full rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+              src={checkIpfsUrl(metadata.asset.cover?.optimized?.uri)}
               alt="Song Pic"
             />
           </div>
@@ -102,11 +113,10 @@ export const AudioPlayerCard = React.memo(function AudioPlayerCard({
             <div className="flex justify-between">
               <div>
                 <h3 className="text-2xl font-medium">
-                  {publication.metadata.name}
+                  {metadata.asset.artist}
                 </h3>
-                <p className="mt-1">{publication.profile.name}</p>
+                <p className="mt-1">{metadata.title}</p>
               </div>
-              <div className=""></div>
             </div>
             <div className="flex my-8">
               <button
@@ -114,40 +124,39 @@ export const AudioPlayerCard = React.memo(function AudioPlayerCard({
                 onClick={togglePlay}
               >
                 {isPlaying ? (
-                  <FaPause className={`h-8 w-8`} />
+                  <FaPause className="h-8 w-8" />
                 ) : (
-                  <FaPlay className={`h-8 w-8`} />
+                  <FaPlay className="h-8 w-8" />
                 )}
               </button>
               <audio
                 ref={audioRef}
-                src={checkIpfsUrl(publication?.metadata.media[0].original.url)}
+                src={checkIpfsUrl(metadata.asset.audio.optimized?.uri)}
                 onTimeUpdate={updateProgress}
-                onLoadedMetadata={handleLoadedMetadata}
               />
             </div>
             <div className="flex items-center space-x-2 text-stone-600 dark:text-stone-300 text-xs">
               <div className="flex items-center space-x-2 w-3/4">
                 <input
                   type="range"
-                  min="0"
-                  max="100"
-                  step="0.1"
+                  min={0}
+                  max={100}
+                  step={0.1}
                   value={progress}
                   onChange={handleProgressChange}
                   className="w-full"
                 />
-                <span className="">{formatTime(remainingTime)}</span>
+                <span>{formatTime(remainingTime)}</span>
               </div>
               <div className="flex items-center space-x-2 w-1/4">
                 <span>
-                  <FaVolumeUp className={`w-4 h-4`} />
+                  <FaVolumeUp className="w-4 h-4" />
                 </span>
                 <input
                   type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
+                  min={0}
+                  max={1}
+                  step={0.01}
                   value={volume}
                   onChange={handleVolumeChange}
                   className="w-full"

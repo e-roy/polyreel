@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { SettingsList } from "@/components/settings";
+import { SettingsList } from "./_components/SettingsList";
 
 const SettingsPage: NextPage = () => {
   return <SettingsList />;

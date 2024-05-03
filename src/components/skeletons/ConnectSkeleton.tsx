@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@/components/elements";
+import { Avatar } from "@/components/elements/Avatar";
 import { emptyProfile } from "@/utils/empty";
 
 export const ConnectSkeleton = () => {
@@ -15,7 +15,7 @@ export const ConnectSkeleton = () => {
   );
 };
 
-const SkeletonLine = () => {
+export const SkeletonLine = () => {
   return (
     <div className={`border-b my-2 p-6 animate-pulse`}>
       <div className={`flex`}>

@@ -1,8 +1,6 @@
-"use client";
-
 import Plyr from "plyr-react";
-import { FC } from "react";
-import "plyr-react/dist/plyr.css";
+import type { FC, Ref } from "react";
+import "plyr-react/plyr.css";
 
 interface Props {
   source: string;
@@ -25,8 +23,30 @@ const controlVideo = [
   "fullscreen",
 ];
 
+import type { APITypes } from "plyr-react";
+import { memo } from "react";
+
+interface PlayerProps {
+  playerRef: Ref<APITypes>;
+  src: string;
+}
+
+const Player: FC<PlayerProps> = ({ playerRef, src }) => {
+  return (
+    <Plyr
+      options={{
+        controls: ["progress", "current-time", "mute", "volume"],
+      }}
+      ref={playerRef}
+      source={{ sources: [{ src }], type: "audio" }}
+    />
+  );
+};
+
+export default memo(Player);
+
 export const VideoPlayer: FC<Props> = ({ source }) => {
-  // console.log("video source", source);
+  // console.log("VideoPlayer source", source);
 
   return (
     <div className="overflow-hidden rounded-md">
@@ -88,6 +108,7 @@ export const VideoPlayerFeed: FC<Props> = ({ source }) => {
 };
 
 const checkIpfs = (url: string) => {
+  if (!url) return "";
   if (url.startsWith("ipfs://")) {
     const ipfs = url.replace("ipfs://", "");
     return `https://ipfs.infura.io/ipfs/${ipfs}`;

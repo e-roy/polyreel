@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 import Plyr, { APITypes, PlyrProps, PlyrInstance } from "plyr-react";
-import "plyr-react/dist/plyr.css";
+import "plyr-react/plyr.css";
 
 export type HLSVideoPlayerProps = {
   media: {

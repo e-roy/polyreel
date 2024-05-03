@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client/core";
 
 export const CREATE_MIRROR_TYPED_DATA = gql`
-  mutation ($request: CreateMirrorRequest!) {
-    createMirrorTypedData(request: $request) {
+  mutation ($request: OnchainMirrorRequest!) {
+    createOnchainMirrorTypedData(request: $request) {
       id
       expiresAt
       typedData {
         types {
-          MirrorWithSig {
+          Mirror {
             name
             type
           }
@@ -22,11 +22,12 @@ export const CREATE_MIRROR_TYPED_DATA = gql`
           nonce
           deadline
           profileId
-          profileIdPointed
-          pubIdPointed
-          referenceModule
+          metadataURI
+          pointedProfileId
+          pointedPubId
+          referrerProfileIds
+          referrerPubIds
           referenceModuleData
-          referenceModuleInitData
         }
       }
     }

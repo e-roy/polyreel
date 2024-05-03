@@ -4,7 +4,7 @@ import { Profile } from "@/types/graphql/generated";
 import { usePathname } from "next/navigation";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 interface IFollowHeaderProps {
   profile?: Profile;
@@ -20,7 +20,7 @@ export const FollowHeader = ({ profile }: IFollowHeaderProps) => {
   return (
     <div>
       <div className={`px-4 py-4 flex`}>
-        <Link href={`/profile/${profile?.handle}`}>
+        <Link href={`/profile/${profile?.handle?.localName}`}>
           <button
             type={`button`}
             className="hover:bg-stone-200 dark:hover:bg-stone-700 h-9 w-9 rounded-full my-auto"
@@ -29,13 +29,13 @@ export const FollowHeader = ({ profile }: IFollowHeaderProps) => {
           </button>
         </Link>
         <div className={`pl-4`}>
-          <div className={`text-lg font-semibold`}>{profile?.name}</div>
-          <div className={`text-sm`}>@{profile?.handle}</div>
+          {/* <div className={`text-lg font-semibold`}>{profile?.name}</div>
+          <div className={`text-sm`}>@{profile?.handle}</div> */}
         </div>
       </div>
       <div className={`flex h-12 text-lg w-full`}>
         <Link
-          href={`/profile/${profile?.handle}/followers`}
+          href={`/profile/${profile?.handle?.localName}/followers`}
           className={`w-1/2 hover:bg-stone-100 dark:hover:bg-stone-700 text-center pt-2`}
         >
           <span
@@ -47,7 +47,7 @@ export const FollowHeader = ({ profile }: IFollowHeaderProps) => {
           </span>
         </Link>
         <Link
-          href={`/profile/${profile?.handle}/following`}
+          href={`/profile/${profile?.handle?.localName}/following`}
           className={`w-1/2 hover:bg-stone-100 dark:hover:bg-stone-700 text-center pt-2`}
         >
           <span

@@ -7,21 +7,32 @@ import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext, useMemo } from "react";
-import { UserContext } from "@/context";
-import { CreatePost } from "@/components/home";
-import { Logout } from "@/components/lens/auth";
+import { UserContext } from "@/context/UserContext/UserContext";
+import { CreatePost } from "@/components/layout/CreatePost";
+import { Auth } from "@/components/auth/Auth";
+import { SwitchNetwork } from "@/components/auth/SwitchNetwork";
+
+import { useAccount } from "wagmi";
+import { useCheckNetwork } from "@/hooks/useCheckNetwork";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { cn } from "@/lib/utils";
+
+import { UserMenu } from "./UserMenu";
 
 type NavLink = {
   id: number;
   label: string;
   icon: React.ReactNode;
-  active: boolean;
   href: string;
 };
 
 export const LeftNavigation = () => {
   const { currentUser, verified } = useContext(UserContext);
+  const correctNetwork = useCheckNetwork();
+  const { connector } = useAccount();
   const pathname = usePathname();
+
+  const isWalletConnected = useMemo(() => !!connector?.onConnect, [connector]);
 
   const userNav: NavLink[] = useMemo(
     () => [
@@ -29,39 +40,34 @@ export const LeftNavigation = () => {
         id: 1,
         label: "Home",
         icon: <FaHome className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/home",
         href: "/home",
       },
       {
         id: 2,
         label: "Explore",
         icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/explore",
         href: "/explore",
       },
       {
         id: 3,
         label: "Notifications",
         icon: <FaBell className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/notifications",
         href: "/notifications",
       },
       {
         id: 4,
         label: "Profile",
         icon: <FaUserAlt className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === `/profile/${currentUser?.handle}`,
-        href: `/profile/${currentUser?.handle}`,
+        href: `/profile/${currentUser?.handle?.localName}`,
       },
       {
         id: 5,
         label: "Settings",
         icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/settings",
         href: "/settings",
       },
     ],
-    [pathname, currentUser]
+    [currentUser]
   );
 
   const guestNav: NavLink[] = useMemo(
@@ -70,31 +76,33 @@ export const LeftNavigation = () => {
         id: 2,
         label: "Explore",
         icon: <GoGlobe className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/explore",
         href: "/explore",
       },
       {
         id: 5,
         label: "Settings",
         icon: <FiSettings className="text-3xl h-7 w-7 mx-auto" />,
-        active: pathname === "/settings",
         href: "/settings",
       },
     ],
-    [pathname]
+    []
   );
 
   const sidebarNav = currentUser && verified ? userNav : guestNav;
   return (
-    <div className={`flex flex-col justify-between h-full`}>
-      <ul className={``}>
-        {sidebarNav.map((item: any, index: number) => (
-          <li key={index}>
+    <div className={`flex flex-col justify-between h-full mx-auto`}>
+      <ul>
+        {sidebarNav.map((item) => (
+          <li key={item.id}>
             <Link
               href={item.href}
-              className={`flex hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full text-stone-500 dark:text-stone-300 hover:text-stone-800 my-2 p-2  ${
-                item.active ? "text-stone-900 dark:text-white font-bold" : ""
-              }`}
+              className={cn(
+                `flex hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 my-2 p-2 xl:pr-6 ${
+                  pathname === item.href
+                    ? "text-stone-900 dark:text-white font-bold"
+                    : ""
+                }`
+              )}
             >
               <span>{item.icon}</span>
               <span className="pl-2 my-auto block md:hidden xl:block">
@@ -103,10 +111,19 @@ export const LeftNavigation = () => {
             </Link>
           </li>
         ))}
-        {currentUser && verified && <Logout className={``} />}
       </ul>
-      <div className={`mb-8 w-full`}>
-        <CreatePost />
+      <div className={`mb-8 w-full space-y-8`}>
+        {isWalletConnected ? (
+          correctNetwork ? (
+            !verified && <Auth />
+          ) : (
+            <SwitchNetwork />
+          )
+        ) : (
+          <ConnectButton showBalance={false} />
+        )}
+        {currentUser && verified && <CreatePost />}
+        {currentUser && verified && <UserMenu />}
       </div>
     </div>
   );

@@ -1,29 +1,27 @@
 "use client";
 
-import { Loading, Error, LoadingMore } from "@/components/elements";
+import { Loading } from "@/components/elements/Loading";
+import { Error } from "@/components/elements/Error";
+import { LoadingMore } from "@/components/elements/LoadingMore";
+
 import { FollowHeader } from "./FollowHeader";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/profile/get-profile";
 import { GET_FOLLOWING } from "@/graphql/follow/following";
-import { ProfileItem } from "../connect";
-import { Following } from "@/types/graphql/generated";
+import { ProfileItem } from "./ProfileItem";
+import { Profile } from "@/types/graphql/generated";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useCallback } from "react";
 
 import { logger } from "@/utils/logger";
-
-const endSuffix = process.env.NODE_ENV === "production" ? ".lens" : ".test";
 
 interface IFollowingListProps {
   rawId: string;
 }
 
 export const FollowingList = ({ rawId }: IFollowingListProps) => {
-  const id =
-    typeof rawId === "string" && !rawId.endsWith(endSuffix)
-      ? `${rawId}` + endSuffix
-      : rawId;
+  const id = `lens/` + rawId;
 
   const {
     data: profileData,
@@ -31,7 +29,7 @@ export const FollowingList = ({ rawId }: IFollowingListProps) => {
     error,
   } = useQuery(GET_PROFILE, {
     variables: {
-      request: { handle: id },
+      request: { forHandle: id },
     },
     skip: !id,
   });
@@ -41,11 +39,10 @@ export const FollowingList = ({ rawId }: IFollowingListProps) => {
   const { data: followingData, fetchMore } = useQuery(GET_FOLLOWING, {
     variables: {
       request: {
-        address: profile?.ownedBy,
-        limit: 10,
+        for: profile?.id,
       },
     },
-    skip: !profile?.ownedBy,
+    skip: !profile?.id,
   });
 
   const { following } = followingData || {};
@@ -84,13 +81,11 @@ export const FollowingList = ({ rawId }: IFollowingListProps) => {
 
   if (following) logger("FollowingList.tsx", following);
 
-  // console.log("pageInfo?.next", pageInfo?.next);
-
   return (
     <div>
       <FollowHeader profile={profile} />
-      {following?.items.map((item: Following) => (
-        <ProfileItem profile={item.profile} key={item.profile.id} />
+      {following?.items.map((item: Profile) => (
+        <ProfileItem profile={item} key={item.id} />
       ))}
       {pageInfo?.next && (
         <div className="h-36" ref={sentryRef}>

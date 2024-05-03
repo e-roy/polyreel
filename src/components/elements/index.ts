@@ -1,9 +1,0 @@
-export { Modal } from "./Modal";
-export { Button } from "./Button";
-export { Avatar } from "./Avatar";
-export { Loading } from "./Loading";
-export { Error } from "./Error";
-export { AddEmoji } from "./AddEmoji";
-export { AddGif } from "./AddGif";
-export { AddPhoto } from "./AddPhoto";
-export { LoadingMore } from "./LoadingMore";

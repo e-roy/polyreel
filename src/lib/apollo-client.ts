@@ -36,6 +36,9 @@ const tokenRefreshLink = new ApolloLink((operation, forward) => {
         ? (jwt_decode(token) as DecodedType)
         : null;
 
+      if (decoded && decoded.exp < Date.now() / 1000)
+        console.log("EXPIRED TOKEN!!!!");
+
       if (decoded && decoded.exp < Date.now() / 1000) {
         try {
           const res = await refreshAuth(refreshToken);

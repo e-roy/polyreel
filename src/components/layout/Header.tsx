@@ -8,21 +8,24 @@ import React, {
   useRef,
   useContext,
 } from "react";
-import { UserContext } from "@/context";
+import { UserContext } from "@/context/UserContext/UserContext";
 import { useRouter } from "next/navigation";
 import { Transition, Dialog } from "@headlessui/react";
 
-import { Auth, Logout, SwitchNetwork } from "@/components/lens/auth";
+import { Auth } from "@/components/auth/Auth";
+import { Logout } from "@/components/auth/Logout";
+import { SwitchNetwork } from "@/components/auth/SwitchNetwork";
 
 import { useAccount } from "wagmi";
 
-import { Avatar } from "@/components/elements";
+import { Avatar } from "@/components/elements/Avatar";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 
 import { LeftNavigation } from "./LeftNavigation";
+import { checkIpfsUrl } from "@/utils/check-ipfs-url";
 
 export type HeaderProps = {};
 
@@ -37,7 +40,7 @@ export const Header = ({}: HeaderProps) => {
   const correctNetwork = useCheckNetwork();
 
   useEffect(() => {
-    if (connector?.ready) {
+    if (connector?.onConnect) {
       setIsWalletConnected(true);
     }
   }, [connector]);
@@ -54,7 +57,7 @@ export const Header = ({}: HeaderProps) => {
 
   return (
     <header
-      className={`md:hidden p-2 sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
+      className={`md:hidden sm:px-8 flex justify-between z-20 sticky top-0 bg-transparent`}
     >
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -89,37 +92,43 @@ export const Header = ({}: HeaderProps) => {
                 <div className="pointer-events-auto max-w-md">
                   <div className="flex h-full flex-col overflow-y-hidden bg-white dark:bg-stone-900 pb-6 shadow">
                     <div className="border-b shadow">
-                      {currentUser?.coverPicture ? (
-                        <div className=" h-40 sm:h-56">
-                          {currentUser.coverPicture.__typename ===
-                            "MediaSet" && (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                              src={currentUser.coverPicture.original.url}
-                              alt=""
-                            />
-                          )}
-                          {currentUser.coverPicture.__typename ===
-                            "NftImage" && (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              className=" max-h-56 w-full sm:border-2 border-transparent rounded-lg"
-                              src={currentUser.coverPicture.uri}
-                              alt=""
-                            />
-                          )}
-                        </div>
+                      {currentUser?.metadata?.coverPicture?.optimized &&
+                      currentUser?.metadata?.coverPicture?.optimized.uri ? (
+                        <div
+                          className="h-52 sm:h-80"
+                          style={{
+                            backgroundImage: currentUser?.metadata?.coverPicture
+                              ?.optimized?.uri
+                              ? `url(${checkIpfsUrl(
+                                  currentUser.metadata?.coverPicture.optimized
+                                    .uri
+                                )})`
+                              : "none",
+                            backgroundColor: "#94a3b8",
+                            backgroundSize: currentUser?.metadata?.coverPicture
+                              ?.optimized?.uri
+                              ? "cover"
+                              : "30%",
+                            backgroundPosition: "center center",
+                            backgroundRepeat: currentUser?.metadata
+                              ?.coverPicture?.optimized?.uri
+                              ? "no-repeat"
+                              : "repeat",
+                          }}
+                        />
                       ) : (
-                        <div className=" bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-40 sm:h-56 max-h-64"></div>
+                        <div
+                          className={`bg-gradient-to-r from-sky-600 via-purple-700 to-purple-500 h-56 rounded-t shadow-xl`}
+                        ></div>
                       )}
+
                       {currentUser && (
                         <div className="mt-4 px-4 pb-4 sm:flex sm:items-end sm:px-6">
                           <div className="sm:flex-1 flex">
                             <Avatar profile={currentUser} size={"small"} />
                             <div className="px-4 font-medium">
-                              <div>@{currentUser?.handle}</div>
-                              <div>{currentUser?.name}</div>
+                              <div>@{currentUser?.handle?.localName}</div>
+                              <div>{currentUser?.metadata?.displayName}</div>
                             </div>
                           </div>
                         </div>
@@ -127,7 +136,7 @@ export const Header = ({}: HeaderProps) => {
                     </div>
                     <div className={`w-72 m-4`}>
                       <LeftNavigation />
-                      {currentUser && verified && <Logout className={``} />}
+                      {currentUser && verified && <Logout />}
                     </div>
                   </div>
                 </div>
@@ -138,7 +147,7 @@ export const Header = ({}: HeaderProps) => {
       </Transition.Root>
 
       {!isWalletConnected ? (
-        <ConnectButton />
+        <ConnectButton showBalance={false} />
       ) : (
         <>
           {correctNetwork ? (

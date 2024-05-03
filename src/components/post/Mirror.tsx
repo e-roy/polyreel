@@ -1,84 +1,124 @@
 "use client";
 // components/post/Mirror.tsx
 
-import { useCallback, useContext, useMemo, useState } from "react";
-import { UserContext } from "@/context";
-import { FaRegCopy, FaRetweet } from "react-icons/fa";
+import { useCallback, useState } from "react";
+
 import { AiOutlineRetweet } from "react-icons/ai";
 
 import { useMutation } from "@apollo/client";
 import { CREATE_MIRROR_TYPED_DATA } from "@/graphql/publications/mirror";
 
-import { useSignTypedData, useContractWrite } from "wagmi";
+import { useAccount, useSignTypedData, useWriteContract } from "wagmi";
 import { omit, splitSignature } from "@/lib/helpers";
 
-import LENS_ABI from "@/abis/Lens-Hub.json";
+import { LensHub } from "@/abis/LensHub";
 import { LENS_HUB_PROXY_ADDRESS } from "@/lib/constants";
 
-import { Post } from "@/types/graphql/generated";
+import {
+  CreateOnchainMirrorBroadcastItemResult,
+  Post,
+} from "@/types/graphql/generated";
+// import { getMetadataAvatarUri } from "viem/_types/utils/ens/avatar/utils";
+
+interface MirrorArgs {
+  mirrorParams: {
+    profileId: string;
+    metadataURI: string;
+    pointedProfileId: string;
+    pointedPubId: string;
+    referrerProfileIds: string[];
+    referrerPubIds: string[];
+    referenceModuleData: string;
+  };
+  signature: {
+    signer: string;
+    v: number;
+    r: string;
+    s: string;
+    deadline: string;
+  };
+}
+
+interface CreateOnchainMirrorBroadcastTypedDataResult {
+  createOnchainMirrorTypedData: CreateOnchainMirrorBroadcastItemResult;
+}
 
 interface IMirrorProps {
   publication: Post;
 }
 
 export const Mirror = ({ publication }: IMirrorProps) => {
-  const { currentUser } = useContext(UserContext);
+  const { address } = useAccount();
+
   const [isMirrored, setIsMirrored] = useState(false);
 
-  const { stats, mirrors } = publication;
-
-  const checkMirrors = useMemo(() => {
-    if (mirrors) {
-      return mirrors.some((mirror) => mirror.includes(currentUser?.id));
-    }
-    return false;
-  }, [mirrors, currentUser]);
+  const { stats } = publication;
 
   const { signTypedDataAsync } = useSignTypedData();
-  const { writeAsync } = useContractWrite({
-    address: LENS_HUB_PROXY_ADDRESS,
-    abi: LENS_ABI,
-    functionName: "mirrorWithSig",
-    mode: "recklesslyUnprepared",
+
+  const { writeContractAsync } = useWriteContract({
+    mutation: {
+      onError: (error) => {
+        console.log("error", error);
+      },
+    },
   });
 
-  const [createMirrorTypedData, {}] = useMutation(CREATE_MIRROR_TYPED_DATA, {
-    onCompleted({ createMirrorTypedData }: any) {
-      const { typedData } = createMirrorTypedData;
-      if (!createMirrorTypedData) console.log("createMirrorTypedData is null");
+  const write = async (args: MirrorArgs) => {
+    const res = await writeContractAsync({
+      address: LENS_HUB_PROXY_ADDRESS,
+      abi: LensHub,
+      functionName: "mirrorWithSig",
+      args: [args.mirrorParams, args.signature],
+    });
+    return res;
+  };
+
+  const [createOnchainMirrorTypedData] = useMutation(CREATE_MIRROR_TYPED_DATA, {
+    onCompleted({
+      createOnchainMirrorTypedData,
+    }: CreateOnchainMirrorBroadcastTypedDataResult) {
+      const { typedData } = createOnchainMirrorTypedData;
+      if (!createOnchainMirrorTypedData)
+        console.log("createOnchainMirrorTypedData is null");
+
       const {
         profileId,
-        profileIdPointed,
-        pubIdPointed,
-        referenceModule,
+        metadataURI,
+        pointedProfileId,
+        pointedPubId,
+        referrerProfileIds,
+        referrerPubIds,
         referenceModuleData,
-        referenceModuleInitData,
       } = typedData?.value;
 
       signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
         types: omit(typedData?.types, "__typename"),
-        value: omit(typedData?.value, "__typename"),
+        primaryType: "Mirror",
+        message: omit(typedData?.value, "__typename"),
       }).then((res) => {
         const { v, r, s } = splitSignature(res);
-        const postARGS = {
-          profileId,
-          profileIdPointed,
-          pubIdPointed,
-          referenceModule,
-          referenceModuleData,
-          referenceModuleInitData,
-          sig: {
+        const mirrorArgs: MirrorArgs = {
+          mirrorParams: {
+            profileId,
+            metadataURI,
+            pointedProfileId,
+            pointedPubId,
+            referrerProfileIds,
+            referrerPubIds,
+            referenceModuleData,
+          },
+          signature: {
+            signer: address!,
             v,
             r,
             s,
             deadline: typedData.value.deadline,
           },
         };
-        writeAsync({ recklesslySetUnpreparedArgs: [postARGS] }).then((res) => {
-          res.wait(1).then(() => {
-            setIsMirrored(true);
-          });
+        write(mirrorArgs).then((res) => {
+          setIsMirrored(true);
         });
       });
     },
@@ -88,33 +128,27 @@ export const Mirror = ({ publication }: IMirrorProps) => {
   });
 
   const handleMirror = useCallback(() => {
-    createMirrorTypedData({
+    createOnchainMirrorTypedData({
       variables: {
         request: {
-          profileId: currentUser?.id,
-          publicationId: publication.id,
-          referenceModule: {
-            followerOnlyReferenceModule: false,
-          },
+          mirrorOn: publication.id,
         },
       },
     });
-  }, [createMirrorTypedData, currentUser, publication]);
+  }, [createOnchainMirrorTypedData, publication]);
 
   return (
     <>
       <button
         className={`flex ml-4 ${
-          checkMirrors || isMirrored
+          isMirrored
             ? "text-green-500 hover:text-green-600"
             : "my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
         }`}
         type="button"
         onClick={handleMirror}
       >
-        {isMirrored
-          ? stats?.totalAmountOfMirrors + 1
-          : stats?.totalAmountOfMirrors}
+        {isMirrored ? stats?.mirrors + 1 : stats?.mirrors}
         <AiOutlineRetweet
           className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
           aria-hidden="true"

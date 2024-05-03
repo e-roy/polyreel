@@ -1,29 +1,27 @@
 "use client";
 
-import { Loading, Error, LoadingMore } from "@/components/elements";
+import { Loading } from "@/components/elements/Loading";
+import { Error } from "@/components/elements/Error";
+import { LoadingMore } from "@/components/elements/LoadingMore";
+
 import { FollowHeader } from "./FollowHeader";
 
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/profile/get-profile";
 import { GET_FOLLOWERS } from "@/graphql/follow/followers";
 
-import { ProfileItem } from "../connect";
-import { Follower, Profile } from "@/types/graphql/generated";
+import { ProfileItem } from "./ProfileItem";
+import { Profile } from "@/types/graphql/generated";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useCallback } from "react";
 
 import { logger } from "@/utils/logger";
 
-const endSuffix = process.env.NODE_ENV === "production" ? ".lens" : ".test";
-
 interface IFollowersListProps {
   rawId: string;
 }
 export const FollowersList = ({ rawId }: IFollowersListProps) => {
-  const id =
-    typeof rawId === "string" && !rawId.endsWith(endSuffix)
-      ? `${rawId}` + endSuffix
-      : rawId;
+  const id = `lens/` + rawId;
 
   const {
     data: profileData,
@@ -31,9 +29,9 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
     error,
   } = useQuery(GET_PROFILE, {
     variables: {
-      request: { handle: id },
+      request: { forHandle: id },
     },
-    skip: !id,
+    skip: !rawId,
   });
 
   const { profile } = profileData || {};
@@ -41,7 +39,7 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
   const { data: followersData, fetchMore } = useQuery(GET_FOLLOWERS, {
     variables: {
       request: {
-        profileId: profile?.id,
+        of: profile?.id,
         // limit: 20,
       },
     },
@@ -56,9 +54,7 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
       fetchMore({
         variables: {
           request: {
-            profileId: profile?.id,
-            cursor: pageInfo?.next,
-            // limit: 10,
+            of: profile?.id,
           },
         },
       }),
@@ -85,23 +81,17 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
 
   logger("FollowersList.tsx", followers);
 
-  // console.log("pageInfo?.next", pageInfo?.next);
-
   return (
     <div>
       <FollowHeader profile={profile} />
-      {followers?.items.map((item: Follower, index: number) => (
-        <ProfileItem
-          profile={item.wallet.defaultProfile as Profile}
-          //   key={item?.wallet?.defaultProfile?.id}
-          key={index}
-        />
+      {followers?.items.map((item: Profile) => (
+        <ProfileItem profile={item} key={item.id} />
       ))}
-      {pageInfo?.next && (
+      {/* {pageInfo?.next && (
         <div className="h-36" ref={sentryRef}>
           <LoadingMore />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

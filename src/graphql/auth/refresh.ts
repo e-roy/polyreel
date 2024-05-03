@@ -3,6 +3,11 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 import { LENS_API_URL } from "@/lib/constants";
 
+const apolloClient = new ApolloClient({
+  uri: LENS_API_URL,
+  cache: new InMemoryCache(),
+});
+
 export const REFRESH_AUTHENTICATION = `
   mutation ($request: RefreshRequest!) {
     refresh(request: $request) {
@@ -22,8 +27,3 @@ export const refreshAuth = (refreshToken: string) => {
     },
   });
 };
-
-const apolloClient = new ApolloClient({
-  uri: LENS_API_URL,
-  cache: new InMemoryCache(),
-});

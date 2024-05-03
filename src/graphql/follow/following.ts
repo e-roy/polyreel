@@ -6,19 +6,11 @@ export const GET_FOLLOWING = gql`
   query ($request: FollowingRequest!) {
     following(request: $request) {
       items {
-        profile {
-          ...ProfileFragmentLite
-          stats {
-            totalFollowers
-            totalFollowing
-          }
-        }
-        totalAmountOfTimesFollowing
+        ...ProfileFragmentLite
       }
       pageInfo {
         prev
         next
-        totalCount
       }
     }
   }

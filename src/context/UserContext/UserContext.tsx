@@ -1,7 +1,7 @@
 "use client";
 // context/UserContext/UserContext.tsx
 
-import { createContext, Dispatch, SetStateAction } from "react";
+import { createContext, Dispatch } from "react";
 import { Profile } from "@/types/graphql/generated";
 
 export interface UserContextType {
@@ -9,7 +9,7 @@ export interface UserContextType {
   defaultProfile?: Profile;
   currentUser?: Profile;
   setCurrentUser: Dispatch<Profile>;
-  refechProfiles: () => void;
+  refetchProfiles: () => void;
   verified?: boolean;
   refetchVerify: () => void;
   loading?: boolean;
@@ -20,7 +20,7 @@ export const UserContext = createContext<UserContextType>({
   defaultProfile: undefined,
   currentUser: undefined,
   setCurrentUser: () => {},
-  refechProfiles: () => {},
+  refetchProfiles: () => {},
   verified: undefined,
   refetchVerify: () => {},
   loading: true,

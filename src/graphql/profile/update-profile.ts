@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const UPDATE_PROFILE = gql`
-  mutation ($request: CreatePublicSetProfileMetadataURIRequest!) {
-    createSetProfileMetadataTypedData(request: $request) {
+  mutation ($request: OnchainSetProfileMetadataRequest!) {
+    createOnchainSetProfileMetadataTypedData(request: $request) {
       id
       expiresAt
       typedData {
         types {
-          SetProfileMetadataURIWithSig {
+          SetProfileMetadataURI {
             name
             type
           }
@@ -22,7 +22,7 @@ export const UPDATE_PROFILE = gql`
           nonce
           deadline
           profileId
-          metadata
+          metadataURI
         }
       }
     }

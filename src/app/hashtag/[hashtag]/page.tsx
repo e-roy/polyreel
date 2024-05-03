@@ -1,6 +1,4 @@
-"use client";
-
-import { HashtagsList } from "@/components/hashtags";
+import { HashtagsList } from "./_components/HashtagsList";
 
 interface Props {
   params: {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 const projectId = process.env.IPFS_PROJECT_ID;
@@ -56,30 +56,23 @@ export async function POST(request: NextRequest) {
     name: body.name,
     attributes: body.attributes || [],
     media: body.media || [],
-    appId: body.appId || "polyreel.xyz",
+    appId: "",
+    // appId: body.appId || "polyreel.xyz",
   };
 
-  // const file = request.body.file;
-  // const file = null;
-
-  // if (!file) {
-  //   return {
-  //     status: 400,
-  //     body: { error: "Missing file" },
-  //   };
-  // }
-
   try {
-    // const ipfsHash = await uploadToIPFS(file, "filename.ext");
     const ipfsHash = await uploadJSONToIPFS(data);
 
     return NextResponse.json({
       hash: ipfsHash,
     });
   } catch (error) {
-    return {
+    console.error(error);
+    return new Response(JSON.stringify({ error: "Error processing IPFS" }), {
       status: 500,
-      body: { error: error },
-    };
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
