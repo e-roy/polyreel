@@ -6,7 +6,7 @@ import { UserContext } from "@/context/UserContext/UserContext";
 import { useQuery } from "@apollo/client";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 
 import { Notification } from "@/types/graphql/generated";
 
@@ -18,7 +18,9 @@ import { GET_NOTIFICATIONS } from "../_graphql/get-notifications";
 
 export const NotificationsList = () => {
   const { currentUser } = useContext(UserContext);
-  const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
+  const { loading, error, data } = useQuery<{
+    notifications: { items: Notification[] };
+  }>(GET_NOTIFICATIONS, {
     variables: {
       request: {},
     },
@@ -26,29 +28,26 @@ export const NotificationsList = () => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
-  if (!data || !data.notifications) return null;
+  const items = data?.notifications?.items;
 
-  const { items } = data.notifications;
+  if (!items) return null;
 
   logger("NotificationsList.tsx", items);
 
   return (
-    <div className={`px-2`}>
-      <div className={`py-6 px-4`}>
-        <h1
-          className={`text-2xl font-semibold text-stone-700 dark:text-stone-100`}
-        >
+    <div className="px-2">
+      <div className="py-6 px-4">
+        <h1 className="text-2xl font-semibold text-stone-700 dark:text-stone-100">
           Notifications
         </h1>
       </div>
-      {items &&
-        items.map((item: Notification, index: number) => (
-          <div key={index} className={`border-b px-4`}>
-            <NotificationCard item={item} />
-          </div>
-        ))}
+      {items.map((item, index) => (
+        <div key={item.id || index} className="border-b px-4">
+          <NotificationCard item={item} />
+        </div>
+      ))}
     </div>
   );
 };

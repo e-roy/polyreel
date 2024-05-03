@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { useAccount } from "wagmi";
 import Link from "next/link";
 
-import { Maybe, Profile } from "@/types/graphql/generated";
+import { Maybe, Profile, MetadataAttribute } from "@/types/graphql/generated";
 
 import { EditProfileButton } from "./edit/EditProfileButton";
 import { FollowProfileButton } from "./FollowProfileButton";
@@ -20,7 +20,6 @@ import { checkFollowerCount } from "@/utils/check-follower-count";
 import { FaTwitter, FaGlobeAmericas } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 
-import { MetadataAttribute } from "@/types/graphql/generated";
 import { UserContext } from "@/context/UserContext/UserContext";
 
 interface ProfileHeaderProps {
@@ -29,32 +28,37 @@ interface ProfileHeaderProps {
   refetch: () => void;
 }
 
-export const ProfileHeader = ({
+const filterAttributes = (
+  attributes: Maybe<MetadataAttribute[]> | undefined,
+  key: string
+): MetadataAttribute[] => {
+  return attributes?.filter((attribute) => attribute.key === key) || [];
+};
+
+const checkAttribute = (
+  attributes: Maybe<MetadataAttribute[]> | undefined,
+  key: string
+): string | undefined => {
+  const attribute = filterAttributes(attributes, key);
+  return attribute[0]?.value;
+};
+
+const socialIconClassName =
+  "h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200";
+
+export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   profile,
   loading,
   refetch,
-}: ProfileHeaderProps) => {
+}) => {
   const { verified } = useContext(UserContext);
-
   const { address } = useAccount();
 
   if (!profile) return null;
 
-  const filterAttributes = (
-    attributes: Maybe<MetadataAttribute[]> | undefined,
-    key: string
-  ): MetadataAttribute[] => {
-    return attributes?.filter((attribute) => attribute.key === key) || [];
-  };
-
-  const checkAttribute = (key: string): string | undefined => {
-    const attribute = filterAttributes(profile.metadata?.attributes, key);
-    return attribute[0]?.value;
-  };
-
-  const location = checkAttribute("location");
-  const website = checkAttribute("website");
-  const twitter = checkAttribute("x");
+  const location = checkAttribute(profile.metadata?.attributes, "location");
+  const website = checkAttribute(profile.metadata?.attributes, "website");
+  const twitter = checkAttribute(profile.metadata?.attributes, "x");
 
   const backgroundImageStyle = {
     backgroundImage: profile.metadata?.coverPicture?.optimized?.uri
@@ -69,9 +73,6 @@ export const ProfileHeader = ({
       ? "no-repeat"
       : "repeat",
   };
-
-  const socialIconClassName =
-    "h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-stone-500 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200";
 
   return (
     <>

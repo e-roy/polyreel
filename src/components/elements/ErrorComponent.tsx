@@ -1,4 +1,4 @@
-export const Error = () => {
+export const ErrorComponent = () => {
   return (
     <div className={`h-screen flex justify-center items-center`}>
       <div className="flex text-stone-600">

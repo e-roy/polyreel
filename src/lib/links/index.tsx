@@ -7,8 +7,7 @@ import { CommentComponent, commentRegex } from "./comment";
 import { HashtagComponent, hashtagRegex } from "./hashtag";
 import { getKey } from "./get-key";
 
-const ctrlCharactersRegex =
-  /[\u0000-\u001F\u007F-\u009F\u2000-\u200D\uFEFF]/gim;
+const ctrlCharactersRegex = /[\u0000-\u001F\u007F-\u009F]/gim;
 
 /**
  * Make urls clickable.

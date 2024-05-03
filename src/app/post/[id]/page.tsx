@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { GET_PUBLICATION } from "./_graphql/get-publication";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { StandardPostLayout } from "./_components/StandardPostLayout";
 import { VideoPostLayout } from "./_components/VideoPostLayout";
 
@@ -32,11 +32,11 @@ const PostPage = ({ params }: Props) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (data) logger("post/[id].tsx", data?.publication);
 
-  if (!data?.publication) return <Error />;
+  if (!data?.publication) return <ErrorComponent />;
 
   const publication = data.publication as PostType;
 

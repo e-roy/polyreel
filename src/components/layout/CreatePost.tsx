@@ -174,7 +174,6 @@ export const CreatePost = () => {
 
     try {
       const res = await axios.post("/api/ipfs", payload);
-      // console.log("RESPONSE ====>", res.data);
       const { hash } = res.data;
 
       createPostTypedData({
@@ -231,32 +230,30 @@ export const CreatePost = () => {
                 Confirm transaction to post on-chain
               </div>
             ) : (
-              <>
-                <form
-                  className={`w-full sm:mx-2`}
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <textarea
-                    id={"content"}
-                    rows={6}
-                    required
-                    className={`block w-full rounded-md border resize-none border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
-                    placeholder="create a post"
-                    {...register("content")}
-                  />
-                  <div className="my-4 flex justify-between">
-                    <div className="flex"></div>
-                    <div className="mx-4">
-                      <button
-                        className={`flex hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full text-stone-500 dark:text-stone-300 hover:text-stone-800 my-2 p-2`}
-                        type={`submit`}
-                      >
-                        <BsFillSendFill className="text-3xl h-7 w-7" />
-                      </button>
-                    </div>
+              <form
+                className={`w-full sm:mx-2`}
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <textarea
+                  id={"content"}
+                  rows={6}
+                  required
+                  className={`block w-full rounded-md border resize-none border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+                  placeholder="create a post"
+                  {...register("content")}
+                />
+                <div className="my-4 flex justify-between">
+                  <div className="flex"></div>
+                  <div className="mx-4">
+                    <button
+                      className={`flex hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full text-stone-500 dark:text-stone-300 hover:text-stone-800 my-2 p-2`}
+                      type={`submit`}
+                    >
+                      <BsFillSendFill className="text-3xl h-7 w-7" />
+                    </button>
                   </div>
-                </form>
-              </>
+                </div>
+              </form>
             )}
             <div className="mx-auto">
               {selectedPicture && (

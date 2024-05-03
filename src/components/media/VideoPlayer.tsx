@@ -2,14 +2,6 @@ import Plyr from "plyr-react";
 import type { FC, Ref } from "react";
 import "plyr-react/plyr.css";
 
-interface Props {
-  source: string;
-  poster?: string;
-  controls?: string[];
-  autoPlay?: boolean;
-  ratio?: string | undefined;
-}
-
 const controlVideo = [
   "play",
   "progress",
@@ -45,9 +37,11 @@ const Player: FC<PlayerProps> = ({ playerRef, src }) => {
 
 export default memo(Player);
 
-export const VideoPlayer: FC<Props> = ({ source }) => {
-  // console.log("VideoPlayer source", source);
+interface Props {
+  source: string;
+}
 
+export const VideoPlayer: FC<Props> = ({ source }) => {
   return (
     <div className="overflow-hidden rounded-md">
       <Plyr
@@ -79,7 +73,6 @@ const controlsFeed = ["current-time", "captions", "volume"];
 export const VideoPlayerFeed: FC<Props> = ({ source }) => {
   const [ref, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
-  // console.log("video source", source);
 
   return (
     <div className="overflow-hidden rounded-lg border" ref={ref}>

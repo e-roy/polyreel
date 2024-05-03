@@ -83,8 +83,6 @@ export const UnFollowProfileButton = ({
             },
           };
 
-          // console.log("unfollowArgs:", JSON.stringify(unfollowArgs, null, 2));
-
           write(unfollowArgs);
         })
         .catch((error) => {

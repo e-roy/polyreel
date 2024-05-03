@@ -108,7 +108,7 @@ export const CommentLine = ({ publicationId, refetch }: CommentLineProps) => {
         actionModulesInitDatas,
         referenceModule,
         referenceModuleInitData,
-      } = typedData?.value;
+      } = typedData.value;
 
       signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
@@ -197,31 +197,26 @@ export const CommentLine = ({ publicationId, refetch }: CommentLineProps) => {
             submitting...
           </div>
         ) : (
-          <>
-            <form
-              className={`w-full sm:mx-2`}
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div className={`flex space-x-2`}>
-                <input
-                  id={"content"}
-                  type="text"
-                  required
-                  placeholder={`Write a comment...`}
-                  {...register("content")}
-                  className={`block w-full rounded-full border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
-                />
-                <button
-                  type={`submit`}
-                  className={
-                    "bg-sky-500 hover:bg-sky-600 hover:text-white text-gray-100 rounded-full p-2 my-auto"
-                  }
-                >
-                  <BsFillSendFill className="w-5 h-5" />
-                </button>
-              </div>
-            </form>
-          </>
+          <form className={`w-full sm:mx-2`} onSubmit={handleSubmit(onSubmit)}>
+            <div className={`flex space-x-2`}>
+              <input
+                id={"content"}
+                type="text"
+                required
+                placeholder={`Write a comment...`}
+                {...register("content")}
+                className={`block w-full rounded-full border border-stone-200 shadow-sm text-base text-stone-700 dark:text-stone-100 py-2 px-3 focus:outline-transparent focus:border-stone-300 focus:ring focus:ring-stone-200 focus:ring-opacity-50`}
+              />
+              <button
+                type={`submit`}
+                className={
+                  "bg-sky-500 hover:bg-sky-600 hover:text-white text-gray-100 rounded-full p-2 my-auto"
+                }
+              >
+                <BsFillSendFill className="w-5 h-5" />
+              </button>
+            </div>
+          </form>
         )}
       </div>
     </div>

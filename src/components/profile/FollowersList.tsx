@@ -1,7 +1,7 @@
 "use client";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { LoadingMore } from "@/components/elements/LoadingMore";
 
 import { FollowHeader } from "./FollowHeader";
@@ -40,14 +40,12 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
     variables: {
       request: {
         of: profile?.id,
-        // limit: 20,
       },
     },
     skip: !profile?.id,
   });
 
   const pageInfo = followersData?.followers?.pageInfo;
-  // console.log("pageInfo", pageInfo);
 
   const handleLoadMore = useCallback(
     () =>
@@ -74,10 +72,10 @@ export const FollowersList = ({ rawId }: IFollowersListProps) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   // TODO: need a screen for no profile found
-  //   if (!profile) return <>profile not found</>;
+  if (!profile) return <>profile not found</>;
 
   logger("FollowersList.tsx", followers);
 

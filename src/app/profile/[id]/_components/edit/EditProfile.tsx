@@ -59,7 +59,6 @@ type EditProfileProps = {
 
 export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const [editProfileImage, setEditProfileImage] = useState<boolean>(false);
 
   const { signTypedDataAsync } = useSignTypedData();
 
@@ -89,7 +88,7 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
       if (!createOnchainSetProfileMetadataTypedData)
         console.log("createOnchainSetProfileMetadataTypedData is null");
 
-      const { profileId, metadataURI } = typedData?.value;
+      const { profileId, metadataURI } = typedData.value;
 
       signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
@@ -115,23 +114,14 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
     },
   });
 
-  const checkLocation = () => {
-    if (!profile.metadata?.attributes) return;
-    const location = filterAttributes(profile.metadata?.attributes, "location");
-    if (location && location[0]) return location[0].value;
-  };
-
-  const checkWebsite = () => {
-    if (!profile.metadata?.attributes) return;
-    const website = filterAttributes(profile.metadata?.attributes, "website");
-    if (website[0]) return website[0].value;
-  };
-
-  const checkTwitter = () => {
-    if (!profile.metadata?.attributes) return;
-    const twitter = filterAttributes(profile.metadata?.attributes, "twitter");
-    if (twitter[0]) return twitter[0].value;
-  };
+  const getAttribute = useCallback(
+    (key: string) => {
+      if (!profile.metadata?.attributes) return;
+      const attribute = filterAttributes(profile.metadata?.attributes, key);
+      return attribute?.[0]?.value;
+    },
+    [profile.metadata?.attributes]
+  );
 
   const { register, handleSubmit, reset } = useForm<ProfileInputs>();
   const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
@@ -180,21 +170,20 @@ export const EditProfile = ({ profile, refetch }: EditProfileProps) => {
       name: profile.metadata?.displayName as string,
       bio: profile.metadata?.bio || "",
       // cover_picture: profile.coverPicture || "",
-      location: checkLocation() || "",
-      website: checkWebsite() || "",
-      twitter_handle: checkTwitter() || "",
+      location: getAttribute("location") || "",
+      website: getAttribute("website") || "",
+      twitter_handle: getAttribute("twitter") || "",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reset]);
+  }, [
+    getAttribute,
+    profile.metadata?.bio,
+    profile.metadata?.displayName,
+    reset,
+  ]);
 
   useEffect(() => {
     resetAsyncForm();
   }, [resetAsyncForm]);
-
-  const handleRefetch = async () => {
-    refetch();
-    setEditProfileImage(!editProfileImage);
-  };
 
   return (
     <>

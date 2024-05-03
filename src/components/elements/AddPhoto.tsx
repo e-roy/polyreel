@@ -10,15 +10,9 @@ type AddPhotoProps = {
   title?: string;
   description?: string;
   onSelect: (image: any) => void;
-  // onRemove: () => void;
 };
 
-export const AddPhoto = ({
-  title,
-  description,
-  onSelect,
-}: // onRemove,
-AddPhotoProps) => {
+export const AddPhoto = ({ title, description, onSelect }: AddPhotoProps) => {
   const [uploadImage, setUploadImage] = useState([]);
   const maxNumber = 1;
 
@@ -30,7 +24,6 @@ AddPhotoProps) => {
     };
     console.log(payload);
     const ipfsImage = await uploadImageIpfs(payload);
-    // const ipfsImage = await uploadImageIpfs(image);
 
     console.log("ipfsImage - onImageUpdate - ", ipfsImage);
     onSelect(ipfsImage);
@@ -46,10 +39,6 @@ AddPhotoProps) => {
     onSelect(ipfsImage);
     setUploadImage(imageList);
   };
-
-  // useEffect(() => {
-  //   console.log("on remove");
-  // }, [onRemove]);
 
   return (
     <div className="py-1 px-2 text-stone-500 hover:text-stone-800 hover:bg-stone-200 cursor-pointer my-auto rounded-lg">

@@ -1,7 +1,7 @@
 "use client";
 // components/post/Mirror.tsx
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import { AiOutlineRetweet } from "react-icons/ai";
 
@@ -18,7 +18,8 @@ import {
   CreateOnchainMirrorBroadcastItemResult,
   Post,
 } from "@/types/graphql/generated";
-// import { getMetadataAvatarUri } from "viem/_types/utils/ens/avatar/utils";
+import { UserContext } from "@/context/UserContext/UserContext";
+import { Button } from "@/components/ui/button";
 
 interface MirrorArgs {
   mirrorParams: {
@@ -49,6 +50,7 @@ interface IMirrorProps {
 
 export const Mirror = ({ publication }: IMirrorProps) => {
   const { address } = useAccount();
+  const { verified } = useContext(UserContext);
 
   const [isMirrored, setIsMirrored] = useState(false);
 
@@ -90,7 +92,7 @@ export const Mirror = ({ publication }: IMirrorProps) => {
         referrerProfileIds,
         referrerPubIds,
         referenceModuleData,
-      } = typedData?.value;
+      } = typedData.value;
 
       signTypedDataAsync({
         domain: omit(typedData?.domain, "__typename"),
@@ -139,21 +141,25 @@ export const Mirror = ({ publication }: IMirrorProps) => {
 
   return (
     <>
-      <button
+      <Button
         className={`flex ml-4 ${
           isMirrored
             ? "text-green-500 hover:text-green-600"
-            : "my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+            : "my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-transparent"
         }`}
         type="button"
+        variant={`ghost`}
+        size={`icon`}
+        aria-label={"Mirror"}
         onClick={handleMirror}
+        disabled={!verified}
       >
         {isMirrored ? stats?.mirrors + 1 : stats?.mirrors}
         <AiOutlineRetweet
           className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2"
           aria-hidden="true"
         />
-      </button>
+      </Button>
     </>
   );
 };

@@ -53,7 +53,7 @@ const navLinks: Omit<NavLink, "active">[] = [
 ];
 
 export const MobileNav = () => {
-  const { currentUser, verified, loading } = useContext(UserContext);
+  const { currentUser, verified } = useContext(UserContext);
   const pathname = usePathname();
 
   const userNav: NavLink[] = useMemo(

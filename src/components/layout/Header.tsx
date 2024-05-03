@@ -27,9 +27,7 @@ import { useCheckNetwork } from "@/hooks/useCheckNetwork";
 import { LeftNavigation } from "./LeftNavigation";
 import { checkIpfsUrl } from "@/utils/check-ipfs-url";
 
-export type HeaderProps = {};
-
-export const Header = ({}: HeaderProps) => {
+export const Header = () => {
   const { currentUser, verified, loading } = useContext(UserContext);
   const router = useRouter();
   const [isWalletConnected, setIsWalletConnected] = useState(false);

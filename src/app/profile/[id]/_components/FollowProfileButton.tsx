@@ -107,8 +107,6 @@ export const FollowProfileButton = ({
           },
         };
 
-        // console.log("followArgs:", JSON.stringify(followArgs, null, 2));
-
         write(followArgs)
           .then(() => {
             console.log("Followed successfully");

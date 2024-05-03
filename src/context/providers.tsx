@@ -91,25 +91,23 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   if (!isMounted) return null;
 
   return (
-    <>
-      <ThemeProvider defaultTheme="light" attribute="class">
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider coolMode theme={customTheme}>
-              <LivepeerConfig
-                //   dehydratedState={pageProps?.dehydratedState}
-                client={livepeerClient}
-              >
-                <ApolloProvider client={apolloClient()}>
-                  <UserProvider>
-                    <AppLayout>{children}</AppLayout>
-                  </UserProvider>
-                </ApolloProvider>
-              </LivepeerConfig>
-            </RainbowKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider defaultTheme="light" attribute="class">
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider coolMode theme={customTheme}>
+            <LivepeerConfig
+              //   dehydratedState={pageProps?.dehydratedState}
+              client={livepeerClient}
+            >
+              <ApolloProvider client={apolloClient()}>
+                <UserProvider>
+                  <AppLayout>{children}</AppLayout>
+                </UserProvider>
+              </ApolloProvider>
+            </LivepeerConfig>
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ThemeProvider>
   );
 };

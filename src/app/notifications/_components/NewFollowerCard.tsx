@@ -8,24 +8,24 @@ interface INewFollowerCardProps {
 
 export const NewFollowerCard = ({ item }: INewFollowerCardProps) => {
   const uniqueFollowers = item.followers.reduce((acc, follower) => {
-    if (follower && follower.handle) {
+    if (follower?.handle) {
       acc.set(follower.handle.id, follower);
     }
     return acc;
-  }, new Map<string, (typeof item.followers)[number]>());
+  }, new Map<string, NonNullable<(typeof item.followers)[number]>>());
 
   const totalCount = uniqueFollowers.size;
 
   return (
-    <div className={`flex flex-col space-y-2 py-2`}>
+    <div className="flex flex-col space-y-2 py-2">
       <Label>{totalCount} New Followers</Label>
-      <div className={`space-x-2`}>
+      <div className="space-x-2">
         {Array.from(uniqueFollowers.values()).map((follower) => (
           <Avatar
-            key={follower.handle!.id}
+            key={follower.handle?.id}
             profile={follower}
             size="xs"
-            href={`/profile/${follower.handle!.localName}`}
+            href={`/profile/${follower.handle?.localName}`}
           />
         ))}
       </div>

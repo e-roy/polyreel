@@ -2,12 +2,13 @@ import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { Providers } from "@/context/providers";
+import { ReactNode } from "react";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+type RootLayoutProps = {
+  children: ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>

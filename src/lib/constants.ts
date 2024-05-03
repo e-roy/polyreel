@@ -1,7 +1,7 @@
 export const ENV_PROD = process.env.NODE_ENV === "production";
 export const ENV_DEV = process.env.NODE_ENV === "development";
 
-export const LOCAL_MAINNET_TESTING = false;
+export const LOCAL_MAINNET_TESTING = true;
 
 export const CURRENT_CHAIN_ID: number =
   ENV_PROD || LOCAL_MAINNET_TESTING ? 137 : 80002;

@@ -2,7 +2,7 @@
 // search/_components/SearchProfilesList.tsx
 
 import { useQuery, gql } from "@apollo/client";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { ProfileFragmentLite } from "@/graphql/fragments/ProfileFragmentLite";
 import { Profile } from "@/types/graphql/generated";
 import { ProfileItem } from "@/components/profile/ProfileItem";
@@ -43,7 +43,7 @@ export const SearchProfilesList = ({ search }: ISearchProfilesListProps) => {
     skip: !search,
   });
 
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (data) logger("SearchProfilesList.tsx", data.search);
 

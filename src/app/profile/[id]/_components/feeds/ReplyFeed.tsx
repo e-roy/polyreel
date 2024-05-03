@@ -9,7 +9,7 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 import { Post } from "@/components/post/Post";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { LoadingMore } from "@/components/elements/LoadingMore";
 
 import { logger } from "@/utils/logger";
@@ -62,7 +62,7 @@ export const ReplyFeed: React.FC<ReplyFeedProps> = ({ profileId }) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
   logger("ReplyFeed.tsx", data);
 
   return (

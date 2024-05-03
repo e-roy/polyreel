@@ -61,8 +61,7 @@ export async function POST(request: NextRequest) {
     const data: MetadataJSON = {
       version: "1.0.0",
       metadata_id: uuidv4(),
-      appId: "",
-      // appId: body.appId || "polyreel.xyz",
+      appId: body.appId || "polyreel.xyz",
       name: body.name,
       bio: body.bio,
       cover_picture: body.cover_picture || null,

@@ -6,7 +6,7 @@ import { GET_PUBLICATIONS } from "@/graphql/publications/get-publications";
 import { Post } from "@/components/post/Post";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 
 import { Post as PostType } from "@/types/graphql/generated";
 import { useEffect, memo } from "react";
@@ -36,7 +36,7 @@ export const PostComments = memo(function PostComments({
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (!data || !data.publications.items) return null;
 
@@ -98,7 +98,7 @@ const Comment = memo(function Comment({ postId }: CommentProps) {
   }, [postId, getPublications]);
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (!data || !data.publications.items) return null;
 

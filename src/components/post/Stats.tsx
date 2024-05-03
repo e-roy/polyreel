@@ -44,19 +44,17 @@ export const Stats = ({ publication }: IStatsProps) => {
   if (!currentUser) return <StatsContent publication={publication} />;
 
   return (
-    <>
-      <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4 mx-2 sm:mx-4">
-        <div className="flex space-x-4">
-          <CommentModal publication={publication} />
-          <Mirror publication={publication} />
-          <Like publication={publication} />
-        </div>
-        {publication.metadata?.appId && (
-          <div className="text-xs text-stone-500">
-            posted on: {publication.metadata?.appId}
-          </div>
-        )}
+    <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium text-stone-500 mt-4 mx-2 sm:mx-4">
+      <div className="flex space-x-4">
+        <CommentModal publication={publication} />
+        <Mirror publication={publication} />
+        <Like publication={publication} />
       </div>
-    </>
+      {publication.metadata?.appId && (
+        <div className="text-xs text-stone-500">
+          posted on: {publication.metadata?.appId}
+        </div>
+      )}
+    </div>
   );
 };

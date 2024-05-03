@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "./_graphql/get-profile";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -40,7 +40,7 @@ const ProfilePage = ({ params }: Props) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (!profileData) return null;
 

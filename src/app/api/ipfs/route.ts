@@ -56,8 +56,7 @@ export async function POST(request: NextRequest) {
     name: body.name,
     attributes: body.attributes || [],
     media: body.media || [],
-    appId: "",
-    // appId: body.appId || "polyreel.xyz",
+    appId: body.appId || "polyreel.xyz",
   };
 
   try {

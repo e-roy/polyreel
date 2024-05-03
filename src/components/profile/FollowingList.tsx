@@ -1,7 +1,7 @@
 "use client";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { LoadingMore } from "@/components/elements/LoadingMore";
 
 import { FollowHeader } from "./FollowHeader";
@@ -72,7 +72,7 @@ export const FollowingList = ({ rawId }: IFollowingListProps) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
 
   if (!profileData) return null;
 

@@ -10,6 +10,7 @@ import {
   PublicationReactionType,
   ReactionRequest,
 } from "@/types/graphql/generated";
+import { Button } from "@/components/ui/button";
 
 export const ADD_LIKE = gql`
   mutation ($request: ReactionRequest!) {
@@ -65,21 +66,23 @@ export const Like = ({ publication }: ILikeProps) => {
   }, [currentUser, addReaction, removeReaction, likeRequest, userLiked]);
 
   return (
-    <div className="flex ml-4 my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer">
-      {numOfLikes}
-      <button
+    <div className="flex ml-4 my-auto">
+      <Button
         onClick={handleReaction}
         aria-label={userLiked ? "Unlike" : "Like"}
-        type="button"
+        variant={`ghost`}
+        size={`icon`}
         disabled={!verified}
+        className={`font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-transparent`}
       >
+        {numOfLikes}
         <FaHeart
           className={`h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2 ${
             userLiked ? "text-red-600" : ""
           }`}
           aria-hidden="true"
         />
-      </button>
+      </Button>
     </div>
   );
 };

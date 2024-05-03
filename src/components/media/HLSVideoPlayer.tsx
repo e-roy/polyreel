@@ -28,7 +28,7 @@ export const HLSVideoPlayer = ({
     if (playbackId) {
       const loadVideo = async () => {
         const video = document.getElementById("plyr") as HTMLVideoElement;
-        var hls = new Hls();
+        const hls = new Hls();
         //   hls.loadSource(`https://cdn.livepeer.com/${playbackId}/index.m3u8`);
         hls.loadSource(`${media.url}`);
 
@@ -64,14 +64,5 @@ export const HLSVideoPlayer = ({
         <source src={media.url} type={media.mimeType} />
       </video>
     </div>
-  );
-
-  return (
-    <Plyr
-      id="plyr"
-      options={{ volume: 0.1, autoplay: false }}
-      source={{} as PlyrProps["source"]}
-      ref={ref}
-    />
   );
 };

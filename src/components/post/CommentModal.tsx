@@ -125,7 +125,7 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
           actionModulesInitDatas,
           referenceModule,
           referenceModuleInitData,
-        } = typedData?.value;
+        } = typedData.value;
 
         signTypedDataAsync({
           domain: omit(typedData?.domain, "__typename"),
@@ -173,7 +173,6 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
 
   const { register, handleSubmit, reset } = useForm<CommentInputs>();
   const onSubmit: SubmitHandler<CommentInputs> = async (data) => {
-    // console.log(data);
     if (!publication.id) return;
     setIsSubmitting(true);
     let media = [] as any[];
@@ -215,8 +214,9 @@ export const CommentModal = ({ publication }: ICommentModalProps) => {
           type={`button`}
           variant={`ghost`}
           size={`icon`}
+          aria-label={"Comment on Post"}
           disabled={!verified}
-          className="flex my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+          className="flex my-auto font-medium text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-transparent"
         >
           {publication?.stats?.comments}
           <BsChat

@@ -3,7 +3,7 @@
 import { useQuery } from "@apollo/client";
 
 import { Loading } from "@/components/elements/Loading";
-import { Error } from "@/components/elements/Error";
+import { ErrorComponent } from "@/components/elements/ErrorComponent";
 import { Avatar } from "@/components/elements/Avatar";
 import { Like } from "@/components/post/Like";
 import { CommentLine } from "@/app/post/[id]/_components/CommentLine";
@@ -33,7 +33,7 @@ export const VideoComments = ({ publication }: VideoCommentsProps) => {
     skip: !publication?.id,
   });
 
-  if (error) return <Error />;
+  if (error) return <ErrorComponent />;
   if (!data) return null;
 
   logger("VideoComments.tsx", data);
